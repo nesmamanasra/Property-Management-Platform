@@ -1,38 +1,59 @@
-import Container from "../layout/Container";
-import { motion } from "framer-motion";
-import logoCenter from "../../assets/logo_center_aqari.png";
+import React from "react";
+import {
+  Building2,
+  Users,
+  CreditCard,
+  LayoutDashboard,
+} from "lucide-react";
 
-const stats = [
-  { number: "+500", label: "Properties Managed" },
-  { number: "+1,200", label: "Contracts Signed" },
-  { number: "99%", label: "Data Accuracy" },
-  { number: "24/7", label: "Support" },
+const STATS = [
+  {
+    title: "Property Management",
+    desc: "Track, add, and edit\nproperties",
+    Icon: Building2,
+  },
+  {
+    title: "Tenant Management",
+    desc: "Manage leases and payments",
+    Icon: Users,
+  },
+  {
+    title: "Payment Tracking",
+    desc: "Monitor rent payments and dues",
+    Icon: CreditCard,
+  },
+  {
+    title: "Smart Dashboard",
+    desc: "Get real-time insights",
+    Icon: LayoutDashboard,
+  },
 ];
 
 export default function StatsSection() {
   return (
-    <section className="py-20 bg-[#F5F7FA] dark:bg-[#0B1220]">
-      <Container>
-        <div className="text-center mb-12">
-          <img src={logoCenter} className="h-14 mx-auto mb-4" alt="Aqari" />
-          <p className="text-gray-600 dark:text-white/70 mt-3">Property Management - simplified</p>
-        </div>
-
-        <div className="grid md:grid-cols-4 gap-10 text-center">
-          {stats.map((s, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="bg-white/0"
+    <section className="w-full mt-10">
+      <div className="mx-auto max-w-6xl px-4">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {STATS.map(({ title, desc, Icon }, idx) => (
+            <div
+              key={idx}
+              className="group rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
             >
-              <h3 className="text-4xl font-bold text-[#1F3C88]">{s.number}</h3>
-              <p className="mt-2 text-gray-600 dark:text-white/70">{s.label}</p>
-            </motion.div>
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-50 ring-1 ring-slate-200">
+                <Icon className="h-7 w-7 text-slate-700" strokeWidth={1.6} />
+              </div>
+
+              <h3 className="text-center text-lg font-semibold text-slate-900">
+                {title}
+              </h3>
+
+              <p className="mt-2 whitespace-pre-line text-center text-sm leading-6 text-slate-600">
+                {desc}
+              </p>
+            </div>
           ))}
         </div>
-      </Container>
+      </div>
     </section>
   );
 }
