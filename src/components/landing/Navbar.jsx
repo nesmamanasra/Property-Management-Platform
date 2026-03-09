@@ -6,9 +6,9 @@ export default function Navbar() {
     <nav className="bg-[#F5F7FA]">
       <Container className="pt-6">
         <div className="grid grid-cols-[1fr_auto_1fr] items-center">
-          <div className="flex items-center">
-            <img src={logo} alt="Aqari" className="h-10 w-auto" />
-          </div>
+         <div className="flex items-center">
+          <img src={logo} alt="Aqari" className="h-20 w-auto" />
+        </div>
 
           <div className="hidden md:flex items-center justify-center gap-10 text-[15px] font-medium text-[#102A43]">
             <a href="#features" className="hover:opacity-80 transition">Features</a>

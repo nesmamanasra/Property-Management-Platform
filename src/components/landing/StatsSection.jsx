@@ -31,7 +31,7 @@ const STATS = [
 
 export default function StatsSection() {
   return (
-    <section className="w-full mt-10">
+    <section className="w-full mt-10 mb-10">
       <div className="mx-auto max-w-6xl px-4">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {STATS.map(({ title, desc, Icon }, idx) => (
