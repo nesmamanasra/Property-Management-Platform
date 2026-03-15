@@ -43,7 +43,7 @@ export default function StatsSection() {
                 <Icon className="h-7 w-7 text-slate-700" strokeWidth={1.6} />
               </div>
 
-              <h3 className="text-center text-lg font-semibold text-slate-900">
+              <h3 className="text-center text-lg font-semibold text-slate-900 ">
                 {title}
               </h3>
 

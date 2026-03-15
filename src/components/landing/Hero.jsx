@@ -33,11 +33,11 @@ export default function Hero() {
 
           {/* Buttons */}
           <div className="mt-8 flex items-center gap-4">
-            <button className="px-7 py-3 rounded-xl bg-[#1F3C88] text-white shadow-xl hover:opacity-90 transition">
+            <button className="px-7 py-3.5 rounded-lg text-white font-bold bg-gradient-to-b from-[#1F3C88] to-[#18346F] shadow-[0_10px_22px_rgba(31,60,136,0.30)] hover:opacity-95 transition">
               Start Free Trial
             </button>
 
-            <button className="px-7 py-3 rounded-xl border border-[#E6ECF3] bg-white text-[#102A43] shadow-sm hover:shadow transition flex items-center gap-2">
+            <button className="px-7 py-3 rounded-xl border border-[#E6ECF3] bg-white text-[#102A43] font-bold shadow-sm hover:shadow transition flex items-center gap-2">
               Watch Demo <span className="text-xl">›</span>
             </button>
           </div>
