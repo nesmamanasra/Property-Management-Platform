@@ -24,7 +24,7 @@ export default function FeatureCards() {
       </div> */}
 
       {/* Title */}
-      <h2 className="text-4xl md:text-5xl font-bold text-[#0b3b78]">
+      <h2 className="text-4xl md:text-5xl font-bold text-[#102A43]">
         Aqari
       </h2>
 

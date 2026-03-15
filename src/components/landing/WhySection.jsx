@@ -58,7 +58,7 @@ export default function WhySection() {
 
         {/* title */}
         <div className="text-center mb-14">
-          <h2 className="text-4xl font-bold text-[#0b3b78]">
+          <h2 className="text-4xl font-bold text-[#102A43]">
             Why Aqari?
           </h2>
 
@@ -78,12 +78,12 @@ export default function WhySection() {
               key={index}
               className="flex items-start gap-4 bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition"
             >
-              <div className="flex items-center justify-center w-14 h-14 rounded-lg bg-blue-100 text-[#0b3b78]">
+              <div className="flex items-center justify-center w-14 h-14 rounded-lg bg-blue-100 text-[#102A43]">
                 {feature.icon}
               </div>
 
               <div>
-                <h3 className="text-xl font-bold text-[#0b3b78]">
+                <h3 className="text-xl font-bold text-[#102A43]">
                   {feature.title}
                 </h3>
                 <p className="text-gray-600 mt-1">
