@@ -1,4 +1,4 @@
-import logo from "../../assets/logo_top.png";
+import logo from "../../assets/aqari_top_white.png";
 import {
   Mail,
   Phone,
@@ -21,7 +21,7 @@ export default function FooterSection() {
           <img
   src={logo}
   alt="Logo"
-  className="h-10 w-auto object-contain"
+  className="h-20 w-auto object-contain"
 />
           </div>
 
