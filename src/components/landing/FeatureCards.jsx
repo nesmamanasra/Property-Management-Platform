@@ -45,7 +45,7 @@ export default function FeatureCards() {
     <div className="mt-12 grid grid-cols-2 md:grid-cols-4 text-center">
 
       <div className="py-6 md:border-r border-slate-300">
-        <h3 className="text-4xl md:text-5xl font-bold text-[#0b3b78]">
+        <h3 className="text-4xl md:text-5xl font-bold text-[#102A43]">
           +500
         </h3>
         <p className="mt-2 text-[#17365d] text-lg">
@@ -54,7 +54,7 @@ export default function FeatureCards() {
       </div>
 
       <div className="py-6 md:border-r border-slate-300">
-        <h3 className="text-4xl md:text-5xl font-bold text-[#0b3b78]">
+        <h3 className="text-4xl md:text-5xl font-bold text-[#102A43]">
           +1,200
         </h3>
         <p className="mt-2 text-[#17365d] text-lg">
@@ -63,7 +63,7 @@ export default function FeatureCards() {
       </div>
 
       <div className="py-6 md:border-r border-slate-300">
-        <h3 className="text-4xl md:text-5xl font-bold text-[#0b3b78]">
+        <h3 className="text-4xl md:text-5xl font-bold text-[#102A43]">
           99%
         </h3>
         <p className="mt-2 text-[#17365d] text-lg">
@@ -72,7 +72,7 @@ export default function FeatureCards() {
       </div>
 
       <div className="py-6">
-        <h3 className="text-4xl md:text-5xl font-bold text-[#0b3b78]">
+        <h3 className="text-4xl md:text-5xl font-bold text-[#102A43]">
           24/7
         </h3>
         <p className="mt-2 text-[#17365d] text-lg">
