@@ -13,7 +13,7 @@ import {
 
 export default function FooterSection() {
   return (
-    <footer className="bg-gradient-to-r from-[#0F2D62] to-[#0859C4] text-white">
+    <footer className="bg-gradient-to-b from-[#1F3C88] to-[#18346F] text-white">
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-12">
         {/* Top */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-8 border-b border-white/20">

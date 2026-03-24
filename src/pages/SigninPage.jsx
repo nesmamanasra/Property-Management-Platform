@@ -19,17 +19,26 @@ export default function LoginPage() {
             </div>
 
             {/* Heading */}
-            <div className="mb-10 text-center lg:text-left">
-              <h2 className="text-[42px] font-semibold leading-tight text-[#102A43]">
-                Welcome Back
-              </h2>
+            <div className=" text-center lg:text-left">
+              <h1 className="text-[42px] font-semibold leading-tight text-[#102A43]">
+                Create an Account
+              </h1>
               <p className="mt-3 text-sm text-[#8a8a8a]">
-                Enter your email and password to access your account.
+                Join now to streamline your experience from day one.
               </p>
             </div>
 
             {/* Form */}
             <form className="space-y-5">
+                 <div>
+                <label className="mb-2 block text-sm font-medium text-[#3a3a3a]">Name</label>
+                <input
+                  type="text"
+                  placeholder="Roger Gerrard"
+                  className="w-full h-11 px-4 rounded-lg border border-gray-200 bg-white outline-none focus:border-[#4f46e5] transition"
+                />
+              </div> 
+
               <div>
                 <label className="mb-2 block text-sm font-medium text-[#3a3a3a]">
                   Email
@@ -61,35 +70,39 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between gap-4">
-                <label className="flex items-center gap-2 text-sm text-[#8b8b8b]">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                  />
-                  Remember Me
+              <div>
+                <label className="mb-2 block text-sm font-medium text-[#3a3a3a]">
+                    Confirm Password
                 </label>
-
-                <button
-                  type="button"
-                  className="text-sm font-medium text-[#102A43] transition hover:text-indigo-700"
-                >
-                  Forgot Your Password?
-                </button>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="5ellostore."
+                    className="h-12 w-full rounded-lg border border-[#e6e6e6] bg-white px-4 pr-12 text-sm text-[#222] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9b9b9b]"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
               </div>
+              
 
               <button
                 type="submit"
                 className="h-12 w-full rounded-lg bg-gradient-to-b from-[#1F3C88] to-[#18346F] text-sm font-semibold text-white shadow-md transition hover:scale-[1.01] hover:shadow-lg"
               >
-                Log In
+                Register Now
               </button>
             </form>
 
             {/* Divider */}
             <div className="my-7 flex items-center gap-4">
               <div className="h-px flex-1 bg-[#e5e5e5]"></div>
-              <span className="text-sm text-[#9b9b9b]">Or Login With</span>
+              <span className="text-sm text-[#9b9b9b]">Or Register With</span>
               <div className="h-px flex-1 bg-[#e5e5e5]"></div>
             </div>
 
@@ -143,12 +156,12 @@ export default function LoginPage() {
 
             {/* Register */}
             <p className="mt-7 text-center text-sm text-[#8f8f8f] lg:text-left">
-              Don&apos;t Have An Account?{" "}
+              Already Have An Account?{" "}
                 <button
                   type="button"
                   onClick={() => navigate("/signin")}
                   className="font-semibold text-[#102A43] hover:text-indigo-700">
-                  Register Now.
+                 Login .
                 </button>
             </p>
 
