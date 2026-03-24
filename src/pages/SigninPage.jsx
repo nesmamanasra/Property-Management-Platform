@@ -159,7 +159,7 @@ export default function LoginPage() {
               Already Have An Account?{" "}
                 <button
                   type="button"
-                  onClick={() => navigate("/signin")}
+                  onClick={() => navigate("/login")}
                   className="font-semibold text-[#102A43] hover:text-indigo-700">
                  Login .
                 </button>
