@@ -1,6 +1,6 @@
 import React from "react";
 import { Bell, Search, User } from "lucide-react";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/aqari_top_white.png";
 
 export default function Navbar() {
   return (
