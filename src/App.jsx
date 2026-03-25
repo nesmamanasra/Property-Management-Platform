@@ -6,7 +6,7 @@ import DashboardHome from "./pages/dashboard/DashboardHome";
 import Owners from "./pages/dashboard/Owners";
 import Tenants from "./pages/dashboard/Tenants";
 import DashboardLayout from "./components/layout/DashboardLayout";
-import ProtectedRoute from "./auth/ProtectedRoute";
+//import ProtectedRoute from "./auth/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
 
 export default function App() {

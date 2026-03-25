@@ -1,10 +1,24 @@
 import React from "react";
+import Navbar from "../../components/dashboard/Navbar";
+import Sidebar from "../../components/dashboard/Sidebar";
+import MainSection from "../../components/dashboard/MainSection";
 
 export default function DashboardHome() {
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm">
-      <h1 className="text-2xl font-bold text-gray-800">Dashboard Home</h1>
-      <p className="mt-2 text-gray-500">Welcome to the dashboard.</p>
+    <div className="min-h-screen bg-[#F7F8FA] flex flex-col">
+
+      {/* Navbar فوق الكل */}
+      <Navbar />
+
+      {/* تحته: Sidebar + Main */}
+      <div className="flex flex-1">
+        <Sidebar />
+
+        <div className="flex-1">
+          <MainSection />
+        </div>
+      </div>
+
     </div>
   );
 }
