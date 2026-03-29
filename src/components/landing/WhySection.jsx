@@ -82,7 +82,7 @@ export default function WhySection() {
             منصة متكاملة تساعدك على إدارة العقارات باحتراف وسهولة
           </h2>
 
-          <p className="mt-4 text-base leading-8 text-gray-600 md:text-lg">
+          <p className="mt-4 mb-10 text-base leading-8 text-gray-600 md:text-lg">
             نوفر لك نظامًا عمليًا ينظم العقارات والمستأجرين والدفعات في مكان
             واحد، حتى تتابع كل تفاصيل عملك بشكل أوضح، أسرع، وأكثر احترافية.
           </p>
