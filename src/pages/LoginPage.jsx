@@ -15,16 +15,16 @@ export default function LoginPage() {
           <div className="w-full max-w-[430px]">
             {/* Logo */}
             <div className=" flex items-center gap-3">
-               <img src={logo} alt="Aqari" className="h-20 w-auto" />
+               <img src={logo} alt="عقاري" className="h-20 w-auto" />
             </div>
 
             {/* Heading */}
-            <div className="mb-10 text-center lg:text-left">
+            <div className="mb-10 text-center lg:text-right">
               <h2 className="text-[42px] font-semibold leading-tight text-[#102A43]">
-                Welcome Back
+                أهلاً بعودتك
               </h2>
               <p className="mt-3 text-sm text-[#8a8a8a]">
-                Enter your email and password to access your account.
+                أدخل بريدك الإلكتروني وكلمة المرور للوصول إلى حسابك.
               </p>
             </div>
 
@@ -32,23 +32,23 @@ export default function LoginPage() {
             <form className="space-y-5">
               <div>
                 <label className="mb-2 block text-sm font-medium text-[#3a3a3a]">
-                  Email
+                  البريد الإلكتروني
                 </label>
                 <input
                   type="email"
-                  placeholder="sellostore@company.com"
+                  placeholder="example@company.com"
                   className="h-12 w-full rounded-lg border border-[#e6e6e6] bg-white px-4 text-sm text-[#222] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                 />
               </div>
 
               <div>
                 <label className="mb-2 block text-sm font-medium text-[#3a3a3a]">
-                  Password
+                  كلمة المرور
                 </label>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
-                    placeholder="5ellostore."
+                    placeholder="••••••••"
                     className="h-12 w-full rounded-lg border border-[#e6e6e6] bg-white px-4 pr-12 text-sm text-[#222] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                   />
                   <button
@@ -67,14 +67,14 @@ export default function LoginPage() {
                     type="checkbox"
                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                   />
-                  Remember Me
+                  تذكرني
                 </label>
 
                 <button
                   type="button"
                   className="text-sm font-medium text-[#102A43] transition hover:text-indigo-700"
                 >
-                  Forgot Your Password?
+                  هل نسيت كلمة المرور؟
                 </button>
               </div>
 
@@ -82,14 +82,14 @@ export default function LoginPage() {
                 type="submit"
                 className="h-12 w-full rounded-lg bg-gradient-to-b from-[#1F3C88] to-[#18346F] text-sm font-semibold text-white shadow-md transition hover:scale-[1.01] hover:shadow-lg"
               >
-                Log In
+                تسجيل الدخول
               </button>
             </form>
 
             {/* Divider */}
             <div className="my-7 flex items-center gap-4">
               <div className="h-px flex-1 bg-[#e5e5e5]"></div>
-              <span className="text-sm text-[#9b9b9b]">Or Login With</span>
+              <span className="text-sm text-[#9b9b9b]">أو سجل الدخول عبر</span>
               <div className="h-px flex-1 bg-[#e5e5e5]"></div>
             </div>
 
@@ -122,9 +122,9 @@ export default function LoginPage() {
                     d="M43.6 20.5H42V20H24v8h11.3c-1.1 3.1-3.3 5.4-6 6.6l.1-.1 6.2 5.2C35.2 40 44 34 44 24c0-1.2-.1-2.3-.4-3.5z"
                   />
                 </svg>
-                Google
-              </button>
-
+                  Google
+               </button>
+                  
               <button
                 type="button"
                 className="flex h-12 items-center justify-center gap-2 rounded-lg border border-[#e6e6e6] bg-white text-sm font-medium text-[#333] transition hover:border-indigo-300 hover:bg-[#fafaff]"
@@ -143,19 +143,19 @@ export default function LoginPage() {
 
             {/* Register */}
             <p className="mt-7 text-center text-sm text-[#8f8f8f] lg:text-left">
-              Don&apos;t Have An Account?{" "}
+              ليس لديك حساب؟{" "}
                 <button
                   type="button"
                   onClick={() => navigate("/signin")}
                   className="font-semibold text-[#102A43] hover:text-indigo-700">
-                  Register Now.
+                  أنشئ حسابًا الآن
                 </button>
             </p>
 
             {/* Footer */}
             <div className="mt-16 flex flex-col gap-3 text-xs text-[#9c9c9c] sm:flex-row sm:items-center sm:justify-between">
-              <span>Copyright © 2025 Sellora Enterprises LTD.</span>
-              <button className="hover:text-[#666]">Privacy Policy</button>
+              <span>© 2025 عقاري. جميع الحقوق محفوظة.</span>
+              <button className="hover:text-[#666]">سياسة الخصوصية</button>
             </div>
           </div>
         </div>
@@ -174,10 +174,10 @@ export default function LoginPage() {
             <div className="relative z-10 mx-auto w-full max-w-[520px]">
               <div className="mb-10">
                 <h2 className="max-w-[420px] text-[42px] font-semibold leading-[1.2]">
-                  Effortlessly manage your team and operations.
+                  أدر فريقك وعملياتك بسهولة تامة.
                 </h2>
                 <p className="mt-5 max-w-[410px] text-sm leading-7 text-white/80">
-                  Log in to access your CRM dashboard and manage your team.
+                  سجّل الدخول للوصول إلى لوحة التحكم الخاصة بك وإدارة فريقك وأعمالك.
                 </p>
               </div>
 
@@ -187,7 +187,7 @@ export default function LoginPage() {
                   {/* Top cards */}
                   <div className="grid grid-cols-3 gap-4">
                     <div className="rounded-2xl bg-[#4a42ff] p-4 text-white">
-                      <p className="text-[11px] text-white/70">Total Sales</p>
+                      <p className="text-[11px] text-white/70">إجمالي المبيعات</p>
                       <h3 className="mt-3 text-2xl font-semibold">$189,374</h3>
                       <div className="mt-6 h-1.5 w-14 rounded-full bg-white/30">
                         <div className="h-1.5 w-9 rounded-full bg-white"></div>
@@ -196,7 +196,7 @@ export default function LoginPage() {
 
                     <div className="rounded-2xl bg-[#f8f8fc] p-4">
                       <p className="text-[11px] text-[#7b7b8f]">
-                        Chat Performance
+                        أداء المحادثات
                       </p>
                       <h3 className="mt-3 text-xl font-semibold text-[#1d1d1f]">
                         00:01:30
@@ -210,7 +210,7 @@ export default function LoginPage() {
                     </div>
 
                     <div className="rounded-2xl bg-[#f8f8fc] p-4">
-                      <p className="text-[11px] text-[#7b7b8f]">Sales Overview</p>
+                      <p className="text-[11px] text-[#7b7b8f]">نظرة عامة على المبيعات</p>
                       <div className="mt-4 flex h-20 items-end justify-center gap-2">
                         <span className="h-8 w-4 rounded-full bg-indigo-200"></span>
                         <span className="h-14 w-4 rounded-full bg-indigo-300"></span>
@@ -224,9 +224,9 @@ export default function LoginPage() {
                   <div className="mt-5 rounded-2xl border border-[#f0f0f4] bg-[#fcfcff] p-4">
                     <div className="mb-4 flex items-center justify-between">
                       <h4 className="text-sm font-semibold text-[#252525]">
-                        Product Transaction
+                        معاملات المنتجات
                       </h4>
-                      <button className="text-xs text-[#8b8b9c]">More</button>
+                      <button className="text-xs text-[#8b8b9c]">المزيد</button>
                     </div>
 
                     <div className="space-y-3">
@@ -257,15 +257,15 @@ export default function LoginPage() {
                 <div className="absolute -right-10 top-12 w-[230px] rounded-[22px] bg-white p-5 shadow-2xl">
                   <div className="mb-4 flex items-center justify-between">
                     <h4 className="text-sm font-semibold text-[#1d1d1f]">
-                      Sales Categories
+                      فئات المبيعات
                     </h4>
-                    <button className="text-xs text-[#8b8b9c]">Monthly</button>
+                    <button className="text-xs text-[#8b8b9c]">شهري</button>
                   </div>
 
                   <div className="mx-auto flex h-36 w-36 items-center justify-center rounded-full border-[14px] border-indigo-500 border-r-indigo-200 border-b-indigo-300">
                     <div className="text-center">
                       <p className="text-2xl font-bold text-[#1d1d1f]">6,248</p>
-                      <span className="text-xs text-[#8b8b9c]">Units</span>
+                      <span className="text-xs text-[#8b8b9c]">وحدة</span>
                     </div>
                   </div>
 
@@ -273,7 +273,7 @@ export default function LoginPage() {
                     <div className="flex items-center justify-between text-xs text-[#6d6d7a]">
                       <div className="flex items-center gap-2">
                         <span className="h-2.5 w-2.5 rounded-full bg-indigo-500"></span>
-                        <span>Marketing</span>
+                        <span>التسويق</span>
                       </div>
                       <span>44%</span>
                     </div>
@@ -281,7 +281,7 @@ export default function LoginPage() {
                     <div className="flex items-center justify-between text-xs text-[#6d6d7a]">
                       <div className="flex items-center gap-2">
                         <span className="h-2.5 w-2.5 rounded-full bg-indigo-300"></span>
-                        <span>Sales</span>
+                        <span>المبيعات</span>
                       </div>
                       <span>31%</span>
                     </div>
@@ -289,7 +289,7 @@ export default function LoginPage() {
                     <div className="flex items-center justify-between text-xs text-[#6d6d7a]">
                       <div className="flex items-center gap-2">
                         <span className="h-2.5 w-2.5 rounded-full bg-indigo-200"></span>
-                        <span>Other</span>
+                        <span>أخرى</span>
                       </div>
                       <span>25%</span>
                     </div>
