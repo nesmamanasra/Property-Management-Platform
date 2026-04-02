@@ -35,7 +35,7 @@ export default function Navbar() {
         {/* User Section */}
         <div className="flex items-center gap-4 md:gap-5">
           <h2 className="text-[18px] font-bold text-white/90 md:text-[20px]">
-            Welcome back, <span className="text-white">Ahmed Saeed</span>
+            أهلا بك ، <span className="text-white">Ahmed Saeed</span>
           </h2>
 
           <button className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20">

@@ -19,19 +19,19 @@ export default function LoginPage() {
             </div>
 
             {/* Heading */}
-            <div className=" text-center lg:text-left">
+            <div className=" text-center lg:text-right">
               <h1 className="text-[42px] font-semibold leading-tight text-[#102A43]">
-                Create an Account
+                   إنشاء حساب
               </h1>
               <p className="mt-3 text-sm text-[#8a8a8a]">
-                Join now to streamline your experience from day one.
+               انضم الآن وابدأ باستخدام النظام بسهولة من اليوم الأول
               </p>
             </div>
 
             {/* Form */}
             <form className="space-y-5">
                  <div>
-                <label className="mb-2 block text-sm font-medium text-[#3a3a3a]">Name</label>
+                <label className="mb-2 block text-sm font-medium text-[#3a3a3a]">الاسم</label>
                 <input
                   type="text"
                   placeholder="Roger Gerrard"
@@ -41,7 +41,7 @@ export default function LoginPage() {
 
               <div>
                 <label className="mb-2 block text-sm font-medium text-[#3a3a3a]">
-                  Email
+                  البريد الالكتروني 
                 </label>
                 <input
                   type="email"
@@ -52,7 +52,7 @@ export default function LoginPage() {
 
               <div>
                 <label className="mb-2 block text-sm font-medium text-[#3a3a3a]">
-                  Password
+                  كلمة المرور
                 </label>
                 <div className="relative">
                   <input
@@ -72,7 +72,7 @@ export default function LoginPage() {
 
               <div>
                 <label className="mb-2 block text-sm font-medium text-[#3a3a3a]">
-                    Confirm Password
+                   تاكيد كلمة المرور
                 </label>
                 <div className="relative">
                   <input
@@ -95,14 +95,14 @@ export default function LoginPage() {
                 type="submit"
                 className="h-12 w-full rounded-lg bg-gradient-to-b from-[#1F3C88] to-[#18346F] text-sm font-semibold text-white shadow-md transition hover:scale-[1.01] hover:shadow-lg"
               >
-                Register Now
+                أنشئ الحساب 
               </button>
             </form>
 
             {/* Divider */}
             <div className="my-7 flex items-center gap-4">
               <div className="h-px flex-1 bg-[#e5e5e5]"></div>
-              <span className="text-sm text-[#9b9b9b]">Or Register With</span>
+              <span className="text-sm text-[#9b9b9b]">او انشئ حساب باستخدام</span>
               <div className="h-px flex-1 bg-[#e5e5e5]"></div>
             </div>
 
@@ -156,19 +156,19 @@ export default function LoginPage() {
 
             {/* Register */}
             <p className="mt-7 text-center text-sm text-[#8f8f8f] lg:text-left">
-              Already Have An Account?{" "}
+             لديك حساب بالفعل ؟{" "}
                 <button
                   type="button"
                   onClick={() => navigate("/login")}
                   className="font-semibold text-[#102A43] hover:text-indigo-700">
-                 Login .
+               تسجيل دخول
                 </button>
             </p>
 
             {/* Footer */}
             <div className="mt-16 flex flex-col gap-3 text-xs text-[#9c9c9c] sm:flex-row sm:items-center sm:justify-between">
-              <span>Copyright © 2025 Sellora Enterprises LTD.</span>
-              <button className="hover:text-[#666]">Privacy Policy</button>
+              <span>© 2025 عقاري. جميع الحقوق محفوظة.</span>
+              <button className="hover:text-[#666]">سياسة الخصوصية </button>
             </div>
           </div>
         </div>

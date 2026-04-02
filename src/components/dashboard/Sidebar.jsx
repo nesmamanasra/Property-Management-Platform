@@ -4,9 +4,9 @@ import {
   Building2,
   MessageSquare,
   CreditCard,
- BarChart3,
+  BarChart3,
   Wrench,
- Megaphone,
+  Megaphone,
   Users,
   Settings,
   HelpCircle,
@@ -16,40 +16,40 @@ import {
 
 const menuSections = [
   {
-    title: "GENERAL",
+    title: "عام",
     items: [
-      { label: "Overview", icon: LayoutDashboard, active: true },
-      { label: "Properties", icon: Building2 },
-      { label: "Messages", icon: MessageSquare },
+      { label: "نظرة عامة", icon: LayoutDashboard, active: true },
+      { label: "العقارات", icon: Building2 },
+      { label: "الرسائل", icon: MessageSquare },
     ],
   },
   {
-    title: "FINANCIAL MANAGEMENT",
+    title: "الإدارة المالية",
     items: [
-      { label: "Payments", icon: CreditCard },
-      { label: "Reports & Analytics", icon: BarChart3 },
+      { label: "المدفوعات", icon: CreditCard },
+      { label: "التقارير والتحليلات", icon: BarChart3 },
     ],
   },
   {
-    title: "MAINTENANCE & SERVICES",
+    title: "الصيانة والخدمات",
     items: [
-      { label: "Maintenance Requests", icon: Wrench },
-      { label: "Sales & Marketing", icon: Megaphone },
+      { label: "طلبات الصيانة", icon: Wrench },
+      { label: "المبيعات والتسويق", icon: Megaphone },
     ],
   },
   {
-    title: "ADMINISTRATION",
+    title: "الإدارة",
     items: [
-      { label: "User Management", icon: Users },
-      { label: "Settings", icon: Settings },
+      { label: "إدارة المستخدمين", icon: Users },
+      { label: "الإعدادات", icon: Settings },
     ],
   },
   {
-    title: "INFORMATION",
+    title: "معلومات",
     items: [
-      { label: "Help & Center", icon: HelpCircle },
-      { label: "Chat and Support", icon: Headphones },
-      { label: "Logout", icon: LogOut },
+      { label: "المساعدة والمركز", icon: HelpCircle },
+      { label: "الدعم والمحادثة", icon: Headphones },
+      { label: "تسجيل الخروج", icon: LogOut },
     ],
   },
 ];
