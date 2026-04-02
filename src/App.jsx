@@ -3,11 +3,14 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import SigninPage from "./pages/SigninPage";
 import DashboardHome from "./pages/dashboard/DashboardHome";
+// import AqariStorePage form "./pages/aqari-store/AqariStorePage";
+import AqariStorePage from "./pages/aqari-store/AqariStorePage";
 // import Owners from "./pages/dashboard/Owners";
 // import Tenants from "./pages/dashboard/Tenants";
 import DashboardLayout from "./components/layout/DashboardLayout";
 //import ProtectedRoute from "./auth/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
+import { form } from "framer-motion/client";
 
 export default function App() {
   return (
@@ -21,17 +24,18 @@ export default function App() {
 
         <Route
           path="/dashboard"
-          element={
-        
-              <DashboardLayout />
-            
-          }
+          element={<DashboardLayout />
+ }
         >
           <Route index element={<DashboardHome />} />
           {/* <Route path="owners" element={<Owners />} />
           <Route path="tenants" element={<Tenants />} /> */}
         </Route>
+
+         <Route path="/aqari-store" element={<AqariStorePage />} />
       </Routes>
+
+      
     </>
   );
 }

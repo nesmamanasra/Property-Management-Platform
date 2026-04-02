@@ -48,10 +48,10 @@ export default function Navbar() {
           {/* Desktop CTA + Mobile Menu Button */}
           <div className="flex items-center gap-3">
             <button
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/")}
               className="hidden rounded-xl bg-[#1F3C88] px-5 py-2.5 text-sm font-bold text-white shadow-[0_10px_25px_rgba(31,60,136,0.22)] transition hover:bg-[#18346F] lg:inline-flex"
             >
-              ابدأ الآن
+             تسوق الان 
             </button>
 
             <button
