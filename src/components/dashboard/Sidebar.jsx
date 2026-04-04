@@ -20,6 +20,7 @@ const menuSections = [
     items: [
       { label: "نظرة عامة", icon: LayoutDashboard, active: true },
       { label: "العقارات", icon: Building2 },
+      { label: "إدارة المالكين", icon: Users, path: "/dashboard/owners" },  
       { label: "الرسائل", icon: MessageSquare },
     ],
   },

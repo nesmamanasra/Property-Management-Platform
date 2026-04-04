@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "../../components/dashboard/Navbar";
 import Sidebar from "../../components/dashboard/Sidebar";
 import MainSection from "../../components/dashboard/MainSection";
+import TableData from "../../components/dashboard/TableData";
 
 export default function DashboardHome() {
   return (
@@ -16,6 +17,7 @@ export default function DashboardHome() {
 
         <div className="flex-1">
           <MainSection />
+          <TableData/>
         </div>
       </div>
 

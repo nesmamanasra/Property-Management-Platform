@@ -10,6 +10,7 @@ import AqariStorePage from "./pages/aqari-store/AqariStorePage";
 import DashboardLayout from "./components/layout/DashboardLayout";
 //import ProtectedRoute from "./auth/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
+// import OwnersPage from "./pages/dashboard/OwnersPage";
 import { form } from "framer-motion/client";
 
 export default function App() {
@@ -33,6 +34,11 @@ export default function App() {
         </Route>
 
          <Route path="/aqari-store" element={<AqariStorePage />} />
+      {/* <Route path="/dashboard" element={<DashboardLayout />}> */}
+      {/* <Route index element={<DashboardHome />} /> */}
+    {/* هون نضيفها */}
+      {/* <Route path="owners" element={<OwnersPage />} /> */}
+        {/* </Route> */}
       </Routes>
 
       
