@@ -1,4 +1,5 @@
-import React from "react";
+import { supabase } from "../../lib/supabase";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { CalendarDays, Download, Home, Building2 } from "lucide-react";
 
 const stats = [
@@ -94,7 +95,21 @@ function StatCard({ item }) {
 }
 
 export default function MainSection() {
+
+
+   useEffect(() => {
+    const testConnection = async () => {
+      const { data, error } = await supabase.from("properties").select("*");
+        console.log(data);
+        console.log(error);
+            };
+
+    testConnection();
+  }, []);
+
   return (
+
+    
     <section className=" bg-[#F7F8FA] p-6" dir="rtl">
       <div className="mx-auto max-w-[1400px]">
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-start">
