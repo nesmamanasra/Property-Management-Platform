@@ -129,32 +129,6 @@
       "area": 155,
       "price": 132000,
       "type": "شقة"
-    },
-    {
-      "id": 11,
-      "image": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1200&auto=format&fit=crop",
-      "badge": "للبيع",
-      "title": "شقة مميزة في عمارة حديثة",
-      "location": "نابلس - المخفية",
-      "city": "نابلس",
-      "beds": 3,
-      "baths": 2,
-      "area": 170,
-      "price": 118000,
-      "type": "شقة"
-    },
-    {
-      "id": 12,
-      "image": "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=1200&auto=format&fit=crop",
-      "badge": "للإيجار",
-      "title": "مكتب جاهز للشركات",
-      "location": "رام الله - الإرسال",
-      "city": "رام الله",
-      "beds": 0,
-      "baths": 1,
-      "area": 110,
-      "price": 900,
-      "type": "مكتب"
     }
   ]
 }
