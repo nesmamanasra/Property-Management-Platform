@@ -2,23 +2,61 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import logo from "../assets/logo_top.png";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../auth/auth";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!cleanEmail || !password.trim()) {
+      alert("يرجى تعبئة جميع الحقول");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      await auth.login({
+        email: cleanEmail,
+        password,
+      });
+
+      alert("تم تسجيل الدخول بنجاح");
+      navigate("/dashboard", { replace: true });
+    } catch (err) {
+      console.error("Login error:", err);
+
+      if (
+        err?.message?.includes("Invalid login credentials") ||
+        err?.message?.toLowerCase()?.includes("invalid")
+      ) {
+        alert("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+      } else {
+        alert(err?.message || "حدث خطأ أثناء تسجيل الدخول");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
       <div className="mx-auto flex min-h-screen max-w-[1440px] flex-col lg:flex-row">
-        {/* Left Side */}
         <div className="flex w-full items-center justify-center px-6 py-10 lg:w-1/2 lg:px-16">
           <div className="w-full max-w-[430px]">
-            {/* Logo */}
-            <div className=" flex items-center gap-3">
-               <img src={logo} alt="عقاري" className="h-20 w-auto" />
+            <div className="flex items-center gap-3">
+              <img src={logo} alt="عقاري" className="h-20 w-auto" />
             </div>
 
-            {/* Heading */}
             <div className="mb-10 text-center lg:text-right">
               <h2 className="text-[42px] font-semibold leading-tight text-[#102A43]">
                 أهلاً بعودتك
@@ -28,8 +66,7 @@ export default function LoginPage() {
               </p>
             </div>
 
-            {/* Form */}
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleLogin}>
               <div>
                 <label className="mb-2 block text-sm font-medium text-[#3a3a3a]">
                   البريد الإلكتروني
@@ -37,6 +74,8 @@ export default function LoginPage() {
                 <input
                   type="email"
                   placeholder="example@company.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="h-12 w-full rounded-lg border border-[#e6e6e6] bg-white px-4 text-sm text-[#222] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                 />
               </div>
@@ -49,10 +88,13 @@ export default function LoginPage() {
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="h-12 w-full rounded-lg border border-[#e6e6e6] bg-white px-4 pr-12 text-sm text-[#222] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                   />
                   <button
                     type="button"
+                    aria-label={showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9b9b9b]"
                   >
@@ -80,20 +122,19 @@ export default function LoginPage() {
 
               <button
                 type="submit"
-                className="h-12 w-full rounded-lg bg-gradient-to-b from-[#1F3C88] to-[#18346F] text-sm font-semibold text-white shadow-md transition hover:scale-[1.01] hover:shadow-lg"
+                disabled={loading}
+                className="h-12 w-full rounded-lg bg-gradient-to-b from-[#1F3C88] to-[#18346F] text-sm font-semibold text-white shadow-md transition hover:scale-[1.01] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-70"
               >
-                تسجيل الدخول
+                {loading ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
               </button>
             </form>
 
-            {/* Divider */}
             <div className="my-7 flex items-center gap-4">
               <div className="h-px flex-1 bg-[#e5e5e5]"></div>
               <span className="text-sm text-[#9b9b9b]">أو سجل الدخول عبر</span>
               <div className="h-px flex-1 bg-[#e5e5e5]"></div>
             </div>
 
-            {/* Social Buttons */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <button
                 type="button"
@@ -122,9 +163,9 @@ export default function LoginPage() {
                     d="M43.6 20.5H42V20H24v8h11.3c-1.1 3.1-3.3 5.4-6 6.6l.1-.1 6.2 5.2C35.2 40 44 34 44 24c0-1.2-.1-2.3-.4-3.5z"
                   />
                 </svg>
-                  Google
-               </button>
-                  
+                Google
+              </button>
+
               <button
                 type="button"
                 className="flex h-12 items-center justify-center gap-2 rounded-lg border border-[#e6e6e6] bg-white text-sm font-medium text-[#333] transition hover:border-indigo-300 hover:bg-[#fafaff]"
@@ -141,18 +182,17 @@ export default function LoginPage() {
               </button>
             </div>
 
-            {/* Register */}
             <p className="mt-7 text-center text-sm text-[#8f8f8f] lg:text-left">
               ليس لديك حساب؟{" "}
-                <button
-                  type="button"
-                  onClick={() => navigate("/signin")}
-                  className="font-semibold text-[#102A43] hover:text-indigo-700">
-                  أنشئ حسابًا الآن
-                </button>
+              <button
+                type="button"
+                onClick={() => navigate("/signup")}
+                className="font-semibold text-[#102A43] hover:text-indigo-700"
+              >
+                أنشئ حسابًا الآن
+              </button>
             </p>
 
-            {/* Footer */}
             <div className="mt-16 flex flex-col gap-3 text-xs text-[#9c9c9c] sm:flex-row sm:items-center sm:justify-between">
               <span>© 2025 عقاري. جميع الحقوق محفوظة.</span>
               <button className="hover:text-[#666]">سياسة الخصوصية</button>
@@ -160,10 +200,8 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Right Side */}
         <div className="hidden w-full p-4 lg:block lg:w-1/2">
           <div className="relative flex h-full min-h-[720px] items-center overflow-hidden rounded-[28px] bg-gradient-to-b from-[#1F3C88] to-[#18346F] px-12 py-14 text-white">
-            {/* Background Shapes */}
             <div className="absolute inset-0 overflow-hidden">
               <div className="absolute -top-24 right-10 h-72 w-72 rounded-full bg-white/5"></div>
               <div className="absolute top-24 left-16 h-56 w-56 rounded-full bg-white/5"></div>
@@ -181,10 +219,8 @@ export default function LoginPage() {
                 </p>
               </div>
 
-              {/* Dashboard Mockup */}
               <div className="relative mt-8">
                 <div className="rounded-[22px] bg-white p-5 shadow-2xl">
-                  {/* Top cards */}
                   <div className="grid grid-cols-3 gap-4">
                     <div className="rounded-2xl bg-[#4a42ff] p-4 text-white">
                       <p className="text-[11px] text-white/70">إجمالي المبيعات</p>
@@ -195,9 +231,7 @@ export default function LoginPage() {
                     </div>
 
                     <div className="rounded-2xl bg-[#f8f8fc] p-4">
-                      <p className="text-[11px] text-[#7b7b8f]">
-                        أداء المحادثات
-                      </p>
+                      <p className="text-[11px] text-[#7b7b8f]">أداء المحادثات</p>
                       <h3 className="mt-3 text-xl font-semibold text-[#1d1d1f]">
                         00:01:30
                       </h3>
@@ -220,7 +254,6 @@ export default function LoginPage() {
                     </div>
                   </div>
 
-                  {/* Table area */}
                   <div className="mt-5 rounded-2xl border border-[#f0f0f4] bg-[#fcfcff] p-4">
                     <div className="mb-4 flex items-center justify-between">
                       <h4 className="text-sm font-semibold text-[#252525]">
@@ -253,7 +286,6 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                {/* Floating analytics card */}
                 <div className="absolute -right-10 top-12 w-[230px] rounded-[22px] bg-white p-5 shadow-2xl">
                   <div className="mb-4 flex items-center justify-between">
                     <h4 className="text-sm font-semibold text-[#1d1d1f]">
