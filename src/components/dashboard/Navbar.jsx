@@ -1,8 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Bell, Search, User } from "lucide-react";
 import logo from "../../assets/aqari_top_white.png";
+import { auth } from "../../auth/auth";
+import { supabase } from "../../lib/supabase";
 
 export default function Navbar() {
+  const [adminName, setAdminName] = useState("");
+
+  useEffect(() => {
+    const loadAdmin = async () => {
+      try {
+        // 1️⃣ نجيب المستخدم الحالي
+        const user = await auth.getUser();
+
+        if (!user) {
+          setAdminName("Admin");
+          return;
+        }
+
+        // 2️⃣ نجيب الاسم من جدول admins
+        const { data, error } = await supabase
+          .from("admins")
+          .select("full_name")
+          .eq("id", user.id)
+          .single();
+
+        if (error) {
+          console.error("Error fetching admin:", error);
+          setAdminName(user.email || "Admin");
+          return;
+        }
+
+        setAdminName(data?.full_name || "Admin");
+      } catch (error) {
+        console.error("Error loading admin:", error);
+        setAdminName("Admin");
+      }
+    };
+
+    loadAdmin();
+  }, []);
+
   return (
     <nav className="w-full bg-gradient-to-b from-[#1F3C88] to-[#18346F] px-6 md:px-10 lg:px-14">
       <div className="mx-auto flex h-[70px] max-w-[1400px] items-center justify-between">
@@ -35,7 +73,7 @@ export default function Navbar() {
         {/* User Section */}
         <div className="flex items-center gap-4 md:gap-5">
           <h2 className="text-[18px] font-bold text-white/90 md:text-[20px]">
-            أهلا بك ، <span className="text-white">Ahmed Saeed</span>
+            أهلا بك ، <span className="text-white">{adminName}</span>
           </h2>
 
           <button className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20">

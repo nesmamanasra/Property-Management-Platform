@@ -1,7 +1,47 @@
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { auth } from "./auth";
 
 export default function ProtectedRoute({ children }) {
-  if (!auth.isAuthed()) return <Navigate to="/login" replace />;
+  const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    auth
+      .getSession()
+      .then((currentSession) => {
+        if (!mounted) return;
+        setSession(currentSession);
+        setLoading(false);
+      })
+      .catch(() => {
+        if (!mounted) return;
+        setSession(null);
+        setLoading(false);
+      });
+
+    const {
+      data: { subscription },
+    } = auth.onAuthStateChange((newSession) => {
+      setSession(newSession);
+      setLoading(false);
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  if (loading) {
+    return <div className="p-6 text-center">جاري التحقق...</div>;
+  }
+
+  if (!session) {
+    return <Navigate to="/login" replace />;
+  }
+
   return children;
 }

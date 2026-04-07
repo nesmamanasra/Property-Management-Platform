@@ -14,13 +14,14 @@ import {
   LogOut,
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { auth } from "../../auth/auth";
 
 const menuSections = [
   {
     title: "عام",
     items: [
       { label: "نظرة عامة", icon: LayoutDashboard, path: "/dashboard" },
-      { label: "العقارات", icon: Building2 ,path: "/dashboard/property"},
+      { label: "العقارات", icon: Building2, path: "/dashboard/property" },
       { label: "إدارة المالكين", icon: Users, path: "/dashboard/owners" },
       { label: "الرسائل", icon: MessageSquare },
     ],
@@ -51,7 +52,7 @@ const menuSections = [
     items: [
       { label: "المساعدة والمركز", icon: HelpCircle },
       { label: "الدعم والمحادثة", icon: Headphones },
-      { label: "تسجيل الخروج", icon: LogOut },
+      { label: "تسجيل الخروج", icon: LogOut, action: "logout" },
     ],
   },
 ];
@@ -63,6 +64,23 @@ export default function Sidebar() {
   const isActive = (path) => {
     if (!path) return false;
     return location.pathname === path;
+  };
+
+  const handleItemClick = async (item) => {
+    if (item.action === "logout") {
+      try {
+        await auth.logout();
+        navigate("/login", { replace: true });
+      } catch (error) {
+        console.error("Logout error:", error);
+        alert("حدث خطأ أثناء تسجيل الخروج");
+      }
+      return;
+    }
+
+    if (item.path) {
+      navigate(item.path);
+    }
   };
 
   return (
@@ -83,9 +101,7 @@ export default function Sidebar() {
                   <button
                     key={itemIndex}
                     type="button"
-                    onClick={() => {
-                      if (item.path) navigate(item.path);
-                    }}
+                    onClick={() => handleItemClick(item)}
                     className={`flex w-full items-center gap-2.5 rounded-md px-3 py-2.5 text-left transition-colors ${
                       active
                         ? "bg-white border border-[#ececec] text-[#111827]"
