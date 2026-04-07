@@ -18,6 +18,7 @@ export default function Owners() {
   const [menuOpenId, setMenuOpenId] = useState(null);
   const [editingItem, setEditingItem] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const menuRef = useRef(null);
 
@@ -43,21 +44,26 @@ export default function Owners() {
   }, []);
 
   const getOwners = async () => {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const { data, error } = await supabase
-      .from("owners")
-      .select("*")
-      .order("created_at", { ascending: false });
+      const { data, error } = await supabase
+        .from("owners")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-    if (error) {
-      console.error("Error fetching owners:", error);
+      if (error) {
+        console.error("Error fetching owners:", error);
+        setTransactions([]);
+      } else {
+        setTransactions(data || []);
+      }
+    } catch (error) {
+      console.error("Unexpected fetch error:", error);
       setTransactions([]);
-    } else {
-      setTransactions(data || []);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   const filteredTransactions = useMemo(() => {
@@ -90,6 +96,11 @@ export default function Owners() {
     resetForm();
   };
 
+  const openAddModal = () => {
+    resetForm();
+    setShowAddModal(true);
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -98,74 +109,90 @@ export default function Owners() {
     }));
   };
 
-  const handleSubmitOwner = async () => {
-    if (
-      !formData.full_name.trim() ||
-      !formData.national_id.trim() ||
-      !formData.phone.trim()
-    ) {
+  const validateForm = () => {
+    const cleanFullName = formData.full_name.trim();
+    const cleanNationalId = formData.national_id.trim();
+    const cleanPhone = formData.phone.trim();
+
+    if (!cleanFullName || !cleanNationalId || !cleanPhone) {
       alert("يرجى تعبئة جميع الحقول المطلوبة");
-      return;
+      return false;
     }
 
-    setLoading(true);
+    return true;
+  };
 
-    if (editingItem) {
-      const { error } = await supabase
-        .from("owners")
-        .update({
-          full_name: formData.full_name.trim(),
-          national_id: formData.national_id.trim(),
-          phone: formData.phone.trim(),
-        })
-        .eq("id", editingItem.id);
+  const handleSubmitOwner = async () => {
+    if (!validateForm()) return;
 
-      if (error) {
-        console.error("Error updating owner:", error);
-        alert("حدث خطأ أثناء تعديل المالك");
-        setLoading(false);
-        return;
+    const payload = {
+      full_name: formData.full_name.trim(),
+      national_id: formData.national_id.trim(),
+      phone: formData.phone.trim(),
+    };
+
+    try {
+      setSubmitting(true);
+
+      if (editingItem?.id) {
+        const { error } = await supabase
+          .from("owners")
+          .update(payload)
+          .eq("id", editingItem.id);
+
+        if (error) {
+          console.error("Error updating owner:", error);
+          alert("حدث خطأ أثناء تعديل المالك");
+          return;
+        }
+
+        alert("تم تعديل بيانات المالك بنجاح");
+      } else {
+        const { error } = await supabase.from("owners").insert([payload]);
+
+        if (error) {
+          console.error("Error adding owner:", error);
+          alert("حدث خطأ أثناء إضافة المالك");
+          return;
+        }
+
+        alert("تمت إضافة المالك بنجاح");
       }
-    } else {
-      const { error } = await supabase.from("owners").insert([
-        {
-          full_name: formData.full_name.trim(),
-          national_id: formData.national_id.trim(),
-          phone: formData.phone.trim(),
-        },
-      ]);
 
-      if (error) {
-        console.error("Error adding owner:", error);
-        alert("حدث خطأ أثناء إضافة المالك");
-        setLoading(false);
-        return;
-      }
+      await getOwners();
+      closeModal();
+    } catch (error) {
+      console.error("Unexpected submit error:", error);
+      alert("حدث خطأ غير متوقع");
+    } finally {
+      setSubmitting(false);
     }
-
-    await getOwners();
-    closeModal();
-    setLoading(false);
   };
 
   const handleDelete = async (id) => {
     const confirmed = window.confirm("هل أنت متأكد من حذف هذا المالك؟");
     if (!confirmed) return;
 
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const { error } = await supabase.from("owners").delete().eq("id", id);
+      const { error } = await supabase.from("owners").delete().eq("id", id);
 
-    if (error) {
-      console.error("Error deleting owner:", error);
-      alert("حدث خطأ أثناء حذف المالك");
+      if (error) {
+        console.error("Error deleting owner:", error);
+        alert("حدث خطأ أثناء حذف المالك");
+        return;
+      }
+
+      await getOwners();
+      setMenuOpenId(null);
+      alert("تم حذف المالك بنجاح");
+    } catch (error) {
+      console.error("Unexpected delete error:", error);
+      alert("حدث خطأ غير متوقع أثناء الحذف");
+    } finally {
       setLoading(false);
-      return;
     }
-
-    await getOwners();
-    setMenuOpenId(null);
-    setLoading(false);
   };
 
   const handleEdit = (item) => {
@@ -220,10 +247,7 @@ export default function Owners() {
               </button>
 
               <button
-                onClick={() => {
-                  resetForm();
-                  setShowAddModal(true);
-                }}
+                onClick={openAddModal}
                 className="flex items-center justify-center gap-2 rounded-xl bg-[#18346F] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#1F3C88]"
               >
                 <Plus size={16} />
@@ -301,22 +325,32 @@ export default function Owners() {
                       </td>
 
                       <td className="relative px-5 py-4 text-sm text-[#374151]">
-                        <div className="relative inline-block" ref={menuRef}>
+                        <div
+                          className="relative inline-block"
+                          ref={menuOpenId === item.id ? menuRef : null}
+                        >
                           <button
-                            onClick={() =>
+                            onClick={(e) => {
+                              e.stopPropagation();
                               setMenuOpenId(
                                 menuOpenId === item.id ? null : item.id
-                              )
-                            }
+                              );
+                            }}
                             className="rounded-lg p-2 transition hover:bg-[#F3F4F6]"
                           >
                             <MoreHorizontal size={18} />
                           </button>
 
                           {menuOpenId === item.id && (
-                            <div className="absolute left-0 top-11 z-20 min-w-[160px] rounded-xl border border-[#E5E7EB] bg-white p-2 shadow-lg">
+                            <div
+                              className="absolute left-0 top-11 z-20 min-w-[160px] rounded-xl border border-[#E5E7EB] bg-white p-2 shadow-lg"
+                              onClick={(e) => e.stopPropagation()}
+                            >
                               <button
-                                onClick={() => handleEdit(item)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleEdit(item);
+                                }}
                                 className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-[#374151] transition hover:bg-[#F9FAFB]"
                               >
                                 <Pencil size={16} />
@@ -324,7 +358,10 @@ export default function Owners() {
                               </button>
 
                               <button
-                                onClick={() => handleDelete(item.id)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDelete(item.id);
+                                }}
                                 className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-600 transition hover:bg-red-50"
                               >
                                 <Trash2 size={16} />
@@ -357,13 +394,14 @@ export default function Owners() {
               <div className="flex items-center justify-between border-b border-[#EEF1F5] px-5 py-4">
                 <button
                   onClick={closeModal}
-                  className="rounded-lg p-2 text-[#6B7280] transition hover:bg-[#EEF2F7]"
+                  disabled={submitting}
+                  className="rounded-lg p-2 text-[#6B7280] transition hover:bg-[#EEF2F7] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <X size={18} />
                 </button>
 
                 <h3 className="text-lg font-semibold text-[#111827]">
-                  {editingItem ? "تعديل مالك" : "إضافة مالك جديد"}
+                  {editingItem?.id ? "تعديل مالك" : "إضافة مالك جديد"}
                 </h3>
               </div>
 
@@ -414,17 +452,24 @@ export default function Owners() {
               <div className="flex items-center justify-end gap-3 border-t border-[#EEF1F5] bg-white px-5 py-4">
                 <button
                   onClick={closeModal}
-                  className="rounded-xl border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-medium text-[#4B5563] transition hover:bg-[#f9fafb]"
+                  disabled={submitting}
+                  className="rounded-xl border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-medium text-[#4B5563] transition hover:bg-[#f9fafb] disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   إلغاء
                 </button>
 
                 <button
                   onClick={handleSubmitOwner}
-                  disabled={loading}
+                  disabled={submitting}
                   className="rounded-xl bg-[#18346F] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#1F3C88] disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  {editingItem ? "حفظ التعديلات" : "إضافة"}
+                  {submitting
+                    ? editingItem?.id
+                      ? "جاري حفظ التعديلات..."
+                      : "جاري الإضافة..."
+                    : editingItem?.id
+                    ? "حفظ التعديلات"
+                    : "إضافة"}
                 </button>
               </div>
             </div>
