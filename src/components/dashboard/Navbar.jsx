@@ -1,90 +1,236 @@
-import React, { useEffect, useState } from "react";
-import { Bell, Search, User } from "lucide-react";
-import logo from "../../assets/aqari_top_white.png";
-import { auth } from "../../auth/auth";
+import React, { useEffect, useRef, useState } from "react";
+import { Bell, Search, User, MessageSquare, X } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
+import logo from "../../assets/aqari_top_white.png";
 
 export default function Navbar() {
-  const [adminName, setAdminName] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [showMessageAlert, setShowMessageAlert] = useState(false);
+  const [latestMessageText, setLatestMessageText] = useState("");
+  const initializedRef = useRef(false);
+  const previousUnreadCountRef = useRef(0);
+
+  const playNotificationSound = () => {
+    try {
+      const audio = new Audio(
+        "data:audio/wav;base64,UklGRlQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YTAAAAAA/////wAAAP///wAAAP///wAAAP///wAAAP///wAA"
+      );
+      audio.volume = 0.5;
+      audio.play().catch(() => {});
+    } catch (error) {
+      console.error("Sound play error:", error);
+    }
+  };
+
+  const fetchUnreadMessagesCount = async (showInitialAlert = false) => {
+    try {
+      const { data, count, error } = await supabase
+        .from("messages")
+        .select("*", { count: "exact" })
+        .eq("is_read", false)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Error fetching unread messages count:", error);
+        return;
+      }
+
+      const newCount = count || 0;
+      const latestMessage = data?.[0] || null;
+
+      setUnreadCount(newCount);
+
+      if (latestMessage) {
+        setLatestMessageText(
+          latestMessage.name
+            ? `رسالة جديدة من ${latestMessage.name}`
+            : "لديك رسالة جديدة"
+        );
+      }
+
+      if (!initializedRef.current) {
+        previousUnreadCountRef.current = newCount;
+        initializedRef.current = true;
+
+        if (showInitialAlert && newCount > 0) {
+          setShowMessageAlert(true);
+        }
+        return;
+      }
+
+      if (newCount > previousUnreadCountRef.current) {
+        previousUnreadCountRef.current = newCount;
+        setShowMessageAlert(true);
+        playNotificationSound();
+      } else {
+        previousUnreadCountRef.current = newCount;
+      }
+    } catch (error) {
+      console.error("Unexpected error fetching unread messages count:", error);
+    }
+  };
 
   useEffect(() => {
-    const loadAdmin = async () => {
-      try {
-        // 1️⃣ نجيب المستخدم الحالي
-        const user = await auth.getUser();
+    fetchUnreadMessagesCount(true);
 
-        if (!user) {
-          setAdminName("Admin");
-          return;
+    const channel = supabase
+      .channel("navbar-live-messages-channel")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+        },
+        async (payload) => {
+          const newMessage = payload.new;
+
+          setUnreadCount((prev) => prev + 1);
+          setLatestMessageText(
+            newMessage?.name
+              ? `رسالة جديدة من ${newMessage.name}`
+              : "لديك رسالة جديدة"
+          );
+          setShowMessageAlert(true);
+          playNotificationSound();
+          previousUnreadCountRef.current += 1;
         }
-
-        // 2️⃣ نجيب الاسم من جدول admins
-        const { data, error } = await supabase
-          .from("admins")
-          .select("full_name")
-          .eq("id", user.id)
-          .single();
-
-        if (error) {
-          console.error("Error fetching admin:", error);
-          setAdminName(user.email || "Admin");
-          return;
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "messages",
+        },
+        () => {
+          fetchUnreadMessagesCount(false);
         }
+      )
+      .subscribe();
 
-        setAdminName(data?.full_name || "Admin");
-      } catch (error) {
-        console.error("Error loading admin:", error);
-        setAdminName("Admin");
-      }
+    return () => {
+      supabase.removeChannel(channel);
     };
-
-    loadAdmin();
   }, []);
 
+  useEffect(() => {
+    if (!showMessageAlert) return;
+
+    const timer = setTimeout(() => {
+      setShowMessageAlert(false);
+    }, 6000);
+
+    return () => clearTimeout(timer);
+  }, [showMessageAlert]);
+
+  const goToMessages = () => {
+    setShowMessageAlert(false);
+    navigate("/dashboard/messages");
+  };
+
   return (
-    <nav className="w-full bg-gradient-to-b from-[#1F3C88] to-[#18346F] px-6 md:px-10 lg:px-14">
-      <div className="mx-auto flex h-[70px] max-w-[1400px] items-center justify-between">
-        
-        {/* Logo */}
-        <div className="flex items-center gap-3">
-          <img
-            src={logo}
-            alt="Aqari Logo"
-            className="h-20 w-auto object-contain"
-          />
-        </div>
-
-        {/* Search Bar */}
-        <div className="hidden flex-1 justify-center px-6 md:flex">
-          <div className="relative w-full max-w-[420px]">
-            <Search
-              size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-            />
-
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full rounded-full bg-white/95 py-3 pl-10 pr-4 text-[15px] text-gray-700 outline-none shadow-sm placeholder:text-gray-400 focus:ring-2 focus:ring-white/40"
+    <>
+      <nav className="w-full bg-gradient-to-b from-[#1F3C88] to-[#18346F] px-6 md:px-10 lg:px-14">
+        <div className="mx-auto flex h-[70px] max-w-[1400px] items-center justify-between">
+          <div className="flex items-center gap-3">
+            <img
+              src={logo}
+              alt="Aqari"
+              className="h-30 w-auto object-contain"
             />
           </div>
-        </div>
 
-        {/* User Section */}
-        <div className="flex items-center gap-4 md:gap-5">
-          <h2 className="text-[18px] font-bold text-white/90 md:text-[20px]">
-            أهلا بك ، <span className="text-white">{adminName}</span>
-          </h2>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              className="hidden h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/20 md:flex"
+            >
+              <Search size={18} />
+            </button>
 
-          <button className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20">
-            <Bell size={19} />
-          </button>
+            <button
+              type="button"
+              onClick={goToMessages}
+              className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/20"
+            >
+              <MessageSquare size={18} />
+              {unreadCount > 0 && (
+                <span className="absolute -right-1 -top-1 min-w-[20px] rounded-full bg-red-500 px-1.5 py-[2px] text-center text-[10px] font-bold text-white">
+                  {unreadCount > 99 ? "99+" : unreadCount}
+                </span>
+              )}
+            </button>
 
-          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 text-white transition hover:bg-white/25">
-            <User size={20} />
+            <button
+              type="button"
+              className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/20"
+            >
+              <Bell size={18} />
+            </button>
+
+            <button
+              type="button"
+              className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/20"
+            >
+              <User size={18} />
+            </button>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {showMessageAlert &&
+        unreadCount > 0 &&
+        location.pathname !== "/dashboard/messages" && (
+          <div className="fixed right-6 top-24 z-[9999] w-[380px] max-w-[calc(100vw-24px)] animate-[fadeIn_.25s_ease] rounded-2xl border border-[#DDE7F3] bg-white p-4 shadow-[0_16px_40px_rgba(15,23,42,0.14)]">
+            <div className="flex items-start gap-3">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#1F3C88]/10 text-[#1F3C88]">
+                <MessageSquare size={18} />
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm font-bold text-[#102A43]">
+                  {latestMessageText || "لديك رسالة جديدة"}
+                </h3>
+
+                <p className="mt-1 text-sm leading-6 text-gray-600">
+                  لديك {unreadCount} رسالة غير مقروءة، تفقدها الآن في قسم
+                  الرسائل داخل الداشبورد.
+                </p>
+
+                <div className="mt-3 flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={goToMessages}
+                    className="rounded-xl bg-[#1F3C88] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#18346F]"
+                  >
+                    عرض الرسائل
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowMessageAlert(false)}
+                    className="rounded-xl border border-gray-200 px-4 py-2 text-xs font-semibold text-gray-600 transition hover:bg-gray-50"
+                  >
+                    إغلاق
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowMessageAlert(false)}
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+              >
+                <X size={16} />
+              </button>
+            </div>
+          </div>
+        )}
+    </>
   );
 }

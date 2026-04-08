@@ -9,6 +9,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import OwnersPage from "./pages/dashboard/OwnersPage";
 import PropertyPage from "./pages/dashboard/PropertyPage";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import MessagesPage from "./pages/dashboard/MessagesPage";
 
 export default function App() {
   return (
@@ -46,7 +47,17 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+       
+         <Route
+          path="/dashboard/messages"
+          element={
+            <ProtectedRoute>
+              <MessagesPage />
+            </ProtectedRoute>
+          }
+        /> 
 
+        
         <Route path="/aqari-store" element={<AqariStorePage />} />
         <Route path="/property/:id" element={<ShowPropertyPage />} />
       </Routes>
