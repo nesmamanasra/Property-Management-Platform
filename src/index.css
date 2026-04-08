@@ -4,3 +4,13 @@
     /* @apply font-cairo; */
   }
 }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+  }
+}

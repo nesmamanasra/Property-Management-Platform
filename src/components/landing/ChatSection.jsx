@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { supabase } from "../../lib/supabase";
 
 const topics = [
   "استفسار عام",
@@ -65,7 +66,7 @@ export default function ChatSection() {
     phone: "",
     message: "",
   });
-  const [status, setStatus] = useState("idle"); // idle | error | success
+  const [status, setStatus] = useState("idle"); // idle | error | success | loading
 
   const handleChange = (e) => {
     setForm((prev) => ({
@@ -74,25 +75,48 @@ export default function ChatSection() {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!form.name.trim() || !form.phone.trim()) {
       setStatus("error");
       setTimeout(() => setStatus("idle"), 2500);
       return;
     }
 
-    setStatus("success");
+    try {
+      setStatus("loading");
+
+      const { error } = await supabase.from("messages").insert([
+        {
+          name: form.name.trim(),
+          phone: form.phone.trim(),
+          topic: selectedTopic,
+          message: form.message.trim(),
+          is_read: false,
+        },
+      ]);
+
+      if (error) throw error;
+
+      setStatus("success");
+
+      setForm({
+        name: "",
+        phone: "",
+        message: "",
+      });
+      setSelectedTopic("استفسار عام");
+
+      setTimeout(() => setStatus("idle"), 2500);
+    } catch (err) {
+      console.error("Error sending message:", err);
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 2500);
+    }
   };
 
   return (
-    <section
-      dir="rtl"
-      className="w-full bg-white py-10"
-    >
-
-
+    <section dir="rtl" className="w-full bg-white py-10">
       <div className="mx-auto max-w-6xl px-6">
-        {/* Header */}
         <div className="mx-auto mb-14 max-w-3xl text-center">
           <span className="inline-flex items-center rounded-full bg-[#1F3C88]/10 px-4 py-1.5 text-sm font-semibold text-[#1F3C88]">
             تواصل معنا
@@ -108,10 +132,8 @@ export default function ChatSection() {
           </p>
         </div>
 
-        {/* Main Box */}
         <div className="overflow-hidden rounded-[32px] border border-gray-200 shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
           <div className="grid lg:grid-cols-2">
-            {/* Right Side */}
             <div className="order-1 bg-gradient-to-b from-[#1F3C88] via-[#18346F] to-[#102A43] p-8 text-white md:p-10 lg:order-2">
               <div className="mb-8">
                 <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white">
@@ -166,7 +188,6 @@ export default function ChatSection() {
               </div>
             </div>
 
-            {/* Left Side */}
             <div className="order-2 bg-white p-8 md:p-10 lg:order-1">
               <div className="mb-8">
                 <h3 className="text-2xl font-bold text-[#102A43]">
@@ -252,12 +273,14 @@ export default function ChatSection() {
 
                 <button
                   onClick={handleSubmit}
-                  disabled={status === "success"}
+                  disabled={status === "success" || status === "loading"}
                   className={`mt-2 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-semibold text-white transition-all duration-200 ${
                     status === "success"
                       ? "cursor-default bg-green-600"
                       : status === "error"
                       ? "bg-red-600"
+                      : status === "loading"
+                      ? "cursor-wait bg-[#18346F]"
                       : "bg-[#1F3C88] hover:bg-[#18346F] active:scale-[0.99]"
                   }`}
                 >
@@ -276,7 +299,9 @@ export default function ChatSection() {
                       تم إرسال رسالتك بنجاح
                     </>
                   ) : status === "error" ? (
-                    "يرجى تعبئة الاسم ورقم الهاتف"
+                    "يرجى تعبئة الاسم ورقم الهاتف أو التحقق من الاتصال"
+                  ) : status === "loading" ? (
+                    "جاري إرسال الرسالة..."
                   ) : (
                     <>
                       إرسال الرسالة

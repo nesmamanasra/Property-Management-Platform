@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   LayoutDashboard,
   Building2,
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../../auth/auth";
+import { supabase } from "../../lib/supabase";
 
 const menuSections = [
   {
@@ -23,7 +24,7 @@ const menuSections = [
       { label: "نظرة عامة", icon: LayoutDashboard, path: "/dashboard" },
       { label: "العقارات", icon: Building2, path: "/dashboard/property" },
       { label: "إدارة المالكين", icon: Users, path: "/dashboard/owners" },
-      { label: "الرسائل", icon: MessageSquare },
+      { label: "الرسائل", icon: MessageSquare, path: "/dashboard/messages", key: "messages" },
     ],
   },
   {
@@ -60,11 +61,49 @@ const menuSections = [
 export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const isActive = (path) => {
     if (!path) return false;
     return location.pathname === path;
   };
+
+  const fetchUnreadMessagesCount = async () => {
+    try {
+      const { count, error } = await supabase
+        .from("messages")
+        .select("*", { count: "exact", head: true })
+        .eq("is_read", false);
+
+      if (error) {
+        console.error("Error fetching unread messages count:", error);
+        return;
+      }
+
+      setUnreadCount(count || 0);
+    } catch (error) {
+      console.error("Unexpected error fetching unread messages count:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUnreadMessagesCount();
+
+    const channel = supabase
+      .channel("messages-sidebar-channel")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "messages" },
+        () => {
+          fetchUnreadMessagesCount();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   const handleItemClick = async (item) => {
     if (item.action === "logout") {
@@ -96,24 +135,39 @@ export default function Sidebar() {
               {section.items.map((item, itemIndex) => {
                 const Icon = item.icon;
                 const active = isActive(item.path);
+                const isMessagesItem = item.key === "messages";
 
                 return (
                   <button
                     key={itemIndex}
                     type="button"
                     onClick={() => handleItemClick(item)}
-                    className={`flex w-full items-center gap-2.5 rounded-md px-3 py-2.5 text-left transition-colors ${
+                    className={`flex w-full items-center justify-between rounded-md px-3 py-2.5 text-left transition-colors ${
                       active
                         ? "bg-white border border-[#ececec] text-[#111827]"
                         : "text-[#5f6672] hover:bg-[#18346F] hover:text-white"
                     }`}
                   >
-                    <Icon
-                      size={16}
-                      strokeWidth={1.8}
-                      className={active ? "text-[#111827]" : "text-[#8b93a1]"}
-                    />
-                    <span className="text-[13px] font-medium">{item.label}</span>
+                    <div className="flex items-center gap-2.5">
+                      <Icon
+                        size={16}
+                        strokeWidth={1.8}
+                        className={active ? "text-[#111827]" : "text-[#8b93a1]"}
+                      />
+                      <span className="text-[13px] font-medium">{item.label}</span>
+                    </div>
+
+                    {isMessagesItem && unreadCount > 0 && (
+                      <span
+                        className={`min-w-[22px] rounded-full px-1.5 py-0.5 text-center text-[11px] font-bold ${
+                          active
+                            ? "bg-[#18346F] text-white"
+                            : "bg-red-500 text-white"
+                        }`}
+                      >
+                        {unreadCount > 99 ? "99+" : unreadCount}
+                      </span>
+                    )}
                   </button>
                 );
               })}

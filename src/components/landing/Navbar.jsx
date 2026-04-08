@@ -29,7 +29,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between gap-4">
           {/* Logo */}
           <div className="flex shrink-0 items-center">
-            <img src={logo} alt="Aqari" className="h-14 w-auto md:h-16" />
+            <img src={logo} alt="Aqari" className="h-20 w-auto  " />
           </div>
 
           {/* Desktop Links */}
