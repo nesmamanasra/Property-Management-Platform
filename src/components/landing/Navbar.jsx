@@ -87,11 +87,11 @@ export default function Navbar() {
             <button
               onClick={() => {
                 setIsOpen(false);
-                navigate("/login");
+                navigate("/aqari-store");
               }}
               className="mt-4 flex w-full items-center justify-center rounded-xl bg-[#1F3C88] px-5 py-3 text-sm font-bold text-white shadow-[0_10px_22px_rgba(31,60,136,0.22)] transition hover:bg-[#18346F]"
             >
-              ابدأ الآن
+              تسوق الان
             </button>
           </div>
         </div>

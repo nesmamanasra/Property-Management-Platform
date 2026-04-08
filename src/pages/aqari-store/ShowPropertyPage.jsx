@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NavbarStore from "../../components/aqari-store/NavbarStore";
-// import MainAqariStore from "../../components/aqari-store/MainAqariStore";
+import ShowProperty from "../../components/aqari-store/ShowProperty";
 
 export default function AqariStorePage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -11,8 +11,9 @@ export default function AqariStorePage() {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
       />
-
-      {/* <MainAqariStore searchQuery={searchQuery} /> */}
+      
+       <ShowProperty/>
+      
     </div>
   );
 }

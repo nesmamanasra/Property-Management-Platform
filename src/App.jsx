@@ -8,7 +8,6 @@ import ShowPropertyPage from "./pages/aqari-store/ShowPropertyPage";
 import ScrollToTop from "./components/ScrollToTop";
 import OwnersPage from "./pages/dashboard/OwnersPage";
 import PropertyPage from "./pages/dashboard/PropertyPage";
-
 import ProtectedRoute from "./auth/ProtectedRoute";
 
 export default function App() {
@@ -49,7 +48,7 @@ export default function App() {
         />
 
         <Route path="/aqari-store" element={<AqariStorePage />} />
-        <Route path="/showproperty" element={<ShowPropertyPage />} />
+        <Route path="/property/:id" element={<ShowPropertyPage />} />
       </Routes>
     </>
   );
