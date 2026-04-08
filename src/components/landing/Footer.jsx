@@ -36,12 +36,13 @@ export default function FooterSection() {
 
             <div className="space-y-3">
               <h2 className="text-2xl font-extrabold leading-tight md:text-3xl">
-                إدارة عقاراتك تبدأ من هنا
+                دع الوسيط يدير عقاراتك بالكامل
               </h2>
 
               <p className="max-w-2xl text-sm leading-7 text-white/85 md:text-base">
-                منصة عقاري تساعدك على إدارة العقارات، متابعة المستأجرين،
-                تنظيم العقود، ورصد الدفعات من مكان واحد وبخطوات أبسط.
+                من إدارة العقارات إلى متابعة المستأجرين وتنظيم العقود وتحصيل
+                الدفعات، يتولى الوسيط العقاري كل التفاصيل اليومية نيابة عنك،
+                بينما تتابع أنت كل شيء بسهولة ووضوح من لوحة تحكم واحدة.
               </p>
             </div>
           </div>
@@ -49,15 +50,15 @@ export default function FooterSection() {
           {/* CTA card */}
           <div className="rounded-3xl border border-white/15 bg-white/10 p-5 shadow-[0_20px_60px_rgba(0,0,0,0.18)] backdrop-blur-sm md:p-6">
             <p className="text-sm font-semibold text-white/80">
-              جاهز لتنظيم أعمالك العقارية؟
+              جاهز تريح نفسك من إدارة العقارات؟
             </p>
 
             <h3 className="mt-2 text-xl font-bold md:text-2xl">
-              ابدأ مع عقاري اليوم
+              ابدأ مع وسيط عقاري اليوم
             </h3>
 
             <p className="mt-2 text-sm leading-6 text-white/75">
-              اجمع كل عمليات الإدارة والمتابعة في لوحة واحدة واضحة وسهلة.
+              اترك الإدارة اليومية للوسيط وركز على استثمارك ونمو أعمالك.
             </p>
 
             <div className="mt-5 flex flex-col gap-3 sm:flex-row">
@@ -77,7 +78,7 @@ export default function FooterSection() {
         <div className="grid grid-cols-1 gap-10 border-b border-white/15 py-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* about */}
           <div>
-            <h3 className="mb-5 text-lg font-semibold">عن المنصة</h3>
+            <h3 className="mb-5 text-lg font-semibold">عن الخدمة</h3>
             <ul className="space-y-3 text-sm text-white/80">
               <li>
                 <a href="#" className="transition hover:text-white">
@@ -86,12 +87,12 @@ export default function FooterSection() {
               </li>
               <li>
                 <a href="#" className="transition hover:text-white">
-                  لماذا عقاري؟
+                  كيف يعمل الوسيط
                 </a>
               </li>
               <li>
                 <a href="#" className="transition hover:text-white">
-                  خدماتنا
+                  خدمات الوساطة
                 </a>
               </li>
               <li>
@@ -113,12 +114,12 @@ export default function FooterSection() {
             <ul className="space-y-3 text-sm text-white/80">
               <li>
                 <a href="#features" className="transition hover:text-white">
-                  المميزات
+                  ماذا يقدم الوسيط
                 </a>
               </li>
               <li>
                 <a href="#forwhom" className="transition hover:text-white">
-                  لمن هذا النظام
+                  لمن هذه الخدمة
                 </a>
               </li>
               <li>
@@ -141,13 +142,13 @@ export default function FooterSection() {
 
           {/* features */}
           <div>
-            <h3 className="mb-5 text-lg font-semibold">ما الذي نقدمه</h3>
+            <h3 className="mb-5 text-lg font-semibold">ما الذي يقدمه الوسيط</h3>
             <ul className="space-y-3 text-sm text-white/80">
-              <li>إدارة العقارات والوحدات</li>
-              <li>تنظيم بيانات المستأجرين</li>
-              <li>متابعة العقود والمدفوعات</li>
-              <li>لوحة تحكم وتقارير واضحة</li>
-              <li>دعم مستمر وسهولة استخدام</li>
+              <li>إدارة العقارات بالكامل</li>
+              <li>التعامل مع المستأجرين</li>
+              <li>تنظيم العقود وتجديدها</li>
+              <li>تحصيل الدفعات ومتابعتها</li>
+              <li>توفير تقارير ورؤية واضحة</li>
             </ul>
           </div>
 
@@ -189,28 +190,16 @@ export default function FooterSection() {
             </ul>
 
             <div className="mt-6 flex items-center gap-3">
-              <a
-                href="#"
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 transition hover:bg-white/15"
-              >
+              <a className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 transition hover:bg-white/15">
                 <Linkedin size={18} />
               </a>
-              <a
-                href="#"
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 transition hover:bg-white/15"
-              >
+              <a className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 transition hover:bg-white/15">
                 <Instagram size={18} />
               </a>
-              <a
-                href="#"
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 transition hover:bg-white/15"
-              >
+              <a className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 transition hover:bg-white/15">
                 <Facebook size={18} />
               </a>
-              <a
-                href="#"
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 transition hover:bg-white/15"
-              >
+              <a className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 transition hover:bg-white/15">
                 <Youtube size={18} />
               </a>
             </div>

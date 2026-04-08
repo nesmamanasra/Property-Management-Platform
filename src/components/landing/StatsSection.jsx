@@ -9,22 +9,22 @@ import {
 const STATS = [
   {
     title: "إدارة العقارات",
-    desc: "أضف وراقب جميع عقاراتك من مكان واحد مع تنظيم كامل وسريع",
+    desc: "الوسيط يتولى إدارة عقاراتك بالكامل من عرضها ومتابعتها لضمان تشغيلها بأفضل شكل",
     Icon: Building2,
   },
   {
     title: "إدارة المستأجرين",
-    desc: "تابع بيانات المستأجرين والعقود بدون فوضى أو ملفات متفرقة",
+    desc: "يتعامل الوسيط مع المستأجرين نيابة عنك من التواصل إلى متابعة الالتزامات اليومية",
     Icon: Users,
   },
   {
     title: "متابعة الدفعات",
-    desc: "اعرف كل دفعة وين وصلت وتجنب التأخير أو الضياع",
+    desc: "الوسيط يتابع جميع الدفعات ويضمن تحصيلها في الوقت المحدد دون تأخير أو ضياع",
     Icon: CreditCard,
   },
   {
-    title: "لوحة تحكم ذكية",
-    desc: "إحصائيات واضحة تساعدك تاخذ قرارات أسرع وأدق",
+    title: "لوحة تحكم واضحة",
+    desc: "تابع كل ما يقوم به الوسيط من خلال لوحة تحكم تمنحك رؤية كاملة وتحكم ذكي",
     Icon: LayoutDashboard,
   },
 ];
@@ -40,15 +40,15 @@ export default function StatsSection() {
         {/* Title */}
         <div className="text-center mb-12">
           <span className="inline-block bg-[#1F3C88]/10 text-[#1F3C88] px-4 py-1 rounded-full text-sm mb-4">
-            كل ما تحتاجه لإدارة عقاراتك
+            كل ما يقدمه لك الوسيط العقاري
           </span>
 
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
-            نظام متكامل يوفر عليك الوقت والجهد
+            إدارة كاملة لعقاراتك بدون أي جهد منك
           </h2>
 
           <p className="mt-3 text-slate-600 text-sm md:text-base">
-            كل شيء في مكان واحد — بدون تعقيد، بدون أدوات إضافية
+            الوسيط يتولى كل التفاصيل، وأنت تتابع كل شيء بسهولة من مكان واحد
           </p>
         </div>
 
@@ -86,7 +86,7 @@ export default function StatsSection() {
         {/* Bottom CTA */}
         <div className="mt-12 text-center">
           <button className="bg-[#1F3C88] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#18346F] transition">
-            جرّب النظام الآن
+            ابدأ بإدارة عقاراتك عبر وسيط الآن
           </button>
         </div>
 

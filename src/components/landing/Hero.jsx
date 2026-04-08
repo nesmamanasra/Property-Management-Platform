@@ -29,35 +29,24 @@ export default function Hero() {
             className="inline-flex items-center gap-2 rounded-full border border-[#1F3C88]/10 bg-white px-4 py-2 text-sm font-semibold text-[#1F3C88] shadow-sm"
           >
             <span className="inline-block h-2 w-2 rounded-full bg-[#1F3C88]" />
-            منصة ذكية لإدارة العقارات
+            منصة لإدارة العقارات عبر وسيط محترف
           </motion.div>
 
           {/* Title */}
           <h1 className="mt-5 text-[38px] font-extrabold leading-[1.2] text-[#102A43] md:text-[56px]">
             إدارة عقاراتك
             <span className="block bg-gradient-to-l from-[#1F3C88] to-[#3E6FD8] bg-clip-text text-transparent">
-              بسهولة واحترافية
-            </span>
-            من مكان واحد
-          </h1>
+              من خلال وسيط محترف
+            </span>        
+              </h1>
 
           {/* Description */}
           <p className="mt-6 max-w-xl text-[17px] leading-8 text-gray-600 md:mr-0 md:ml-auto">
-            تابع العقارات والمستأجرين والعقود والمدفوعات من خلال لوحة تحكم
-            واحدة تساعدك على تنظيم العمل وتوفير الوقت واتخاذ قرارات أوضح.
+            دع الوسيط العقاري يتولى إدارة عقاراتك بالكامل، من متابعة
+            المستأجرين إلى تنظيم العقود وتحصيل المدفوعات، مع نظام ذكي يمنحك
+            رؤية واضحة وتحكمًا كاملًا دون عناء.
           </p>
 
-          {/* Buttons */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4 md:justify-end">
-            <button className="rounded-xl bg-gradient-to-b from-[#1F3C88] to-[#18346F] px-7 py-3.5 text-white font-bold shadow-[0_12px_30px_rgba(31,60,136,0.30)] transition hover:-translate-y-0.5 hover:opacity-95">
-              ابدأ الآن مجانًا
-            </button>
-
-            <button className="inline-flex items-center gap-2 rounded-xl border border-[#102A43]/10 bg-white px-7 py-3.5 font-semibold text-[#102A43] shadow-sm transition hover:bg-slate-50">
-              احجز عرضًا توضيحيًا
-              <ArrowLeft size={18} />
-            </button>
-          </div>
 
           {/* Stats */}
           <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -67,7 +56,8 @@ export default function Hero() {
               </div>
               <h3 className="text-lg font-bold text-[#102A43]">إدارة العقارات</h3>
               <p className="mt-1 text-sm leading-6 text-gray-600">
-                تنظيم كامل للوحدات والعقارات في لوحة واحدة.
+                يتولى الوسيط إدارة عقاراتك، عرضها، متابعتها، والتأكد من تشغيلها
+                بأفضل شكل.
               </p>
             </div>
 
@@ -77,7 +67,8 @@ export default function Hero() {
               </div>
               <h3 className="text-lg font-bold text-[#102A43]">إدارة المستأجرين</h3>
               <p className="mt-1 text-sm leading-6 text-gray-600">
-                متابعة بيانات المستأجرين والمدفوعات بسهولة.
+                الوسيط يتعامل مع المستأجرين نيابة عنك، من التواصل إلى متابعة
+                الالتزامات والمدفوعات.
               </p>
             </div>
 
@@ -87,7 +78,8 @@ export default function Hero() {
               </div>
               <h3 className="text-lg font-bold text-[#102A43]">إدارة العقود</h3>
               <p className="mt-1 text-sm leading-6 text-gray-600">
-                متابعة العقود والاستحقاقات بشكل أوضح وأسرع.
+                إدارة كاملة للعقود من إنشاء وتجديد ومتابعة الاستحقاقات لضمان
+                حقوق جميع الأطراف.
               </p>
             </div>
           </div>
@@ -124,7 +116,7 @@ export default function Hero() {
             <div className="rounded-[22px] bg-gradient-to-b from-white to-slate-100 p-2">
               <motion.img
                 src={heroDevices}
-                alt="واجهة منصة عقاري"
+                alt="واجهة منصة عقارية لإدارة العقارات عبر وسيط"
                 className="w-full rounded-[18px] drop-shadow-2xl"
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}

@@ -1,20 +1,18 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ArrowUpLeft,
-  Bath,
-  BedDouble,
   ChevronLeft,
   ChevronRight,
   MapPin,
   SlidersHorizontal,
-  Square,
 } from "lucide-react";
+import { supabase } from "../../lib/supabase";
 
 const filters = [
   { label: "الكل", value: "الكل" },
   { label: "للبيع", value: "للبيع" },
   { label: "للإيجار", value: "للإيجار" },
-  { label: "مباع", value: "مباع" },
 ];
 
 const cities = [
@@ -31,8 +29,8 @@ const cities = [
 ];
 
 function formatPrice(price, badge) {
-  if (badge === "للإيجار") return `${price.toLocaleString()} $ / شهر`;
-  return `${price.toLocaleString()} $`;
+  if (badge === "للإيجار") return `${Number(price || 0).toLocaleString()} $ / شهر`;
+  return `${Number(price || 0).toLocaleString()} $`;
 }
 
 function FilterButton({ label, active = false, icon = null, onClick }) {
@@ -51,21 +49,13 @@ function FilterButton({ label, active = false, icon = null, onClick }) {
   );
 }
 
-function InfoPill({ icon, value }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1.5 text-xs font-medium text-slate-600">
-      {icon}
-      {value}
-    </span>
-  );
-}
-
 function PropertyCard({ property }) {
+  const navigate = useNavigate();
   return (
     <div className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
       <div className="relative h-44 overflow-hidden">
         <img
-          src={property.image}
+          src={property.image || "/placeholder-property.jpg"}
           alt={property.title}
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
@@ -91,13 +81,7 @@ function PropertyCard({ property }) {
           <MapPin size={14} className="shrink-0" />
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center justify-end gap-2">
-          <InfoPill icon={<Square size={14} />} value={`${property.area} م²`} />
-          <InfoPill icon={<Bath size={14} />} value={`${property.baths} حمامات`} />
-          <InfoPill icon={<BedDouble size={14} />} value={`${property.beds} غرف`} />
-        </div>
-
-        <div className="mt-4 flex items-end justify-between gap-3">
+        <div className="mt-4 flex items-center justify-between gap-3">
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
             {property.type}
           </span>
@@ -109,6 +93,11 @@ function PropertyCard({ property }) {
             </p>
           </div>
         </div>
+
+        <button onClick={() => navigate("/showproperty")}
+        className="mt-4 w-full rounded-xl bg-gradient-to-b from-[#1F3C88] to-[#18346F] px-4 py-3 text-sm font-semibold text-white transition hover:opacity-90">
+          عرض التفاصيل
+        </button>
       </div>
     </div>
   );
@@ -142,16 +131,47 @@ export default function MainAqariStore({ searchQuery = "" }) {
   const perPage = 8;
 
   useEffect(() => {
-    fetch("http://localhost:3001/properties")
-      .then((res) => res.json())
-      .then((data) => {
-        setAllProperties(data);
+    const fetchProperties = async () => {
+      setLoading(true);
+
+      const { data, error } = await supabase
+        .from("properties")
+        .select(`
+          id,
+          title,
+          image,
+          property_type,
+          operation_type,
+          city,
+          price
+        `)
+        .order("id", { ascending: false });
+
+      if (error) {
+        console.error("Error fetching properties:", error);
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching properties:", err);
-        setLoading(false);
-      });
+        return;
+      }
+
+      const formatted = (data || []).map((item) => ({
+        id: item.id,
+        title: item.title,
+        image: item.image,
+        location: item.city,
+        city: item.city,
+        type: item.property_type,
+        badge:
+          item.operation_type === "إيجار" || item.operation_type === "للإيجار"
+            ? "للإيجار"
+            : "للبيع",
+        price: Number(item.price || 0),
+      }));
+
+      setAllProperties(formatted);
+      setLoading(false);
+    };
+
+    fetchProperties();
   }, []);
 
   const filteredProperties = useMemo(() => {
@@ -185,8 +205,6 @@ export default function MainAqariStore({ searchQuery = "" }) {
       data.sort((a, b) => b.price - a.price);
     } else if (sortBy === "الأقل سعرًا") {
       data.sort((a, b) => a.price - b.price);
-    } else if (sortBy === "الأكبر مساحة") {
-      data.sort((a, b) => b.area - a.area);
     } else {
       data.sort((a, b) => b.id - a.id);
     }
@@ -244,7 +262,6 @@ export default function MainAqariStore({ searchQuery = "" }) {
             <option>الأحدث</option>
             <option>الأعلى سعرًا</option>
             <option>الأقل سعرًا</option>
-            <option>الأكبر مساحة</option>
           </select>
         </div>
       </div>
