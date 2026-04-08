@@ -286,10 +286,9 @@ function PropertyCard({ property }) {
             </p>
           </div>
         </div>
-
         <button
-          onClick={() => navigate("/showproperty")}
-          className="mt-5 w-full rounded-2xl bg-gradient-to-b from-[#1F3C88] to-[#18346F] px-4 py-3 text-sm font-semibold text-white shadow-md transition duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+          onClick={() => navigate(`/property/${property.id}`)}
+          className="mt-4 w-full rounded-xl bg-gradient-to-r from-[#1F3C88] to-[#18346F] py-2 text-white hover:opacity-90 transition"
         >
           عرض التفاصيل
         </button>
