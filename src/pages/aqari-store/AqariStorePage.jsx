@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import NavbarStore from "../../components/aqari-store/NavbarStore";
+// import NavbarStore from "../../components/aqari-store/NavbarStore";
 import MainAqariStore from "../../components/aqari-store/MainAqariStore";
 
 export default function AqariStorePage() {
@@ -7,10 +7,10 @@ export default function AqariStorePage() {
 
   return (
     <div className="w-full">
-      <NavbarStore
+      {/* <NavbarStore
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-      />
+      /> */}
 
       <MainAqariStore searchQuery={searchQuery} />
     </div>
