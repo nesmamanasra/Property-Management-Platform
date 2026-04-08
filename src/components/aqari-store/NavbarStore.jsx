@@ -20,10 +20,10 @@ export default function NavbarStore({
           </div>
 
           <div>
-            <h3 className="text-[18px] sm:text-[16px] font-medium text-white">
+            <h3 className="text-[18px] sm:text-[20px] font-medium text-white">
               العقارات
             </h3>
-            <p className="mt-1 text-[14px] text-white">
+            <p className="mt-1 text-[18px] text-white font-bold">
               تسوق حيث يمكنك ايجاد ما تريده
             </p>
           </div>

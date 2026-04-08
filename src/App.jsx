@@ -4,9 +4,11 @@ import LoginPage from "./pages/LoginPage";
 import SignupPages from "./pages/SignupPages";
 import DashboardHome from "./pages/dashboard/DashboardHome";
 import AqariStorePage from "./pages/aqari-store/AqariStorePage";
+import ShowPropertyPage from "./pages/aqari-store/ShowPropertyPage";
 import ScrollToTop from "./components/ScrollToTop";
 import OwnersPage from "./pages/dashboard/OwnersPage";
 import PropertyPage from "./pages/dashboard/PropertyPage";
+
 import ProtectedRoute from "./auth/ProtectedRoute";
 
 export default function App() {
@@ -47,6 +49,7 @@ export default function App() {
         />
 
         <Route path="/aqari-store" element={<AqariStorePage />} />
+        <Route path="/showproperty" element={<ShowPropertyPage />} />
       </Routes>
     </>
   );
