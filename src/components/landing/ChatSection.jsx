@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { supabase } from "../../lib/supabase";
 
 const topics = [
+  "عرض عقار",
   "استفسار عام",
-  "دعم فني",
   "طلب خدمة",
   "شراكة",
-  "شكوى",
   "أخرى",
 ];
 
@@ -60,7 +58,7 @@ const contactInfo = [
 ];
 
 export default function ChatSection() {
-  const [selectedTopic, setSelectedTopic] = useState("استفسار عام");
+  const [selectedTopic, setSelectedTopic] = useState("عرض عقار");
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -75,7 +73,7 @@ export default function ChatSection() {
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!form.name.trim() || !form.phone.trim()) {
       setStatus("error");
       setTimeout(() => setStatus("idle"), 2500);
@@ -85,30 +83,36 @@ export default function ChatSection() {
     try {
       setStatus("loading");
 
-      const { error } = await supabase.from("messages").insert([
-        {
-          name: form.name.trim(),
-          phone: form.phone.trim(),
-          topic: selectedTopic,
-          message: form.message.trim(),
-          is_read: false,
-        },
-      ]);
+      const phone = "972597851386";
 
-      if (error) throw error;
+      const message = `مرحباً 👋
+أرغب بعرض عقار لدي على منصة عقاري.
+
+الاسم: ${form.name.trim()}
+رقم الهاتف: ${form.phone.trim()}
+نوع الطلب: ${selectedTopic}
+${
+  form.message.trim()
+    ? `تفاصيل إضافية: ${form.message.trim()}`
+    : "أرغب بمعرفة المتطلبات والخطوات اللازمة لعرض العقار."
+}`;
+
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 
       setStatus("success");
 
-      setForm({
-        name: "",
-        phone: "",
-        message: "",
-      });
-      setSelectedTopic("استفسار عام");
-
-      setTimeout(() => setStatus("idle"), 2500);
+      setTimeout(() => {
+        window.open(url, "_blank");
+        setForm({
+          name: "",
+          phone: "",
+          message: "",
+        });
+        setSelectedTopic("عرض عقار");
+        setStatus("idle");
+      }, 400);
     } catch (err) {
-      console.error("Error sending message:", err);
+      console.error("Error opening WhatsApp:", err);
       setStatus("error");
       setTimeout(() => setStatus("idle"), 2500);
     }
@@ -123,12 +127,12 @@ export default function ChatSection() {
           </span>
 
           <h2 className="mt-5 text-3xl font-bold leading-tight text-[#102A43] md:text-4xl">
-            نحن هنا للإجابة على استفساراتك ومساعدتك في الوصول للحل المناسب
+            نحن هنا لمساعدتك في عرض عقارك والوصول إلى المهتمين بسهولة
           </h2>
 
           <p className="mt-4 text-base leading-8 text-gray-600 md:text-lg">
-            أرسل لنا تفاصيل طلبك، وسيتواصل معك فريقنا بطريقة واضحة وسريعة
-            لمساعدتك في الاستفسارات العامة أو الدعم الفني أو أي خدمة تحتاجها.
+            أرسل لنا بياناتك الأساسية، وسنتواصل معك عبر واتساب لمساعدتك في معرفة
+            الخطوات والمتطلبات اللازمة لعرض عقارك بطريقة واضحة وسريعة.
           </p>
         </div>
 
@@ -146,8 +150,8 @@ export default function ChatSection() {
                 </h3>
 
                 <p className="mt-4 text-sm leading-8 text-white/80 md:text-base">
-                  نساعدك في توضيح الفكرة، فهم الطلب، وتحديد أفضل طريقة للتواصل
-                  والمتابعة حتى تحصل على تجربة منظمة وواضحة من أول رسالة.
+                  إذا كان لديك عقار وتود عرضه، يمكننا مساعدتك في فهم الخطوات
+                  المطلوبة والتواصل معك بطريقة سهلة وسريعة عبر واتساب.
                 </p>
               </div>
 
@@ -180,10 +184,10 @@ export default function ChatSection() {
                   واتساب
                 </span>
                 <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-white/90">
-                  دعم فني
+                  عرض عقار
                 </span>
                 <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-white/90">
-                  استفسارات عامة
+                  متابعة سريعة
                 </span>
               </div>
             </div>
@@ -191,11 +195,11 @@ export default function ChatSection() {
             <div className="order-2 bg-white p-8 md:p-10 lg:order-1">
               <div className="mb-8">
                 <h3 className="text-2xl font-bold text-[#102A43]">
-                  أرسل رسالتك
+                  أرسل طلبك
                 </h3>
                 <p className="mt-2 text-sm leading-7 text-gray-500">
-                  املأ البيانات التالية وسنقوم بمراجعة طلبك والتواصل معك في أقرب
-                  وقت ممكن.
+                  املأ البيانات التالية وسنحوّلك مباشرة إلى واتساب لبدء التواصل
+                  معنا بخصوص عرض العقار.
                 </p>
               </div>
 
@@ -255,7 +259,7 @@ export default function ChatSection() {
 
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-semibold text-[#102A43]">
-                    رسالتك
+                    تفاصيل إضافية
                     <span className="mr-2 text-xs font-normal text-gray-400">
                       (اختياري)
                     </span>
@@ -266,7 +270,7 @@ export default function ChatSection() {
                     value={form.message}
                     onChange={handleChange}
                     rows={5}
-                    placeholder="اكتب تفاصيل رسالتك هنا..."
+                    placeholder="مثلاً: لدي شقة للبيع في رام الله وأرغب بمعرفة خطوات عرضها"
                     className="resize-none rounded-xl border border-gray-200 bg-[#F8FAFC] px-4 py-3 text-sm leading-7 text-gray-800 outline-none transition placeholder:text-gray-400 focus:border-[#1F3C88] focus:bg-white"
                   />
                 </div>
@@ -296,15 +300,15 @@ export default function ChatSection() {
                       >
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
-                      تم إرسال رسالتك بنجاح
+                      جاري تحويلك إلى واتساب
                     </>
                   ) : status === "error" ? (
-                    "يرجى تعبئة الاسم ورقم الهاتف أو التحقق من الاتصال"
+                    "يرجى تعبئة الاسم ورقم الهاتف"
                   ) : status === "loading" ? (
-                    "جاري إرسال الرسالة..."
+                    "جاري تجهيز الرسالة..."
                   ) : (
                     <>
-                      إرسال الرسالة
+                      تواصل عبر واتساب
                       <svg
                         width="16"
                         height="16"
