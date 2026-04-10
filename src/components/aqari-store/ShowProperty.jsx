@@ -37,7 +37,8 @@ export default function ShowProperty() {
   };
 
   const handleWhatsApp = () => {
-    const phone = "970599999999";
+    const phone = "972597851386";
+
     const message = `مرحباً 👋
 أرغب بالاستفسار عن العقار التالي:
 
