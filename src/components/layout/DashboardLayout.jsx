@@ -13,7 +13,13 @@ function DashboardLayoutContent() {
     return <Loader />;
   }
 
-  return <Outlet />;
+  return (
+    <div className="min-h-screen overflow-x-auto bg-[#F7F8FA]">
+      <div style={{ zoom: 0.8 }}>
+        <Outlet />
+      </div>
+    </div>
+  );
 }
 
 export default function DashboardLayout() {
