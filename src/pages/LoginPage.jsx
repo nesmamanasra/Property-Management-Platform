@@ -1,4 +1,4 @@
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, AlertCircle, X } from "lucide-react";
 import { useState } from "react";
 import logo from "../assets/logo_top.png";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -17,8 +18,10 @@ export default function LoginPage() {
 
     const cleanEmail = email.trim().toLowerCase();
 
+    setErrorMessage("");
+
     if (!cleanEmail || !password.trim()) {
-      alert("يرجى تعبئة جميع الحقول");
+      setErrorMessage("يرجى تعبئة جميع الحقول");
       return;
     }
 
@@ -30,7 +33,6 @@ export default function LoginPage() {
         password,
       });
 
-      alert("تم تسجيل الدخول بنجاح");
       navigate("/dashboard", { replace: true });
     } catch (err) {
       console.error("Login error:", err);
@@ -39,9 +41,9 @@ export default function LoginPage() {
         err?.message?.includes("Invalid login credentials") ||
         err?.message?.toLowerCase()?.includes("invalid")
       ) {
-        alert("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+        setErrorMessage("البريد الإلكتروني أو كلمة المرور غير صحيحة");
       } else {
-        alert(err?.message || "حدث خطأ أثناء تسجيل الدخول");
+        setErrorMessage(err?.message || "حدث خطأ أثناء تسجيل الدخول");
       }
     } finally {
       setLoading(false);
@@ -50,6 +52,30 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
+      {errorMessage && (
+        <div className="fixed left-1/2 top-5 z-50 w-[calc(100%-24px)] max-w-md -translate-x-1/2">
+          <div className="flex items-start gap-3 rounded-xl border border-red-200 bg-white px-4 py-3 shadow-lg">
+            <div className="mt-0.5 text-red-500">
+              <AlertCircle size={18} />
+            </div>
+
+            <div className="flex-1 text-right">
+              <p className="text-sm font-medium text-red-600">
+                {errorMessage}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setErrorMessage("")}
+              className="text-gray-400 transition hover:text-gray-600"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="mx-auto flex min-h-screen max-w-[1440px] flex-col lg:flex-row">
         <div className="flex w-full items-center justify-center px-6 py-10 lg:w-1/2 lg:px-16">
           <div className="w-full max-w-[430px]">
@@ -75,7 +101,10 @@ export default function LoginPage() {
                   type="email"
                   placeholder="example@company.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (errorMessage) setErrorMessage("");
+                  }}
                   className="h-12 w-full rounded-lg border border-[#e6e6e6] bg-white px-4 text-sm text-[#222] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                 />
               </div>
@@ -89,7 +118,10 @@ export default function LoginPage() {
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (errorMessage) setErrorMessage("");
+                    }}
                     className="h-12 w-full rounded-lg border border-[#e6e6e6] bg-white px-4 pr-12 text-sm text-[#222] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                   />
                   <button

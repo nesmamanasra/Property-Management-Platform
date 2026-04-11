@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   Download,
   Search,
@@ -10,14 +10,15 @@ import {
   Trash2,
 } from "lucide-react";
 import { supabase } from "../../lib/supabase";
+import { useDashboardData } from "../../context/DashboardDataContext";
 
 export default function Owners() {
-  const [transactions, setTransactions] = useState([]);
+  const { owners, refreshOwners } = useDashboardData();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [menuOpenId, setMenuOpenId] = useState(null);
   const [editingItem, setEditingItem] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const menuRef = useRef(null);
@@ -28,11 +29,7 @@ export default function Owners() {
     phone: "",
   });
 
-  useEffect(() => {
-    getOwners();
-  }, []);
-
-  useEffect(() => {
+  React.useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setMenuOpenId(null);
@@ -43,35 +40,12 @@ export default function Owners() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const getOwners = async () => {
-    try {
-      setLoading(true);
-
-      const { data, error } = await supabase
-        .from("owners")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("Error fetching owners:", error);
-        setTransactions([]);
-      } else {
-        setTransactions(data || []);
-      }
-    } catch (error) {
-      console.error("Unexpected fetch error:", error);
-      setTransactions([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const filteredTransactions = useMemo(() => {
     const value = searchTerm.trim().toLowerCase();
 
-    if (!value) return transactions;
+    if (!value) return owners;
 
-    return transactions.filter((item) => {
+    return owners.filter((item) => {
       return (
         String(item.id ?? "").toLowerCase().includes(value) ||
         String(item.full_name ?? "").toLowerCase().includes(value) ||
@@ -80,7 +54,7 @@ export default function Owners() {
         String(item.created_at ?? "").toLowerCase().includes(value)
       );
     });
-  }, [transactions, searchTerm]);
+  }, [owners, searchTerm]);
 
   const resetForm = () => {
     setFormData({
@@ -159,7 +133,7 @@ export default function Owners() {
         alert("تمت إضافة المالك بنجاح");
       }
 
-      await getOwners();
+      await refreshOwners();
       closeModal();
     } catch (error) {
       console.error("Unexpected submit error:", error);
@@ -174,8 +148,6 @@ export default function Owners() {
     if (!confirmed) return;
 
     try {
-      setLoading(true);
-
       const { error } = await supabase.from("owners").delete().eq("id", id);
 
       if (error) {
@@ -184,14 +156,12 @@ export default function Owners() {
         return;
       }
 
-      await getOwners();
+      await refreshOwners();
       setMenuOpenId(null);
       alert("تم حذف المالك بنجاح");
     } catch (error) {
       console.error("Unexpected delete error:", error);
       alert("حدث خطأ غير متوقع أثناء الحذف");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -285,16 +255,7 @@ export default function Owners() {
               </thead>
 
               <tbody>
-                {loading ? (
-                  <tr>
-                    <td
-                      colSpan="7"
-                      className="px-5 py-8 text-center text-sm text-[#6B7280]"
-                    >
-                      جاري تحميل البيانات...
-                    </td>
-                  </tr>
-                ) : filteredTransactions.length > 0 ? (
+                {filteredTransactions.length > 0 ? (
                   filteredTransactions.map((item, index) => (
                     <tr
                       key={item.id}

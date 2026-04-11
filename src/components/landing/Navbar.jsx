@@ -24,41 +24,51 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 backdrop-blur-md">
-      <Container className="py-4">
-        <div className="flex items-center justify-between gap-4">
-          {/* Logo */}
-          <div className="flex shrink-0 items-center">
-            <img src={logo} alt="Aqari" className="h-20 w-auto  " />
+    <nav className="sticky top-0 z-50 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl">
+      <Container className="py-3">
+        <div className="flex items-center justify-between gap-6">
+          
+          {/* 🔥 Logo PRO */}
+          <div className="relative flex items-center">
+            {/* Glow خلف اللوجو */}
+            <div className="absolute h-20 w-20 rounded-full bg-[#1F3C88]/20 blur-2xl"></div>
+
+            <img
+              src={logo}
+              alt="Aqari"
+              className="relative h-24 w-auto object-contain transition duration-300 hover:scale-105"
+            />
           </div>
 
           {/* Desktop Links */}
-          <div className="hidden items-center gap-8 lg:flex">
+          <div className="hidden items-center gap-10 lg:flex">
             {navLinks.map((link) => (
               <button
                 key={link.href}
                 onClick={() => handleNavigate(link.href)}
-                className="text-[16px] font-semibold text-[#1F3C88] transition hover:text-[#102A43]"
+                className="relative text-[16px] font-semibold text-[#1F3C88] transition hover:text-[#102A43]"
               >
                 {link.label}
+
+                {/* underline animation */}
+                <span className="absolute -bottom-1 right-0 h-[2px] w-0 bg-[#1F3C88] transition-all duration-300 group-hover:w-full"></span>
               </button>
             ))}
           </div>
 
-          {/* Desktop CTA + Mobile Menu Button */}
+          {/* CTA + Mobile */}
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate("/aqari-store")}
-              className="hidden rounded-xl bg-[#1F3C88] px-5 py-2.5 text-sm font-bold text-white shadow-[0_10px_25px_rgba(31,60,136,0.22)] transition hover:bg-[#18346F] lg:inline-flex"
+              className="hidden rounded-2xl bg-gradient-to-r from-[#1F3C88] to-[#18346F] px-6 py-2.5 text-sm font-bold text-white shadow-[0_12px_30px_rgba(31,60,136,0.30)] transition duration-300 hover:scale-[1.03] hover:shadow-[0_16px_40px_rgba(31,60,136,0.35)] lg:inline-flex"
             >
-             تسوق الان 
+              تسوق الآن
             </button>
 
             <button
               type="button"
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-[#102A43] transition hover:border-[#1F3C88]/30 hover:text-[#1F3C88] lg:hidden"
-              aria-label="Toggle Menu"
             >
               {isOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
@@ -89,9 +99,9 @@ export default function Navbar() {
                 setIsOpen(false);
                 navigate("/aqari-store");
               }}
-              className="mt-4 flex w-full items-center justify-center rounded-xl bg-[#1F3C88] px-5 py-3 text-sm font-bold text-white shadow-[0_10px_22px_rgba(31,60,136,0.22)] transition hover:bg-[#18346F]"
+              className="mt-4 flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#1F3C88] to-[#18346F] px-5 py-3 text-sm font-bold text-white shadow-[0_10px_22px_rgba(31,60,136,0.22)] transition hover:scale-[1.02]"
             >
-              تسوق الان
+              تسوق الآن
             </button>
           </div>
         </div>

@@ -12,7 +12,7 @@ import {
   MapPinned,
   BadgeDollarSign,
 } from "lucide-react";
-import { supabase } from "../../lib/supabase";
+import { useDashboardData } from "../../context/DashboardDataContext";
 
 const filters = [
   { label: "الكل", value: "الكل" },
@@ -112,32 +112,27 @@ function HeroSection({ onSearch, propertiesCount }) {
         <div className="absolute -top-16 -left-16 h-72 w-72 rounded-full bg-emerald-400/20 blur-3xl" />
         <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-sky-300/20 blur-3xl" />
 
-  <motion.div
-  initial={{ y: -30, opacity: 0 }}
-  animate={{ y: 0, opacity: 1 }}
-  transition={{ duration: 0.6 }}
-  className="absolute top-0 left-0 right-0 z-20"
->
-  <div className="mx-auto flex max-w-[1400px] justify-start px-6 py-6 md:px-10 lg:px-14">
-    
-    <div className="relative flex flex-col items-start">
-      
-      {/* Glow خلف اللوجو */}
-      <div className="absolute right-0 h-40 w-40 rounded-full bg-emerald-400/30 blur-3xl"></div>
+        <motion.div
+          initial={{ y: -30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="absolute top-0 left-0 right-0 z-20"
+        >
+          <div className="mx-auto flex max-w-[1400px] justify-start px-6 py-6 md:px-10 lg:px-14">
+            <div className="relative flex flex-col items-start">
+              <div className="absolute right-0 h-40 w-40 rounded-full bg-emerald-400/30 blur-3xl"></div>
 
-      {/* Logo */}
-      <motion.img
-        src="/aqari_top_white.png"
-        alt="Aqari"
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        className="relative z-10 h-30 w- object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)] md:h-24 md:w-24 lg:h-28 lg:w-28"
-      />
-
-    </div>
-  </div>
-</motion.div>
+              <motion.img
+                src="/aqari_top_white.png"
+                alt="Aqari"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.6 }}
+                className="relative z-10 h-30 w- object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)] md:h-24 md:w-24 lg:h-28 lg:w-28"
+              />
+            </div>
+          </div>
+        </motion.div>
 
         <div className="relative z-10 mx-auto flex min-h-[520px] max-w-[1400px] flex-col justify-center px-6 py-10 pt-28 md:px-10 lg:px-14">
           <motion.div
@@ -286,9 +281,10 @@ function PropertyCard({ property }) {
             </p>
           </div>
         </div>
+
         <button
           onClick={() => navigate(`/property/${property.id}`)}
-          className="mt-4 w-full rounded-xl bg-gradient-to-r from-[#1F3C88] to-[#18346F] py-2 text-white hover:opacity-90 transition"
+          className="mt-4 w-full rounded-xl bg-gradient-to-r from-[#1F3C88] to-[#18346F] py-2 text-white transition hover:opacity-90"
         >
           عرض التفاصيل
         </button>
@@ -298,8 +294,7 @@ function PropertyCard({ property }) {
 }
 
 export default function MainAqariStore() {
-  const [allProperties, setAllProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { properties } = useDashboardData();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("الكل");
@@ -309,49 +304,21 @@ export default function MainAqariStore() {
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 8;
 
-  useEffect(() => {
-    const fetchProperties = async () => {
-      setLoading(true);
-
-      const { data, error } = await supabase
-        .from("properties")
-        .select(`
-          id,
-          title,
-          image,
-          property_type,
-          operation_type,
-          city,
-          price
-        `)
-        .order("id", { ascending: false });
-
-      if (error) {
-        console.error("Error fetching properties:", error);
-        setLoading(false);
-        return;
-      }
-
-      const formatted = (data || []).map((item) => ({
-        id: item.id,
-        title: item.title,
-        image: item.image,
-        location: item.city,
-        city: item.city,
-        type: item.property_type,
-        badge:
-          item.operation_type === "إيجار" || item.operation_type === "للإيجار"
-            ? "للإيجار"
-            : "للبيع",
-        price: Number(item.price || 0),
-      }));
-
-      setAllProperties(formatted);
-      setLoading(false);
-    };
-
-    fetchProperties();
-  }, []);
+  const allProperties = useMemo(() => {
+    return (properties || []).map((item) => ({
+      id: item.id,
+      title: item.title,
+      image: item.image,
+      location: item.city,
+      city: item.city,
+      type: item.property_type,
+      badge:
+        item.operation_type === "إيجار" || item.operation_type === "للإيجار"
+          ? "للإيجار"
+          : "للبيع",
+      price: Number(item.price || 0),
+    }));
+  }, [properties]);
 
   const filteredProperties = useMemo(() => {
     let data = [...allProperties];
@@ -446,9 +413,7 @@ export default function MainAqariStore() {
         </div>
       </div>
 
-      {loading ? (
-        <div className="py-12 text-center text-slate-500">جاري تحميل العقارات...</div>
-      ) : paginatedProperties.length === 0 ? (
+      {paginatedProperties.length === 0 ? (
         <div className="py-12 text-center text-slate-500">
           لا توجد نتائج مطابقة للفلاتر الحالية
         </div>

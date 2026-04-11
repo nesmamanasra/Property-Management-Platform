@@ -1,4 +1,3 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
 import Loader from "../../components/landing/Loader";
 import {
@@ -6,20 +5,20 @@ import {
   useDashboardData,
 } from "../../context/DashboardDataContext";
 
-function DashboardLayoutContent() {
-  const { initialized } = useDashboardData();
+function AqariStoreLayoutContent() {
+  const { loading, initialized } = useDashboardData();
 
-  if (!initialized) {
-    return <Loader />;
-  }
+ if (!initialized) {
+     return <Loader />;
+   }
 
   return <Outlet />;
 }
 
-export default function DashboardLayout() {
+export default function AqariStoreLayout() {
   return (
     <DashboardDataProvider>
-      <DashboardLayoutContent />
+      <AqariStoreLayoutContent />
     </DashboardDataProvider>
   );
 }

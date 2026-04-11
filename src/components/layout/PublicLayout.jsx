@@ -1,4 +1,3 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
 import Loader from "../../components/landing/Loader";
 import {
@@ -6,20 +5,20 @@ import {
   useDashboardData,
 } from "../../context/DashboardDataContext";
 
-function DashboardLayoutContent() {
-  const { initialized } = useDashboardData();
+function PublicLayoutContent() {
+  const { loading, initialized } = useDashboardData();
 
   if (!initialized) {
-    return <Loader />;
-  }
+      return <Loader />;
+    }
 
   return <Outlet />;
 }
 
-export default function DashboardLayout() {
+export default function PublicLayout() {
   return (
     <DashboardDataProvider>
-      <DashboardLayoutContent />
+      <PublicLayoutContent />
     </DashboardDataProvider>
   );
 }

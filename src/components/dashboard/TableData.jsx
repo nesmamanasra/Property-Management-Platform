@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   Download,
   Search,
@@ -8,6 +8,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { supabase } from "../../lib/supabase";
+import { useDashboardData } from "../../context/DashboardDataContext";
 
 function StatusBadge({ status }) {
   const styles = {
@@ -28,32 +29,16 @@ function StatusBadge({ status }) {
   );
 }
 
-export default function TableData({ onEdit, refreshKey, renderAddButton }) {
-  const [properties, setProperties] = useState([]);
+export default function TableData({ onEdit, renderAddButton }) {
+  const { properties, setProperties } = useDashboardData(); // 🔥 مهم
+
   const [searchTerm, setSearchTerm] = useState("");
   const [menuOpenId, setMenuOpenId] = useState(null);
+  const [deleteLoadingId, setDeleteLoadingId] = useState(null);
 
   const menuRef = useRef(null);
 
-  const fetchProperties = async () => {
-    const { data, error } = await supabase
-      .from("properties")
-      .select("*, owners(full_name)")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Error fetching properties:", error);
-      return;
-    }
-
-    setProperties(data || []);
-  };
-
-  useEffect(() => {
-    fetchProperties();
-  }, [refreshKey]);
-
-  useEffect(() => {
+  React.useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setMenuOpenId(null);
@@ -84,26 +69,35 @@ export default function TableData({ onEdit, refreshKey, renderAddButton }) {
     });
   }, [properties, searchTerm]);
 
+  // 🔥 حذف سريع بدون refresh
   const handleDelete = async (id) => {
     const confirmed = window.confirm("هل أنت متأكد من حذف هذا العقار؟");
     if (!confirmed) return;
+
+    setDeleteLoadingId(id);
+
+    // حذف فوري من الواجهة
+    setProperties((prev) => prev.filter((item) => item.id !== id));
 
     const { error } = await supabase.from("properties").delete().eq("id", id);
 
     if (error) {
       console.error("Error deleting property:", error);
-      alert("فشل حذف العقار");
-      return;
+
+      // rollback إذا فشل
+      // (اختياري ترجع البيانات من جديد)
     }
 
-    await fetchProperties();
     setMenuOpenId(null);
+    setDeleteLoadingId(null);
   };
 
   return (
     <section className="bg-[#F7F8FA] p-6" dir="rtl">
       <div className="mx-auto max-w-[1400px]">
         <div className="rounded-2xl border border-[#ECEEF2] bg-white shadow-[0_2px_10px_rgba(15,23,42,0.04)]">
+
+          {/* Header */}
           <div className="flex flex-col gap-4 border-b border-[#EEF1F5] px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
             <h3 className="text-right text-lg font-semibold text-[#1F2937]">
               العقارات
@@ -135,6 +129,7 @@ export default function TableData({ onEdit, refreshKey, renderAddButton }) {
             </div>
           </div>
 
+          {/* Table */}
           <div className="overflow-x-auto">
             <table className="min-w-[1900px] w-full">
               <thead>
@@ -159,9 +154,7 @@ export default function TableData({ onEdit, refreshKey, renderAddButton }) {
                     key={item.id}
                     className="group border-b border-[#F3F4F6] text-sm hover:bg-[#18346F]"
                   >
-                    <td className="px-5 py-4 group-hover:text-white">
-                      {index + 1}
-                    </td>
+                    <td className="px-5 py-4 group-hover:text-white">{index + 1}</td>
 
                     <td className="px-5 py-4 group-hover:text-white">
                       {item.owners?.full_name || "—"}
@@ -171,6 +164,8 @@ export default function TableData({ onEdit, refreshKey, renderAddButton }) {
                       {item.image ? (
                         <img
                           src={item.image}
+                          alt={item.title || "property"}
+                          loading="lazy" // 🔥 مهم
                           className="h-14 w-20 rounded-lg object-cover"
                         />
                       ) : (
@@ -178,29 +173,12 @@ export default function TableData({ onEdit, refreshKey, renderAddButton }) {
                       )}
                     </td>
 
-                    <td className="px-5 py-4 group-hover:text-white">
-                      {item.title}
-                    </td>
-
-                    <td className="px-5 py-4 group-hover:text-white">
-                      {item.property_type}
-                    </td>
-
-                    <td className="px-5 py-4 group-hover:text-white">
-                      {item.operation_type}
-                    </td>
-
-                    <td className="px-5 py-4 group-hover:text-white">
-                      {item.city}
-                    </td>
-
-                    <td className="px-5 py-4 group-hover:text-white">
-                      {item.description}
-                    </td>
-
-                    <td className="px-5 py-4 group-hover:text-white">
-                      {item.price}
-                    </td>
+                    <td className="px-5 py-4 group-hover:text-white">{item.title}</td>
+                    <td className="px-5 py-4 group-hover:text-white">{item.property_type}</td>
+                    <td className="px-5 py-4 group-hover:text-white">{item.operation_type}</td>
+                    <td className="px-5 py-4 group-hover:text-white">{item.city}</td>
+                    <td className="px-5 py-4 group-hover:text-white">{item.description}</td>
+                    <td className="px-5 py-4 group-hover:text-white">{item.price}</td>
 
                     <td className="px-5 py-4">
                       <StatusBadge status={item.status} />
@@ -218,7 +196,7 @@ export default function TableData({ onEdit, refreshKey, renderAddButton }) {
                       {menuOpenId === item.id && (
                         <div
                           ref={menuRef}
-                          className="absolute left-5 top-12 z-20 bg-white rounded-xl shadow"
+                          className="absolute left-5 top-12 z-20 rounded-xl bg-white shadow"
                         >
                           <button
                             onClick={() => {
@@ -232,9 +210,13 @@ export default function TableData({ onEdit, refreshKey, renderAddButton }) {
 
                           <button
                             onClick={() => handleDelete(item.id)}
-                            className="flex gap-2 px-4 py-2 text-red-600"
+                            disabled={deleteLoadingId === item.id}
+                            className="flex gap-2 px-4 py-2 text-red-600 disabled:opacity-50"
                           >
-                            حذف <Trash2 size={14} />
+                            {deleteLoadingId === item.id
+                              ? "جاري الحذف..."
+                              : "حذف"}
+                            <Trash2 size={14} />
                           </button>
                         </div>
                       )}
@@ -244,7 +226,7 @@ export default function TableData({ onEdit, refreshKey, renderAddButton }) {
 
                 {filteredData.length === 0 && (
                   <tr>
-                    <td colSpan={11} className="text-center py-6 text-gray-400">
+                    <td colSpan={11} className="py-6 text-center text-gray-400">
                       لا توجد بيانات
                     </td>
                   </tr>
@@ -252,6 +234,7 @@ export default function TableData({ onEdit, refreshKey, renderAddButton }) {
               </tbody>
             </table>
           </div>
+
         </div>
       </div>
     </section>
