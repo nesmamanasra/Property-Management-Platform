@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { auth } from "./auth";
+// import Loader from "../components/landing/Loader";
 
 export default function ProtectedRoute({ children }) {
   const [loading, setLoading] = useState(true);
@@ -35,9 +36,7 @@ export default function ProtectedRoute({ children }) {
     };
   }, []);
 
-  if (loading) {
-    return <div className="p-6 text-center">جاري التحقق...</div>;
-  }
+  if (loading) return null;
 
   if (!session) {
     return <Navigate to="/login" replace />;

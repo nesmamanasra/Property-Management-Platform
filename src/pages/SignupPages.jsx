@@ -1,4 +1,4 @@
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, AlertCircle, X } from "lucide-react";
 import { useState } from "react";
 import logo from "../assets/logo_top.png";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,7 @@ export default function SignupPages() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -23,23 +24,25 @@ export default function SignupPages() {
     const cleanFullName = fullName.trim();
     const cleanEmail = email.trim().toLowerCase();
 
+    setErrorMessage("");
+
     if (
       !cleanFullName ||
       !cleanEmail ||
       !password.trim() ||
       !confirmPassword.trim()
     ) {
-      alert("يرجى تعبئة جميع الحقول");
+      setErrorMessage("يرجى تعبئة جميع الحقول");
       return;
     }
 
     if (password.length < 6) {
-      alert("يجب أن تكون كلمة المرور 6 أحرف على الأقل");
+      setErrorMessage("يجب أن تكون كلمة المرور 6 أحرف على الأقل");
       return;
     }
 
     if (password !== confirmPassword) {
-      alert("كلمة المرور وتأكيد كلمة المرور غير متطابقين");
+      setErrorMessage("كلمة المرور وتأكيد كلمة المرور غير متطابقين");
       return;
     }
 
@@ -52,8 +55,7 @@ export default function SignupPages() {
         password,
       });
 
-      alert("تم إنشاء الحساب بنجاح");
-      navigate("/login", { replace: true });
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       console.error("Signup error:", err);
 
@@ -62,9 +64,9 @@ export default function SignupPages() {
         err?.message?.includes("already") ||
         err?.code === "user_already_exists"
       ) {
-        alert("هذا البريد الإلكتروني مستخدم بالفعل");
+        setErrorMessage("هذا البريد الإلكتروني مستخدم بالفعل");
       } else {
-        alert(err?.message || "حدث خطأ أثناء إنشاء الحساب");
+        setErrorMessage(err?.message || "حدث خطأ أثناء إنشاء الحساب");
       }
     } finally {
       setLoading(false);
@@ -73,6 +75,30 @@ export default function SignupPages() {
 
   return (
     <div className="min-h-screen bg-[#f5f5f7]">
+      {errorMessage && (
+        <div className="fixed left-1/2 top-5 z-50 w-[calc(100%-24px)] max-w-md -translate-x-1/2">
+          <div className="flex items-start gap-3 rounded-xl border border-red-200 bg-white px-4 py-3 shadow-lg">
+            <div className="mt-0.5 text-red-500">
+              <AlertCircle size={18} />
+            </div>
+
+            <div className="flex-1 text-right">
+              <p className="text-sm font-medium text-red-600">
+                {errorMessage}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setErrorMessage("")}
+              className="text-gray-400 transition hover:text-gray-600"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="mx-auto flex min-h-screen max-w-[1440px] flex-col lg:flex-row">
         <div className="flex w-full items-center justify-center px-6 py-10 lg:w-1/2 lg:px-16">
           <div className="w-full max-w-[430px]">
@@ -98,7 +124,10 @@ export default function SignupPages() {
                   type="text"
                   placeholder="Roger Gerrard"
                   value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
+                  onChange={(e) => {
+                    setFullName(e.target.value);
+                    if (errorMessage) setErrorMessage("");
+                  }}
                   className="h-11 w-full rounded-lg border border-gray-200 bg-white px-4 outline-none transition focus:border-[#4f46e5]"
                 />
               </div>
@@ -111,7 +140,10 @@ export default function SignupPages() {
                   type="email"
                   placeholder="sellostore@company.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (errorMessage) setErrorMessage("");
+                  }}
                   className="h-12 w-full rounded-lg border border-[#e6e6e6] bg-white px-4 text-sm text-[#222] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                 />
               </div>
@@ -125,7 +157,10 @@ export default function SignupPages() {
                     type={showPassword ? "text" : "password"}
                     placeholder="5ellostore."
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (errorMessage) setErrorMessage("");
+                    }}
                     className="h-12 w-full rounded-lg border border-[#e6e6e6] bg-white px-4 pr-12 text-sm text-[#222] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                   />
                   <button
@@ -148,7 +183,10 @@ export default function SignupPages() {
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="5ellostore."
                     value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                      if (errorMessage) setErrorMessage("");
+                    }}
                     className="h-12 w-full rounded-lg border border-[#e6e6e6] bg-white px-4 pr-12 text-sm text-[#222] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                   />
                   <button
@@ -264,10 +302,10 @@ export default function SignupPages() {
             <div className="relative z-10 mx-auto w-full max-w-[520px]">
               <div className="mb-10">
                 <h2 className="max-w-[420px] text-[42px] font-semibold leading-[1.2]">
-                  Effortlessly manage your team and operations.
+                  أدر فريقك وعملياتك بسهولة تامة.
                 </h2>
                 <p className="mt-5 max-w-[410px] text-sm leading-7 text-white/80">
-                  Log in to access your CRM dashboard and manage your team.
+                  سجّل الدخول للوصول إلى لوحة التحكم الخاصة بك وإدارة فريقك وأعمالك.
                 </p>
               </div>
 
@@ -275,7 +313,7 @@ export default function SignupPages() {
                 <div className="rounded-[22px] bg-white p-5 shadow-2xl">
                   <div className="grid grid-cols-3 gap-4">
                     <div className="rounded-2xl bg-[#4a42ff] p-4 text-white">
-                      <p className="text-[11px] text-white/70">Total Sales</p>
+                      <p className="text-[11px] text-white/70">إجمالي المبيعات</p>
                       <h3 className="mt-3 text-2xl font-semibold">$189,374</h3>
                       <div className="mt-6 h-1.5 w-14 rounded-full bg-white/30">
                         <div className="h-1.5 w-9 rounded-full bg-white"></div>
@@ -283,7 +321,7 @@ export default function SignupPages() {
                     </div>
 
                     <div className="rounded-2xl bg-[#f8f8fc] p-4">
-                      <p className="text-[11px] text-[#7b7b8f]">Chat Performance</p>
+                      <p className="text-[11px] text-[#7b7b8f]">أداء المحادثات</p>
                       <h3 className="mt-3 text-xl font-semibold text-[#1d1d1f]">
                         00:01:30
                       </h3>
@@ -296,7 +334,7 @@ export default function SignupPages() {
                     </div>
 
                     <div className="rounded-2xl bg-[#f8f8fc] p-4">
-                      <p className="text-[11px] text-[#7b7b8f]">Sales Overview</p>
+                      <p className="text-[11px] text-[#7b7b8f]">نظرة عامة على المبيعات</p>
                       <div className="mt-4 flex h-20 items-end justify-center gap-2">
                         <span className="h-8 w-4 rounded-full bg-indigo-200"></span>
                         <span className="h-14 w-4 rounded-full bg-indigo-300"></span>
@@ -309,9 +347,9 @@ export default function SignupPages() {
                   <div className="mt-5 rounded-2xl border border-[#f0f0f4] bg-[#fcfcff] p-4">
                     <div className="mb-4 flex items-center justify-between">
                       <h4 className="text-sm font-semibold text-[#252525]">
-                        Product Transaction
+                        معاملات المنتجات
                       </h4>
-                      <button className="text-xs text-[#8b8b9c]">More</button>
+                      <button className="text-xs text-[#8b8b9c]">المزيد</button>
                     </div>
 
                     <div className="space-y-3">
@@ -341,15 +379,15 @@ export default function SignupPages() {
                 <div className="absolute -right-10 top-12 w-[230px] rounded-[22px] bg-white p-5 shadow-2xl">
                   <div className="mb-4 flex items-center justify-between">
                     <h4 className="text-sm font-semibold text-[#1d1d1f]">
-                      Sales Categories
+                      فئات المبيعات
                     </h4>
-                    <button className="text-xs text-[#8b8b9c]">Monthly</button>
+                    <button className="text-xs text-[#8b8b9c]">شهري</button>
                   </div>
 
                   <div className="mx-auto flex h-36 w-36 items-center justify-center rounded-full border-[14px] border-indigo-500 border-r-indigo-200 border-b-indigo-300">
                     <div className="text-center">
                       <p className="text-2xl font-bold text-[#1d1d1f]">6,248</p>
-                      <span className="text-xs text-[#8b8b9c]">Units</span>
+                      <span className="text-xs text-[#8b8b9c]">وحدة</span>
                     </div>
                   </div>
 
@@ -357,7 +395,7 @@ export default function SignupPages() {
                     <div className="flex items-center justify-between text-xs text-[#6d6d7a]">
                       <div className="flex items-center gap-2">
                         <span className="h-2.5 w-2.5 rounded-full bg-indigo-500"></span>
-                        <span>Marketing</span>
+                        <span>التسويق</span>
                       </div>
                       <span>44%</span>
                     </div>
@@ -365,7 +403,7 @@ export default function SignupPages() {
                     <div className="flex items-center justify-between text-xs text-[#6d6d7a]">
                       <div className="flex items-center gap-2">
                         <span className="h-2.5 w-2.5 rounded-full bg-indigo-300"></span>
-                        <span>Sales</span>
+                        <span>المبيعات</span>
                       </div>
                       <span>31%</span>
                     </div>
@@ -373,7 +411,7 @@ export default function SignupPages() {
                     <div className="flex items-center justify-between text-xs text-[#6d6d7a]">
                       <div className="flex items-center gap-2">
                         <span className="h-2.5 w-2.5 rounded-full bg-indigo-200"></span>
-                        <span>Other</span>
+                        <span>أخرى</span>
                       </div>
                       <span>25%</span>
                     </div>

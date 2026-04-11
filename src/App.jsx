@@ -10,6 +10,8 @@ import OwnersPage from "./pages/dashboard/OwnersPage";
 import PropertyPage from "./pages/dashboard/PropertyPage";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import MessagesPage from "./pages/dashboard/MessagesPage";
+import DashboardLayout from "./components/layout/DashboardLayout";
+import PublicLayout from "./components/layout/PublicLayout";
 
 export default function App() {
   return (
@@ -17,49 +19,28 @@ export default function App() {
       <ScrollToTop />
 
       <Routes>
-        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPages />} />
+
+   <Route path="/" element={<PublicLayout />}>
+  <Route index element={<LandingPage />} />
+  <Route path="aqari-store" element={<AqariStorePage />} />
+  <Route path="property/:id" element={<ShowPropertyPage />} />
+</Route>
 
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <DashboardHome />
+              <DashboardLayout />
             </ProtectedRoute>
           }
-        />
-
-        <Route
-          path="/dashboard/owners"
-          element={
-            <ProtectedRoute>
-              <OwnersPage />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/dashboard/property"
-          element={
-            <ProtectedRoute>
-              <PropertyPage />
-            </ProtectedRoute>
-          }
-        />
-       
-         <Route
-          path="/dashboard/messages"
-          element={
-            <ProtectedRoute>
-              <MessagesPage />
-            </ProtectedRoute>
-          }
-        /> 
-
-        
-        <Route path="/aqari-store" element={<AqariStorePage />} />
-        <Route path="/property/:id" element={<ShowPropertyPage />} />
+        >
+          <Route index element={<DashboardHome />} />
+          <Route path="owners" element={<OwnersPage />} />
+          <Route path="property" element={<PropertyPage />} />
+          <Route path="messages" element={<MessagesPage />} />
+        </Route>
       </Routes>
     </>
   );

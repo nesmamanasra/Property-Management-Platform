@@ -13,6 +13,7 @@ export default function PropertyForm({
   const [owners, setOwners] = useState([]);
   const [loadingOwners, setLoadingOwners] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [compressingImage, setCompressingImage] = useState(false);
 
   const [formData, setFormData] = useState({
     owner_id: "",
@@ -116,22 +117,80 @@ export default function PropertyForm({
     }));
   };
 
-  const handleImageChange = (e) => {
+  const compressImage = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const img = new Image();
+
+        img.onload = () => {
+          try {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            if (!ctx) {
+              reject(new Error("Canvas context not available"));
+              return;
+            }
+
+            const MAX_WIDTH = 1200;
+            const MAX_HEIGHT = 1200;
+
+            let { width, height } = img;
+
+            const widthRatio = MAX_WIDTH / width;
+            const heightRatio = MAX_HEIGHT / height;
+            const ratio = Math.min(widthRatio, heightRatio, 1);
+
+            width = Math.round(width * ratio);
+            height = Math.round(height * ratio);
+
+            canvas.width = width;
+            canvas.height = height;
+
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
+            resolve(compressedBase64);
+          } catch (err) {
+            reject(err);
+          }
+        };
+
+        img.onerror = () => reject(new Error("Failed to load image"));
+        img.src = event.target?.result;
+      };
+
+      reader.onerror = () => reject(new Error("Failed to read file"));
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
+    try {
+      setCompressingImage(true);
+
+      const compressedImage = await compressImage(file);
+
       setFormData((prev) => ({
         ...prev,
-        image: typeof reader.result === "string" ? reader.result : "",
+        image: typeof compressedImage === "string" ? compressedImage : "",
       }));
-    };
-    reader.readAsDataURL(file);
+    } catch (error) {
+      console.error("Error compressing image:", error);
+    } finally {
+      setCompressingImage(false);
+    }
   };
 
   const handleSubmitProperty = async () => {
     if (
+      submitting ||
+      compressingImage ||
       !formData.owner_id ||
       !formData.propertyName.trim() ||
       !formData.price.trim() ||
@@ -156,28 +215,42 @@ export default function PropertyForm({
       setSubmitting(true);
 
       if (editingItem?.id) {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from("properties")
           .update(payload)
-          .eq("id", editingItem.id);
+          .eq("id", editingItem.id)
+          .select()
+          .single();
 
         if (error) {
           console.error("Error updating property:", error);
           return;
         }
-      } else {
-        const { error } = await supabase.from("properties").insert([payload]);
 
-        if (error) {
-          console.error("Error inserting property:", error);
-          return;
+        closeModal();
+
+        if (onSuccess && data) {
+          onSuccess(data, "update");
         }
+
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("properties")
+        .insert([payload])
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Error inserting property:", error);
+        return;
       }
 
       closeModal();
 
-      if (onSuccess) {
-        onSuccess();
+      if (onSuccess && data) {
+        onSuccess(data, "insert");
       }
     } catch (error) {
       console.error("Unexpected submit error:", error);
@@ -357,11 +430,18 @@ export default function PropertyForm({
                   className="w-full rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-right text-sm text-[#374151] file:ml-3 file:rounded-lg file:border-0 file:bg-[#18346F] file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-[#1F3C88]"
                 />
 
+                {compressingImage && (
+                  <p className="mt-2 text-right text-sm text-[#6B7280]">
+                    جاري ضغط الصورة...
+                  </p>
+                )}
+
                 {formData.image && (
                   <div className="mt-4 overflow-hidden rounded-2xl border border-[#E5E7EB]">
                     <img
                       src={formData.image}
                       alt="preview"
+                      loading="lazy"
                       className="h-56 w-full object-cover"
                     />
                   </div>
@@ -379,10 +459,12 @@ export default function PropertyForm({
 
               <button
                 onClick={handleSubmitProperty}
-                disabled={submitting}
+                disabled={submitting || compressingImage}
                 className="rounded-xl bg-[#18346F] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#1F3C88] disabled:cursor-not-allowed disabled:opacity-70"
               >
-                {submitting
+                {compressingImage
+                  ? "جاري تجهيز الصورة..."
+                  : submitting
                   ? "جاري الحفظ..."
                   : editingItem
                   ? "حفظ التعديلات"
