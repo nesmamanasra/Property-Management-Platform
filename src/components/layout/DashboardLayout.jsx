@@ -10,12 +10,16 @@ function DashboardLayoutContent() {
   const { initialized } = useDashboardData();
 
   if (!initialized) {
-    return <Loader />;
+    return (
+      <div className="min-h-screen w-full overflow-x-hidden bg-[#F7F8FA]">
+        <Loader />
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen overflow-x-auto bg-[#F7F8FA]">
-      <div style={{ zoom: 0.8 }}>
+    <div className="min-h-screen w-full overflow-x-hidden bg-[#F7F8FA]">
+      <div className="w-full min-w-0">
         <Outlet />
       </div>
     </div>

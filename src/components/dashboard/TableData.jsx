@@ -20,7 +20,7 @@ function StatusBadge({ status }) {
 
   return (
     <span
-      className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
+      className={`inline-flex rounded-full px-2 py-[2px] text-[10px] font-semibold ${
         styles[status] || "bg-gray-100 text-gray-600"
       }`}
     >
@@ -30,7 +30,7 @@ function StatusBadge({ status }) {
 }
 
 export default function TableData({ onEdit, renderAddButton }) {
-  const { properties, setProperties } = useDashboardData(); // 🔥 مهم
+  const { properties, setProperties } = useDashboardData();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [menuOpenId, setMenuOpenId] = useState(null);
@@ -69,23 +69,17 @@ export default function TableData({ onEdit, renderAddButton }) {
     });
   }, [properties, searchTerm]);
 
-  // 🔥 حذف سريع بدون refresh
   const handleDelete = async (id) => {
     const confirmed = window.confirm("هل أنت متأكد من حذف هذا العقار؟");
     if (!confirmed) return;
 
     setDeleteLoadingId(id);
-
-    // حذف فوري من الواجهة
     setProperties((prev) => prev.filter((item) => item.id !== id));
 
     const { error } = await supabase.from("properties").delete().eq("id", id);
 
     if (error) {
       console.error("Error deleting property:", error);
-
-      // rollback إذا فشل
-      // (اختياري ترجع البيانات من جديد)
     }
 
     setMenuOpenId(null);
@@ -93,19 +87,19 @@ export default function TableData({ onEdit, renderAddButton }) {
   };
 
   return (
-    <section className="bg-[#F7F8FA] p-6" dir="rtl">
+    <section className="bg-[#F7F8FA] p-4" dir="rtl">
       <div className="mx-auto max-w-[1400px]">
         <div className="rounded-2xl border border-[#ECEEF2] bg-white shadow-[0_2px_10px_rgba(15,23,42,0.04)]">
 
           {/* Header */}
-          <div className="flex flex-col gap-4 border-b border-[#EEF1F5] px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
-            <h3 className="text-right text-lg font-semibold text-[#1F2937]">
+          <div className="flex flex-col gap-2 border-b border-[#EEF1F5] px-3 py-3 lg:flex-row lg:items-center lg:justify-between">
+            <h3 className="text-right text-[14px] font-semibold text-[#1F2937]">
               العقارات
             </h3>
 
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <div className="flex items-center gap-2 rounded-xl border border-[#E5E7EB] bg-[#F9FAFB] px-4 py-2.5 text-sm text-[#9CA3AF]">
-                <Search size={16} />
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <div className="flex items-center gap-2 rounded-xl border border-[#E5E7EB] bg-[#F9FAFB] px-3 py-2 text-[12px] text-[#9CA3AF]">
+                <Search size={14} />
                 <input
                   type="text"
                   placeholder="بحث..."
@@ -115,13 +109,13 @@ export default function TableData({ onEdit, renderAddButton }) {
                 />
               </div>
 
-              <button className="flex items-center justify-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-medium text-[#4B5563] transition hover:bg-[#f9fafb]">
-                <Download size={16} />
+              <button className="flex items-center justify-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-3 py-2 text-[12px] font-medium text-[#4B5563] hover:bg-[#f9fafb]">
+                <Download size={14} />
                 تصدير
               </button>
 
-              <button className="flex items-center justify-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-medium text-[#4B5563] transition hover:bg-[#f9fafb]">
-                <Printer size={16} />
+              <button className="flex items-center justify-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-3 py-2 text-[12px] font-medium text-[#4B5563] hover:bg-[#f9fafb]">
+                <Printer size={14} />
                 طباعة
               </button>
 
@@ -134,89 +128,88 @@ export default function TableData({ onEdit, renderAddButton }) {
             <table className="min-w-[1900px] w-full">
               <thead>
                 <tr className="border-b border-[#EEF1F5] bg-[#FCFCFD] text-right">
-                  <th className="px-5 py-4 text-xs text-[#9CA3AF]">#</th>
-                  <th className="px-5 py-4 text-xs text-[#9CA3AF]">المالك</th>
-                  <th className="px-5 py-4 text-xs text-[#9CA3AF]">الصورة</th>
-                  <th className="px-5 py-4 text-xs text-[#9CA3AF]">العقار</th>
-                  <th className="px-5 py-4 text-xs text-[#9CA3AF]">النوع</th>
-                  <th className="px-5 py-4 text-xs text-[#9CA3AF]">العملية</th>
-                  <th className="px-5 py-4 text-xs text-[#9CA3AF]">المدينة</th>
-                  <th className="px-5 py-4 text-xs text-[#9CA3AF]">الوصف</th>
-                  <th className="px-5 py-4 text-xs text-[#9CA3AF]">السعر</th>
-                  <th className="px-5 py-4 text-xs text-[#9CA3AF]">الحالة</th>
-                  <th className="px-5 py-4" />
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">#</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">المالك</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">الصورة</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">العقار</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">النوع</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">العملية</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">المدينة</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">الوصف</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">السعر</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">الحالة</th>
+                  <th className="px-3 py-2" />
                 </tr>
               </thead>
 
-              <tbody>
+              <tbody className="text-[12px]">
                 {filteredData.map((item, index) => (
                   <tr
                     key={item.id}
-                    className="group border-b border-[#F3F4F6] text-sm hover:bg-[#18346F]"
+                    className="group border-b border-[#F3F4F6] hover:bg-[#18346F]"
                   >
-                    <td className="px-5 py-4 group-hover:text-white">{index + 1}</td>
-
-                    <td className="px-5 py-4 group-hover:text-white">
+                    <td className="px-3 py-2 group-hover:text-white">{index + 1}</td>
+                    <td className="px-3 py-2 group-hover:text-white">
                       {item.owners?.full_name || "—"}
                     </td>
 
-                    <td className="px-5 py-4">
+                    <td className="px-3 py-2">
                       {item.image ? (
                         <img
                           src={item.image}
                           alt={item.title || "property"}
-                          loading="lazy" // 🔥 مهم
-                          className="h-14 w-20 rounded-lg object-cover"
+                          loading="lazy"
+                          className="h-10 w-14 rounded-lg object-cover"
                         />
                       ) : (
                         "—"
                       )}
                     </td>
 
-                    <td className="px-5 py-4 group-hover:text-white">{item.title}</td>
-                    <td className="px-5 py-4 group-hover:text-white">{item.property_type}</td>
-                    <td className="px-5 py-4 group-hover:text-white">{item.operation_type}</td>
-                    <td className="px-5 py-4 group-hover:text-white">{item.city}</td>
-                    <td className="px-5 py-4 group-hover:text-white">{item.description}</td>
-                    <td className="px-5 py-4 group-hover:text-white">{item.price}</td>
+                    <td className="px-3 py-2 group-hover:text-white">{item.title}</td>
+                    <td className="px-3 py-2 group-hover:text-white">{item.property_type}</td>
+                    <td className="px-3 py-2 group-hover:text-white">{item.operation_type}</td>
+                    <td className="px-3 py-2 group-hover:text-white">{item.city}</td>
+                    <td className="px-3 py-2 group-hover:text-white">{item.description}</td>
+                    <td className="px-3 py-2 group-hover:text-white">{item.price}</td>
 
-                    <td className="px-5 py-4">
+                    <td className="px-3 py-2">
                       <StatusBadge status={item.status} />
                     </td>
 
-                    <td className="relative px-5 py-4">
+                    <td className="relative px-3 py-2">
                       <button
                         onClick={() =>
                           setMenuOpenId(menuOpenId === item.id ? null : item.id)
                         }
                       >
-                        <MoreHorizontal size={18} />
+                        <MoreHorizontal size={14} />
                       </button>
 
                       {menuOpenId === item.id && (
                         <div
                           ref={menuRef}
-                          className="absolute left-5 top-12 z-20 rounded-xl bg-white shadow"
+                          className="absolute left-3 top-9 z-20 rounded-xl bg-white shadow"
                         >
                           <button
                             onClick={() => {
                               onEdit(item);
                               setMenuOpenId(null);
                             }}
-                            className="flex gap-2 px-4 py-2"
+                            className="flex gap-2 px-3 py-2 text-[12px]"
                           >
-                            تعديل <Pencil size={14} />
+                            تعديل <Pencil size={12} />
                           </button>
 
                           <button
                             onClick={() => handleDelete(item.id)}
                             disabled={deleteLoadingId === item.id}
-                            className="flex gap-2 px-4 py-2 text-red-600 disabled:opacity-50"
+                            className="flex gap-2 px-3 py-2 text-[12px] text-red-600 disabled:opacity-50"
                           >
                             {deleteLoadingId === item.id
                               ? "جاري الحذف..."
                               : "حذف"}
-                            <Trash2 size={14} />
+                            <Trash2 size={12} />
                           </button>
                         </div>
                       )}

@@ -22,11 +22,11 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPages />} />
 
-   <Route path="/" element={<PublicLayout />}>
-  <Route index element={<LandingPage />} />
-  <Route path="aqari-store" element={<AqariStorePage />} />
-  <Route path="property/:id" element={<ShowPropertyPage />} />
-</Route>
+        <Route path="/" element={<PublicLayout />}>
+          <Route index element={<LandingPage />} />
+          <Route path="aqari-store" element={<AqariStorePage />} />
+          <Route path="property/:id" element={<ShowPropertyPage />} />
+        </Route>
 
         <Route
           path="/dashboard"

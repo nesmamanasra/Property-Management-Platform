@@ -4,6 +4,7 @@ import logo from "../assets/logo_top.png";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../auth/auth";
 
+
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -51,6 +52,7 @@ export default function LoginPage() {
   };
 
   return (
+    
     <div className="min-h-screen bg-[#f5f5f7]">
       {errorMessage && (
         <div className="fixed left-1/2 top-5 z-50 w-[calc(100%-24px)] max-w-md -translate-x-1/2">

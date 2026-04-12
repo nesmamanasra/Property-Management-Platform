@@ -5,6 +5,7 @@ import PropertyForm from "../../components/dashboard/PropertyForm";
 import TableData from "../../components/dashboard/TableData";
 import { useDashboardData } from "../../context/DashboardDataContext";
 
+
 export default function PropertyPage() {
   const [editingItem, setEditingItem] = useState(null);
   const { setProperties, owners } = useDashboardData();
@@ -39,13 +40,13 @@ export default function PropertyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F8FA] flex flex-col">
-      <Navbar />
-
-      <div className="flex flex-1">
-        <Sidebar />
-
-        <div className="flex-1">
+   <div className="min-h-screen w-full overflow-x-hidden bg-[#F7F8FA] flex flex-col">
+                <Navbar />
+          
+                <div className="flex flex-1 min-w-0 overflow-x-hidden">
+                  <Sidebar />
+          
+                  <div className="flex-1 min-w-0 overflow-x-hidden">
           <TableData
             onEdit={(item) => setEditingItem(item)}
             renderAddButton={
@@ -59,5 +60,6 @@ export default function PropertyPage() {
         </div>
       </div>
     </div>
+
   );
 }

@@ -186,17 +186,17 @@ export default function Owners() {
   };
 
   return (
-    <section className="bg-[#F7F8FA] p-6" dir="rtl">
+    <section className="bg-[#F7F8FA] p-5" dir="rtl">
       <div className="mx-auto max-w-[1400px]">
         <div className="rounded-2xl border border-[#ECEEF2] bg-white shadow-[0_2px_10px_rgba(15,23,42,0.04)]">
-          <div className="flex flex-col gap-4 border-b border-[#EEF1F5] px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
-            <h3 className="text-right text-lg font-semibold text-[#1F2937]">
+          <div className="flex flex-col gap-3 border-b border-[#EEF1F5] px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+            <h3 className="text-right text-[16px] font-semibold text-[#1F2937]">
               جدول المالكين
             </h3>
 
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <div className="flex items-center gap-2 rounded-xl border border-[#E5E7EB] bg-[#F9FAFB] px-4 py-2.5 text-sm text-[#9CA3AF]">
-                <Search size={16} />
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <div className="flex items-center gap-2 rounded-xl border border-[#E5E7EB] bg-[#F9FAFB] px-3 py-2 text-[13px] text-[#9CA3AF]">
+                <Search size={15} />
                 <input
                   type="text"
                   placeholder="بحث..."
@@ -206,21 +206,21 @@ export default function Owners() {
                 />
               </div>
 
-              <button className="flex items-center justify-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-medium text-[#4B5563] transition hover:bg-[#f9fafb]">
-                <Download size={16} />
+              <button className="flex items-center justify-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-3 py-2 text-[13px] font-medium text-[#4B5563] transition hover:bg-[#f9fafb]">
+                <Download size={15} />
                 تصدير
               </button>
 
-              <button className="flex items-center justify-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-medium text-[#4B5563] transition hover:bg-[#f9fafb]">
-                <Printer size={16} />
+              <button className="flex items-center justify-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-3 py-2 text-[13px] font-medium text-[#4B5563] transition hover:bg-[#f9fafb]">
+                <Printer size={15} />
                 طباعة
               </button>
 
               <button
                 onClick={openAddModal}
-                className="flex items-center justify-center gap-2 rounded-xl bg-[#18346F] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#1F3C88]"
+                className="flex items-center justify-center gap-2 rounded-xl bg-[#18346F] px-3 py-2 text-[13px] font-medium text-white transition hover:bg-[#1F3C88]"
               >
-                <Plus size={16} />
+                <Plus size={15} />
                 إضافة مالك
               </button>
             </div>
@@ -230,25 +230,25 @@ export default function Owners() {
             <table className="min-w-[1200px] w-full">
               <thead>
                 <tr className="border-b border-[#EEF1F5] bg-[#FCFCFD] text-right">
-                  <th className="px-5 py-4 text-xs font-semibold tracking-wide text-[#9CA3AF]">
+                  <th className="px-4 py-3 text-[11px] font-semibold tracking-wide text-[#9CA3AF]">
                     الرقم
                   </th>
-                  <th className="px-5 py-4 text-xs font-semibold tracking-wide text-[#9CA3AF]">
+                  <th className="px-4 py-3 text-[11px] font-semibold tracking-wide text-[#9CA3AF]">
                     ID
                   </th>
-                  <th className="px-5 py-4 text-xs font-semibold tracking-wide text-[#9CA3AF]">
+                  <th className="px-4 py-3 text-[11px] font-semibold tracking-wide text-[#9CA3AF]">
                     الاسم الكامل
                   </th>
-                  <th className="px-5 py-4 text-xs font-semibold tracking-wide text-[#9CA3AF]">
+                  <th className="px-4 py-3 text-[11px] font-semibold tracking-wide text-[#9CA3AF]">
                     رقم الهوية
                   </th>
-                  <th className="px-5 py-4 text-xs font-semibold tracking-wide text-[#9CA3AF]">
+                  <th className="px-4 py-3 text-[11px] font-semibold tracking-wide text-[#9CA3AF]">
                     رقم الهاتف
                   </th>
-                  <th className="px-5 py-4 text-xs font-semibold tracking-wide text-[#9CA3AF]">
+                  <th className="px-4 py-3 text-[11px] font-semibold tracking-wide text-[#9CA3AF]">
                     تاريخ الإضافة
                   </th>
-                  <th className="px-5 py-4 text-xs font-semibold tracking-wide text-[#9CA3AF]">
+                  <th className="px-4 py-3 text-[11px] font-semibold tracking-wide text-[#9CA3AF]">
                     الإجراءات
                   </th>
                 </tr>
@@ -261,31 +261,31 @@ export default function Owners() {
                       key={item.id}
                       className="border-b border-[#F3F4F6] text-right transition hover:bg-[#FAFBFC]"
                     >
-                      <td className="px-5 py-4 text-sm text-[#374151]">
+                      <td className="px-4 py-3 text-[13px] text-[#374151]">
                         {index + 1}
                       </td>
 
-                      <td className="px-5 py-4 text-sm text-[#374151]">
+                      <td className="px-4 py-3 text-[13px] text-[#374151]">
                         {item.id}
                       </td>
 
-                      <td className="px-5 py-4 text-sm font-medium text-[#111827]">
+                      <td className="px-4 py-3 text-[13px] font-medium text-[#111827]">
                         {item.full_name}
                       </td>
 
-                      <td className="px-5 py-4 text-sm text-[#374151]">
+                      <td className="px-4 py-3 text-[13px] text-[#374151]">
                         {item.national_id}
                       </td>
 
-                      <td className="px-5 py-4 text-sm text-[#374151]">
+                      <td className="px-4 py-3 text-[13px] text-[#374151]">
                         {item.phone}
                       </td>
 
-                      <td className="px-5 py-4 text-sm text-[#374151]">
+                      <td className="px-4 py-3 text-[13px] text-[#374151]">
                         {formatDate(item.created_at)}
                       </td>
 
-                      <td className="relative px-5 py-4 text-sm text-[#374151]">
+                      <td className="relative px-4 py-3 text-[13px] text-[#374151]">
                         <div
                           className="relative inline-block"
                           ref={menuOpenId === item.id ? menuRef : null}
@@ -297,14 +297,14 @@ export default function Owners() {
                                 menuOpenId === item.id ? null : item.id
                               );
                             }}
-                            className="rounded-lg p-2 transition hover:bg-[#F3F4F6]"
+                            className="rounded-lg p-1.5 transition hover:bg-[#F3F4F6]"
                           >
-                            <MoreHorizontal size={18} />
+                            <MoreHorizontal size={16} />
                           </button>
 
                           {menuOpenId === item.id && (
                             <div
-                              className="absolute left-0 top-11 z-20 min-w-[160px] rounded-xl border border-[#E5E7EB] bg-white p-2 shadow-lg"
+                              className="absolute left-0 top-10 z-20 min-w-[160px] rounded-xl border border-[#E5E7EB] bg-white p-2 shadow-lg"
                               onClick={(e) => e.stopPropagation()}
                             >
                               <button
@@ -312,9 +312,9 @@ export default function Owners() {
                                   e.stopPropagation();
                                   handleEdit(item);
                                 }}
-                                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-[#374151] transition hover:bg-[#F9FAFB]"
+                                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-[13px] text-[#374151] transition hover:bg-[#F9FAFB]"
                               >
-                                <Pencil size={16} />
+                                <Pencil size={15} />
                                 تعديل
                               </button>
 
@@ -323,9 +323,9 @@ export default function Owners() {
                                   e.stopPropagation();
                                   handleDelete(item.id);
                                 }}
-                                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-600 transition hover:bg-red-50"
+                                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-[13px] text-red-600 transition hover:bg-red-50"
                               >
-                                <Trash2 size={16} />
+                                <Trash2 size={15} />
                                 حذف
                               </button>
                             </div>
@@ -338,7 +338,7 @@ export default function Owners() {
                   <tr>
                     <td
                       colSpan="7"
-                      className="px-5 py-8 text-center text-sm text-[#6B7280]"
+                      className="px-4 py-6 text-center text-[13px] text-[#6B7280]"
                     >
                       لا توجد بيانات حالياً
                     </td>

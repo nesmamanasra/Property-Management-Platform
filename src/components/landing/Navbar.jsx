@@ -7,7 +7,7 @@ import logo from "../../assets/logo_top.png";
 const navLinks = [
   { label: "الصفحة الرئيسية", href: "#home" },
   { label: "لمن هذا النظام؟", href: "#forwhom" },
-  { label: "الميزات", href: "#pricing" },
+  { label: "الميزات", href: "#pricing" ,href:"#features"},
   { label: "تواصل معنا", href: "#contact" },
 ];
 
@@ -25,18 +25,17 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl">
-      <Container className="py-3">
-        <div className="flex items-center justify-between gap-6">
+      <Container className="py-0">
+        <div className="flex h-[70px] items-center justify-between gap-6 overflow-visible">
           
           {/* 🔥 Logo PRO */}
           <div className="relative flex items-center">
-            {/* Glow خلف اللوجو */}
-            <div className="absolute h-20 w-20 rounded-full bg-[#1F3C88]/20 blur-2xl"></div>
+            <div className="absolute h-16 w-16 rounded-full bg-[#1F3C88]/20 blur-2xl "></div>
 
             <img
               src={logo}
               alt="Aqari"
-              className="relative h-24 w-auto object-contain transition duration-300 hover:scale-105"
+              className="relative h-24 -my-6 w-auto object-contain transition duration-300 hover:scale-105"
             />
           </div>
 
@@ -49,9 +48,7 @@ export default function Navbar() {
                 className="relative text-[16px] font-semibold text-[#1F3C88] transition hover:text-[#102A43]"
               >
                 {link.label}
-
-                {/* underline animation */}
-                <span className="absolute -bottom-1 right-0 h-[2px] w-0 bg-[#1F3C88] transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute -bottom-1 right-0 h-[2px] w-0 bg-[#1F3C88] transition-all duration-300 hover:w-full"></span>
               </button>
             ))}
           </div>

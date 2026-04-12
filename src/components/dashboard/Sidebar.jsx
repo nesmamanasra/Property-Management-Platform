@@ -123,11 +123,11 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-[240px] min-h-screen bg-[#f7f7f8] border-r border-[#ececec] px-2.5 py-4">
-      <div className="flex flex-col gap-5">
+    <aside className="w-[220px] min-h-screen bg-[#f7f7f8] border-r border-[#ececec] px-2 py-3">
+      <div className="flex flex-col gap-4">
         {menuSections.map((section, sectionIndex) => (
           <section key={sectionIndex}>
-            <h3 className="mb-2.5 px-2 text-[10px] font-bold uppercase tracking-[0.08em] text-[#b1b5bd]">
+            <h3 className="mb-2 px-2 text-[9px] font-bold uppercase tracking-[0.08em] text-[#b1b5bd]">
               {section.title}
             </h3>
 
@@ -142,24 +142,24 @@ export default function Sidebar() {
                     key={itemIndex}
                     type="button"
                     onClick={() => handleItemClick(item)}
-                    className={`flex w-full items-center justify-between rounded-md px-3 py-2.5 text-left transition-colors ${
+                    className={`flex w-full items-center justify-between rounded-md px-2.5 py-2 text-left transition-colors ${
                       active
                         ? "bg-white border border-[#ececec] text-[#111827]"
                         : "text-[#5f6672] hover:bg-[#18346F] hover:text-white"
                     }`}
                   >
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-2">
                       <Icon
-                        size={16}
+                        size={15}
                         strokeWidth={1.8}
                         className={active ? "text-[#111827]" : "text-[#8b93a1]"}
                       />
-                      <span className="text-[13px] font-medium">{item.label}</span>
+                      <span className="text-[12px] font-medium">{item.label}</span>
                     </div>
 
                     {isMessagesItem && unreadCount > 0 && (
                       <span
-                        className={`min-w-[22px] rounded-full px-1.5 py-0.5 text-center text-[11px] font-bold ${
+                        className={`min-w-[20px] rounded-full px-1.5 py-0.5 text-center text-[10px] font-bold ${
                           active
                             ? "bg-[#18346F] text-white"
                             : "bg-red-500 text-white"

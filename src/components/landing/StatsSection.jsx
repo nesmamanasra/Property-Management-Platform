@@ -31,7 +31,7 @@ const STATS = [
 
 export default function StatsSection() {
   return (
-    <section className="relative py-16" dir="rtl">
+    <section className="relative py-16" dir="rtl" id="forwhom">
       {/* Background subtle gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-white to-[#F8FAFC]" />
 
