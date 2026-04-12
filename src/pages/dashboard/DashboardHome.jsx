@@ -2,25 +2,21 @@ import React from "react";
 import Navbar from "../../components/dashboard/Navbar";
 import Sidebar from "../../components/dashboard/Sidebar";
 import MainSection from "../../components/dashboard/MainSection";
-import TableData from "../../components/dashboard/TableData";
+// import TableData from "../../components/dashboard/TableData";
 
 export default function DashboardHome() {
   return (
-    <div className="min-h-screen bg-[#F7F8FA] flex flex-col">
-
-      {/* Navbar فوق الكل */}
+    <div className="min-h-screen w-full overflow-x-hidden bg-[#F7F8FA] flex flex-col">
       <Navbar />
 
-      {/* تحته: Sidebar + Main */}
-      <div className="flex flex-1">
+      <div className="flex flex-1 min-w-0 overflow-x-hidden">
         <Sidebar />
 
-        <div className="flex-1">
+        <div className="flex-1 min-w-0 overflow-x-hidden">
           <MainSection />
-          <TableData/>
+          {/* <TableData /> */}
         </div>
       </div>
-
     </div>
   );
 }

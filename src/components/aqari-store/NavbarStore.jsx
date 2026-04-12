@@ -8,17 +8,21 @@ export default function NavbarStore() {
 
   return (
     <nav className="relative w-full overflow-hidden bg-gradient-to-br from-[#1F3C88] via-[#1B3778] to-[#18346F] px-4 sm:px-6 lg:px-10">
-      {/* خلفيات جمالية */}
+      
+      {/* خلفيات */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-10 left-10 h-32 w-32 rounded-full bg-white/10 blur-3xl"></div>
-        <div className="absolute right-10 top-6 h-40 w-40 rounded-full bg-cyan-300/10 blur-3xl"></div>
-        <div className="absolute bottom-0 left-1/3 h-24 w-24 rounded-full bg-emerald-300/10 blur-2xl"></div>
+        <div className="absolute -top-8 left-10 h-24 w-24 rounded-full bg-white/10 blur-3xl"></div>
+        <div className="absolute right-10 top-4 h-32 w-32 rounded-full bg-cyan-300/10 blur-3xl"></div>
+        <div className="absolute bottom-0 left-1/3 h-20 w-20 rounded-full bg-emerald-300/10 blur-2xl"></div>
       </div>
 
-      <div className="relative mx-auto flex max-w-[1400px] flex-col gap-5 py-5 lg:flex-row lg:items-center lg:justify-between">
-        {/* القسم الأيسر */}
-        <div className="flex items-center gap-4 sm:gap-5">
-          <div className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl bg-white/10 p-2 shadow-lg ring-1 ring-white/15 backdrop-blur-md">
+      <div className="relative mx-auto flex max-w-[1400px] flex-col gap-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+        
+        {/* LEFT */}
+        <div className="flex items-center gap-3 sm:gap-4">
+          
+          {/* Logo */}
+          <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl bg-white/10 p-2 shadow-md ring-1 ring-white/15 backdrop-blur-md" >
             <img
               src={logo}
               alt="Aqari"
@@ -26,41 +30,44 @@ export default function NavbarStore() {
             />
           </div>
 
+          {/* Text */}
           <div>
-            <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] sm:text-xs text-white/85 backdrop-blur-md">
-              <Home size={14} />
+            <div className="mb-1 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-2.5 py-0.5 text-[10px] sm:text-[11px] text-white/85 backdrop-blur-md">
+              <Home size={12} />
               Aqari Store
             </div>
 
-            <h1 className="text-[22px] font-bold tracking-wide text-white sm:text-[28px]">
+            <h1 className="text-[18px] font-bold tracking-wide text-white sm:text-[22px]">
               تفاصيل العقار
             </h1>
 
-            <p className="mt-1 max-w-[520px] text-[13px] leading-6 text-white/80 sm:text-[14px]">
-              اكتشف كافة تفاصيل العقار بدقة، واطلع على الوصف والمعلومات الكاملة
-              بطريقة أنيقة وواضحة.
+            <p className="mt-0.5 max-w-[420px] text-[11px] leading-5 text-white/80 sm:text-[12px]">
+              اكتشف كافة تفاصيل العقار بدقة وبطريقة أنيقة وسريعة.
             </p>
           </div>
         </div>
 
-        {/* القسم الأيمن */}
+        {/* RIGHT */}
         <div className="flex items-center justify-start lg:justify-end">
           <button
             onClick={() => navigate("/aqari-store")}
-            className="group inline-flex items-center gap-3 rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-medium text-white shadow-lg backdrop-blur-md transition duration-300 hover:-translate-y-[1px] hover:bg-white/20"
+            className="group inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-4 py-2 text-[13px] font-medium text-white shadow-md backdrop-blur-md transition duration-300 hover:-translate-y-[1px] hover:bg-white/20"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 transition group-hover:bg-white/25">
-              <ArrowRight size={18} />
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/15 transition group-hover:bg-white/25">
+              <ArrowRight size={16} />
             </span>
 
             <div className="flex flex-col items-start text-right">
-              <span className="text-[14px] font-semibold">العودة إلى المتجر</span>
-              <span className="text-[11px] text-white/70">
-                الرجوع إلى صفحة العقارات
+              <span className="text-[13px] font-semibold">
+                العودة للمتجر
+              </span>
+              <span className="text-[10px] text-white/70">
+                صفحة العقارات
               </span>
             </div>
           </button>
         </div>
+
       </div>
     </nav>
   );

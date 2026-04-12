@@ -70,7 +70,7 @@ const features = [
 
 export default function WhySection() {
   return (
-    <section className="bg-white py-24" dir="rtl">
+    <section className="bg-white py-24" dir="rtl" id="features">
       <div className="mx-auto max-w-6xl px-6">
         {/* Header */}
         <div className="mx-auto max-w-3xl text-center">

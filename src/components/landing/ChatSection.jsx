@@ -119,7 +119,7 @@ ${
   };
 
   return (
-    <section dir="rtl" className="w-full bg-white py-10">
+    <section dir="rtl" className="w-full bg-white py-10" id ="contact">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mx-auto mb-14 max-w-3xl text-center">
           <span className="inline-flex items-center rounded-full bg-[#1F3C88]/10 px-4 py-1.5 text-sm font-semibold text-[#1F3C88]">

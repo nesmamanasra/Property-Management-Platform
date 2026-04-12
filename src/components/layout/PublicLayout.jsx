@@ -9,8 +9,8 @@ function PublicLayoutContent() {
   const { loading, initialized } = useDashboardData();
 
   if (!initialized) {
-      return <Loader />;
-    }
+    return <Loader />;
+  }
 
   return <Outlet />;
 }
