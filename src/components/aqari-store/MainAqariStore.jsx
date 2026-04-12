@@ -98,15 +98,6 @@ function HeroSection({ onSearch, propertiesCount }) {
   return (
     <section dir="rtl" className="relative mb-6 overflow-hidden rounded-[28px]">
       <div className="relative min-h-[420px] w-full md:min-h-[480px]">
-        <motion.img
-          initial={{ scale: 1.08, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.1, ease: "easeOut" }}
-          src="/hero-property.jpg"
-          alt="Aqari Hero"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-
         <div className="absolute inset-0 bg-gradient-to-l from-[#0f172ae6] via-[#18346fcc] to-[#1F3C88d9]" />
 
         <div className="absolute -top-16 -left-16 h-56 w-56 rounded-full bg-emerald-400/20 blur-3xl md:h-72 md:w-72" />
