@@ -1,5 +1,5 @@
 import { supabase } from "../../lib/supabase";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import { CalendarDays, Download, Home, Building2 } from "lucide-react";
 
 const stats = [
@@ -55,33 +55,31 @@ const stats = [
 
 function StatCard({ item }) {
   return (
-    <div className="rounded-2xl border border-[#ECEEF2] bg-white p-4 shadow-[0_2px_10px_rgba(15,23,42,0.04)]">
-      <div className="mb-3 flex items-start justify-between">
-        <div className="text-right">
-          <p className={`mb-1 text-[11px] font-semibold ${item.color}`}>
+    <div className="rounded-2xl border border-[#ECEEF2] bg-white p-4 shadow-[0_2px_10px_rgba(15,23,42,0.04)] sm:p-5">
+      <div className="mb-3 flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1 text-right">
+          <p className={`mb-1 text-[11px] sm:text-[12px] font-semibold ${item.color}`}>
             {item.title}
           </p>
 
           <div className="flex items-end justify-end gap-1">
-            <span className="mb-[2px] text-[16px] font-semibold text-[#6B7280]">
+            <span className="mb-[2px] text-[13px] sm:text-[16px] font-semibold text-[#6B7280]">
               {item.decimal}
             </span>
-            <h3 className="text-[28px] font-bold leading-none text-[#1F2937]">
+            <h3 className="text-[20px] sm:text-[24px] lg:text-[28px] font-bold leading-none text-[#1F2937] break-words">
               {item.value}
             </h3>
           </div>
         </div>
 
         <div
-          className={`flex h-8 w-8 items-center justify-center rounded-lg text-sm ${item.bg} ${item.color}`}
+          className={`flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-lg text-sm ${item.bg} ${item.color}`}
         >
           {item.icon}
         </div>
       </div>
 
-      <div className="flex items-center justify-end gap-2 text-[12px] text-right">
-        <span className="font-medium text-[#4B5563]">{item.compare}</span>
-        <span className="text-[#9CA3AF]">{item.subtitle}</span>
+      <div className="flex flex-wrap items-center justify-end gap-2 text-[11px] sm:text-[12px] text-right">
         <span
           className={`font-semibold ${
             item.trend === "up" ? "text-[#22C55E]" : "text-[#EF4444]"
@@ -89,58 +87,56 @@ function StatCard({ item }) {
         >
           {item.change} {item.trend === "up" ? "↗" : "↘"}
         </span>
+        <span className="text-[#9CA3AF]">{item.subtitle}</span>
+        <span className="font-medium text-[#4B5563]">{item.compare}</span>
       </div>
     </div>
   );
 }
 
 export default function MainSection() {
-
-
-   useEffect(() => {
+  useEffect(() => {
     const testConnection = async () => {
       const { data, error } = await supabase.from("properties").select("*");
-        console.log(data);
-        console.log(error);
-            };
+      console.log(data);
+      console.log(error);
+    };
 
     testConnection();
   }, []);
 
   return (
-
-    
-    <section className=" bg-[#F7F8FA] p-6" dir="rtl">
+    <section className="bg-[#F7F8FA] p-3 sm:p-4 md:p-6" dir="rtl">
       <div className="mx-auto max-w-[1400px]">
-        <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-start">
-          <div className="flex flex-wrap items-center gap-3">
-            <button className="flex items-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-medium text-[#4B5563] shadow-sm transition hover:bg-[#f9fafb]">
+        <div className="mb-5 sm:mb-6 flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-start">
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
+            <button className="flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-medium text-[#4B5563] shadow-sm transition hover:bg-[#f9fafb]">
               <CalendarDays size={16} />
               الشهر الماضي
             </button>
 
-            <button className="flex items-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-medium text-[#4B5563] shadow-sm transition hover:bg-[#f9fafb]">
+            <button className="flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-medium text-[#4B5563] shadow-sm transition hover:bg-[#f9fafb]">
               <Download size={16} />
               تصدير
             </button>
           </div>
         </div>
 
-        <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {stats.map((item, index) => (
             <StatCard key={index} item={item} />
           ))}
         </div>
 
-        <div className=" grid grid-cols-1 gap-6 xl:grid-cols-[320px_minmax(0,1fr)]">
-          <div className="rounded-2xl border border-[#ECEEF2] bg-white p-5 shadow-[0_2px_10px_rgba(15,23,42,0.04)]">
-            <h3 className="mb-4 text-right text-lg font-semibold text-[#1F2937]">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[320px_minmax(0,1fr)]">
+          <div className="rounded-2xl border border-[#ECEEF2] bg-white p-4 sm:p-5 shadow-[0_2px_10px_rgba(15,23,42,0.04)]">
+            <h3 className="mb-4 text-right text-base sm:text-lg font-semibold text-[#1F2937]">
               أكثر الوحدات طلباً
             </h3>
 
             <div className="mb-5 rounded-2xl border border-[#F0E7CF] bg-[#FFF8E8] p-4">
               <div className="flex items-start gap-3">
-                <div className="mt-1 rounded-lg bg-white p-2 text-[#F59E0B] shadow-sm">
+                <div className="mt-1 rounded-lg bg-white p-2 text-[#F59E0B] shadow-sm shrink-0">
                   ✦
                 </div>
                 <p className="text-right text-sm leading-6 text-[#4B5563]">
@@ -151,57 +147,63 @@ export default function MainSection() {
 
             <div className="mb-4 text-right">
               <div className="flex items-end justify-end gap-2">
-                <span className="text-sm text-[#9CA3AF]">وحدة</span>
-                <h4 className="text-[34px] font-bold leading-none text-[#1F2937]">
+                <span className="text-xs sm:text-sm text-[#9CA3AF]">وحدة</span>
+                <h4 className="text-[26px] sm:text-[30px] lg:text-[34px] font-bold leading-none text-[#1F2937]">
                   28,278
                 </h4>
               </div>
-              <p className="mt-1 text-sm text-[#9CA3AF]">
+              <p className="mt-1 text-xs sm:text-sm text-[#9CA3AF]">
                 تم بيعها على مدار الوقت
               </p>
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-[#1F2937]">16,978</span>
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-semibold text-[#1F2937] text-sm sm:text-base">
+                  16,978
+                </span>
                 <div className="flex items-center gap-3">
-                  <span className="text-[15px] text-[#374151]">منزل</span>
+                  <span className="text-sm sm:text-[15px] text-[#374151]">منزل</span>
                   <Home size={16} className="text-[#4F7CFF]" />
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-[#1F2937]">7,548</span>
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-semibold text-[#1F2937] text-sm sm:text-base">
+                  7,548
+                </span>
                 <div className="flex items-center gap-3">
-                  <span className="text-[15px] text-[#374151]">شقة</span>
+                  <span className="text-sm sm:text-[15px] text-[#374151]">شقة</span>
                   <Building2 size={16} className="text-[#4F7CFF]" />
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-[#1F2937]">4,278</span>
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-semibold text-[#1F2937] text-sm sm:text-base">
+                  4,278
+                </span>
                 <div className="flex items-center gap-3">
-                  <span className="text-[15px] text-[#374151]">فيلا</span>
+                  <span className="text-sm sm:text-[15px] text-[#374151]">فيلا</span>
                   <Building2 size={16} className="text-[#4F7CFF]" />
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-[#ECEEF2] bg-white p-5 shadow-[0_2px_10px_rgba(15,23,42,0.04)]">
-            <div className=" flex flex-wrap items-center justify-start gap-4">
-              <div className="flex items-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-3 py-2 text-sm text-[#374151]">
+          <div className="rounded-2xl border border-[#ECEEF2] bg-white p-4 sm:p-5 shadow-[0_2px_10px_rgba(15,23,42,0.04)]">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-start">
+              <div className="flex items-center justify-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-3 py-2 text-xs sm:text-sm text-[#374151]">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#4F7CFF]" />
                 278 عقار تم بيعه
               </div>
 
-              <div className="flex items-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-3 py-2 text-sm text-[#374151]">
+              <div className="flex items-center justify-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-3 py-2 text-xs sm:text-sm text-[#374151]">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#F59E0B]" />
                 328 عقار للإيجار
               </div>
             </div>
 
-            <div className="relative h-[320px] w-full overflow-hidden rounded-xl">
+            <div className="relative mt-4 h-[260px] sm:h-[300px] md:h-[320px] w-full overflow-hidden rounded-xl">
               <div className="absolute inset-0">
                 {[...Array(5)].map((_, i) => (
                   <div
@@ -212,7 +214,7 @@ export default function MainSection() {
                 ))}
               </div>
 
-              <div className="absolute bottom-0 left-0 right-0 flex justify-between px-4 text-xs text-[#9CA3AF]">
+              <div className="absolute bottom-0 left-0 right-0 flex justify-between gap-2 px-2 sm:px-4 text-[9px] sm:text-xs text-[#9CA3AF]">
                 {[
                   "يناير",
                   "فبراير",
@@ -227,7 +229,9 @@ export default function MainSection() {
                   "نوفمبر",
                   "ديسمبر",
                 ].map((month) => (
-                  <span key={month}>{month}</span>
+                  <span key={month} className="truncate">
+                    {month}
+                  </span>
                 ))}
               </div>
 
