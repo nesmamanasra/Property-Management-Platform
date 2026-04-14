@@ -7,7 +7,7 @@ const stats = [
     icon: Building2,
   },
   {
-    value: "+1,200",
+    value: "+300",
     label: "عقد تم إنجازه بكل سلاسة",
     icon: FileText,
   },

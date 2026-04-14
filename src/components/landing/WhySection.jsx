@@ -26,10 +26,22 @@ const features = [
   {
     title: "إدارة المستأجرين والعقود",
     points: [
-      "الوسيط يتعامل مع المستأجرين بالكامل من أول تواصل حتى تسليم العقار",
-      "إدارة العقود من الإنشاء إلى التجديد ومتابعة تواريخ الانتهاء",
-      "ربط كل مستأجر بعقاره لضمان متابعة دقيقة ومنظمة",
-      "حل المشاكل اليومية والتواصل مع المستأجرين نيابة عنك",
+      {
+        text: "الوسيط يتعامل مع المستأجرين بالكامل من أول تواصل حتى تسليم العقار",
+        comingSoon: false,
+      },
+      {
+        text: "توقيع العقود إلكترونيًا ومتابعة حالتها بشكل مباشر",
+        comingSoon: true,
+      },
+      {
+        text: "تنبيهات ذكية لمواعيد التجديد والانتهاء والمتابعات المهمة",
+        comingSoon: true,
+      },
+      {
+        text: "لوحة متابعة موحدة لكل العقود والمستأجرين في مكان واحد",
+        comingSoon: true,
+      },
     ],
     icon: (
       <svg
@@ -46,11 +58,12 @@ const features = [
   },
   {
     title: "متابعة الدفعات والتحصيل",
+    isComingCard: true,
     points: [
-      "الوسيط يتابع جميع الدفعات ويضمن تحصيلها في الوقت المحدد",
-      "معرفة الدفعات المسددة والمتأخرة دون الحاجة للمتابعة اليدوية",
-      "تسجيل المدفوعات وتحديث الحالة بشكل مباشر ودقيق",
-      "توفير رؤية مالية واضحة تساعدك على معرفة أداء عقاراتك",
+      "متابعة الدفعات والتحصيل بشكل آلي وأكثر تنظيمًا",
+      "تنبيهات فورية للدفعات المتأخرة والمستحقة",
+      "تقارير مالية أوضح تساعدك على متابعة الأداء بسهولة",
+      "سجل دفعات منظم يوضح كل العمليات المالية الخاصة بعقاراتك",
     ],
     icon: (
       <svg
@@ -67,6 +80,36 @@ const features = [
     ),
   },
 ];
+
+function ComingSoonIcon() {
+  return (
+    <svg
+      className="h-6 w-6"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.9"
+    >
+      <path d="M12 8v4l2.5 2.5" />
+      <circle cx="12" cy="12" r="9" />
+    </svg>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg
+      className="h-4 w-4"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.9"
+    >
+      <rect x="5" y="11" width="14" height="9" rx="2" />
+      <path d="M8 11V8a4 4 0 1 1 8 0v3" />
+    </svg>
+  );
+}
 
 export default function WhySection() {
   return (
@@ -94,29 +137,111 @@ export default function WhySection() {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group rounded-3xl border border-gray-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              className={`group relative overflow-hidden rounded-3xl bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+                feature.isComingCard
+                  ? "border border-dashed border-amber-300 shadow-[0_10px_35px_rgba(245,158,11,0.14)]"
+                  : "border border-gray-200 shadow-sm"
+              }`}
             >
-              <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1F3C88]/10 text-[#1F3C88] transition duration-300 group-hover:scale-105 group-hover:bg-[#1F3C88] group-hover:text-white">
-                {feature.icon}
-              </div>
+              {feature.isComingCard && (
+                <>
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-amber-50/90 via-white to-white" />
+                  <div className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full bg-amber-200/30 blur-3xl" />
+                  <div className="pointer-events-none absolute -bottom-12 -right-12 h-36 w-36 rounded-full bg-amber-100/40 blur-3xl" />
+                </>
+              )}
 
-              <h3 className="text-xl font-bold text-[#102A43]">
-                {feature.title}
-              </h3>
-
-              <ul className="mt-5 space-y-3">
-                {feature.points.map((point, i) => (
-                  <li
-                    key={i}
-                    className="flex items-start gap-3 text-sm leading-7 text-gray-600"
+              <div className="relative z-10">
+                <div className="mb-5 flex items-center justify-between">
+                  <div
+                    className={`flex h-14 w-14 items-center justify-center rounded-2xl transition duration-300 group-hover:scale-105 ${
+                      feature.isComingCard
+                        ? "bg-amber-100 text-amber-700 group-hover:bg-amber-500 group-hover:text-white"
+                        : "bg-[#1F3C88]/10 text-[#1F3C88] group-hover:bg-[#1F3C88] group-hover:text-white"
+                    }`}
                   >
-                    <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#1F3C88]" />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
+                    {feature.icon}
+                  </div>
 
-              <div className="mt-6 h-[2px] w-0 bg-[#1F3C88] transition-all duration-300 group-hover:w-full" />
+                  {feature.isComingCard && (
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-700 shadow-sm">
+                        <ComingSoonIcon />
+                      </div>
+
+                      <div className="text-left">
+                        <div className="flex items-center gap-1 text-amber-700">
+                          <LockIcon />
+                          <span className="text-[11px] font-semibold uppercase tracking-[0.22em]">
+                            New Feature
+                          </span>
+                        </div>
+                        <div className="text-2xl font-extrabold leading-none text-amber-600 md:text-3xl">
+                          قريبًا
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <h3
+                  className={`text-xl font-bold ${
+                    feature.isComingCard ? "text-amber-900" : "text-[#102A43]"
+                  }`}
+                >
+                  {feature.title}
+                </h3>
+
+                <ul className="mt-5 space-y-3">
+                  {feature.points.map((point, i) => (
+                    <li
+                      key={i}
+                      className={`flex items-start gap-3 text-sm leading-7 ${
+                        feature.isComingCard ? "text-amber-900/80" : "text-gray-600"
+                      }`}
+                    >
+                      {typeof point === "string" && !feature.isComingCard && (
+                        <>
+                          <span className="mt-2 h-2 w-2 rounded-full bg-[#1F3C88]" />
+                          <span>{point}</span>
+                        </>
+                      )}
+
+                      {typeof point === "string" && feature.isComingCard && (
+                        <>
+                          <span className="mt-1.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+                            <LockIcon />
+                          </span>
+                          <span>{point}</span>
+                        </>
+                      )}
+
+                      {typeof point !== "string" && (
+                        <>
+                          <span className="mt-2 h-2 w-2 rounded-full bg-[#1F3C88]" />
+
+                          <div className="flex w-full items-center justify-between gap-2">
+                            <span>{point.text}</span>
+
+                            {point.comingSoon && (
+                              <span className="mr-auto flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700">
+                                <ComingSoonIcon />
+                                قريبًا
+                              </span>
+                            )}
+                          </div>
+                        </>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+
+                <div
+                  className={`mt-6 h-[2px] w-0 transition-all duration-300 group-hover:w-full ${
+                    feature.isComingCard ? "bg-amber-400" : "bg-[#1F3C88]"
+                  }`}
+                />
+              </div>
             </div>
           ))}
         </div>
@@ -147,7 +272,6 @@ export default function WhySection() {
               رؤية واضحة
             </span>
           </div>
-
         </div>
       </div>
     </section>
