@@ -60,17 +60,6 @@ export default function FooterSection() {
             <p className="mt-2 text-sm leading-6 text-white/75">
               اترك الإدارة اليومية للوسيط وركز على استثمارك ونمو أعمالك.
             </p>
-
-            <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-              <button className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-[#18346F] transition hover:scale-[1.02]">
-                ابدأ الآن
-                <ArrowUpLeft size={16} />
-              </button>
-
-              <button className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-transparent px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
-                احجز عرضًا توضيحيًا
-              </button>
-            </div>
           </div>
         </div>
 
@@ -174,10 +163,10 @@ export default function FooterSection() {
                   <Phone size={18} />
                 </div>
                 <a
-                  href="tel:+970599999999"
+                  href="tel:+972597851386"
                   className="transition hover:text-white"
                 >
-                  +970 599 999 999
+                  +972 597 851 386
                 </a>
               </li>
 

@@ -53,40 +53,40 @@ export default function Hero() {
             </p>
 
             {/* Cards */}
-            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-              <div className="rounded-2xl border border-slate-200 bg-white p-3.5 shadow-sm">
-                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-lg bg-[#1F3C88]/10 text-[#1F3C88]">
-                  <Building2 size={17} />
+            <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3">
+              <div className="rounded-2xl border border-slate-200 bg-white p-2.5 shadow-sm sm:p-3.5">
+                <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-[#1F3C88]/10 text-[#1F3C88] sm:h-9 sm:w-9">
+                  <Building2 size={16} />
                 </div>
-                <h3 className="text-[14px] font-bold text-[#102A43]">
+                <h3 className="text-[11px] font-bold text-[#102A43] sm:text-[14px]">
                   إدارة العقارات
                 </h3>
-                <p className="mt-1 text-[12px] leading-5 text-gray-600">
+                <p className="mt-1 text-[10px] leading-4 text-gray-600 sm:text-[12px] sm:leading-5">
                   إدارة ومتابعة العقارات بشكل منظم وواضح.
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-white p-3.5 shadow-sm">
-                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-lg bg-[#1F3C88]/10 text-[#1F3C88]">
-                  <Users size={17} />
+              <div className="rounded-2xl border border-slate-200 bg-white p-2.5 shadow-sm sm:p-3.5">
+                <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-[#1F3C88]/10 text-[#1F3C88] sm:h-9 sm:w-9">
+                  <Users size={16} />
                 </div>
-                <h3 className="text-[14px] font-bold text-[#102A43]">
+                <h3 className="text-[11px] font-bold text-[#102A43] sm:text-[14px]">
                   إدارة المستأجرين
                 </h3>
-                <p className="mt-1 text-[12px] leading-5 text-gray-600">
+                <p className="mt-1 text-[10px] leading-4 text-gray-600 sm:text-[12px] sm:leading-5">
                   متابعة المستأجرين والتواصل والالتزامات بسهولة.
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-white p-3.5 shadow-sm">
-                <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-lg bg-[#1F3C88]/10 text-[#1F3C88]">
-                  <FileText size={17} />
+              <div className="rounded-2xl border border-slate-200 bg-white p-2.5 shadow-sm sm:p-3.5">
+                <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-[#1F3C88]/10 text-[#1F3C88] sm:h-9 sm:w-9">
+                  <FileText size={16} />
                 </div>
-                <h3 className="text-[14px] font-bold text-[#102A43]">
-                  إدارة العقود
+                <h3 className="text-[11px] font-bold text-[#102A43] sm:text-[14px]">
+                  إدارة الرسائل
                 </h3>
-                <p className="mt-1 text-[12px] leading-5 text-gray-600">
-                  إنشاء وتجديد ومتابعة العقود والاستحقاقات.
+                <p className="mt-1 text-[10px] leading-4 text-gray-600 sm:text-[12px] sm:leading-5">
+                  إدارة الرسائل والاستفسارات عبر الواتساب من قبل المالكين او المستاجرين .
                 </p>
               </div>
             </div>
