@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Bell, Search, User, MessageSquare, X } from "lucide-react";
+import { Bell, User, MessageSquare, X, Menu } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import logo from "../../assets/aqari_top_white.png";
 
-export default function Navbar() {
+export default function Navbar({ onMenuClick }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -135,32 +135,37 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="w-full bg-gradient-to-b from-[#1F3C88] to-[#18346F] px-6 md:px-10 lg:px-14">
-        <div className="mx-auto flex h-[70px] max-w-[1400px] items-center justify-between">
-          <div className="flex items-center gap-3">
+      <nav className="w-full bg-gradient-to-b from-[#1F3C88] to-[#18346F] px-3 sm:px-4 md:px-8 lg:px-14">
+        <div className="mx-auto flex h-[64px] sm:h-[70px] max-w-[1400px] items-center justify-between gap-3">
+          
+          {/* Right side / logo + mobile menu */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              type="button"
+              onClick={onMenuClick}
+              className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/20 md:hidden"
+            >
+              <Menu size={20} />
+            </button>
+
             <img
               src={logo}
               alt="Aqari"
-              className="h-30 w-auto object-contain"
+              className="h-10 sm:h-12 md:h-14 w-auto object-contain"
             />
           </div>
 
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              className="hidden h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/20 md:flex"
-            >
-              <Search size={18} />
-            </button>
-
+          {/* Left side / actions */}
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               type="button"
               onClick={goToMessages}
-              className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/20"
+              className="relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/20"
             >
-              <MessageSquare size={18} />
+              <MessageSquare size={17} className="sm:hidden" />
+              <MessageSquare size={18} className="hidden sm:block" />
               {unreadCount > 0 && (
-                <span className="absolute -right-1 -top-1 min-w-[20px] rounded-full bg-red-500 px-1.5 py-[2px] text-center text-[10px] font-bold text-white">
+                <span className="absolute -right-1 -top-1 min-w-[18px] sm:min-w-[20px] rounded-full bg-red-500 px-1.5 py-[2px] text-center text-[9px] sm:text-[10px] font-bold text-white">
                   {unreadCount > 99 ? "99+" : unreadCount}
                 </span>
               )}
@@ -168,16 +173,18 @@ export default function Navbar() {
 
             <button
               type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/20"
+              className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/20"
             >
-              <Bell size={18} />
+              <Bell size={17} className="sm:hidden" />
+              <Bell size={18} className="hidden sm:block" />
             </button>
 
             <button
               type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/20"
+              className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/20"
             >
-              <User size={18} />
+              <User size={17} className="sm:hidden" />
+              <User size={18} className="hidden sm:block" />
             </button>
           </div>
         </div>
@@ -186,7 +193,7 @@ export default function Navbar() {
       {showMessageAlert &&
         unreadCount > 0 &&
         location.pathname !== "/dashboard/messages" && (
-          <div className="fixed right-6 top-24 z-[9999] w-[380px] max-w-[calc(100vw-24px)] animate-[fadeIn_.25s_ease] rounded-2xl border border-[#DDE7F3] bg-white p-4 shadow-[0_16px_40px_rgba(15,23,42,0.14)]">
+          <div className="fixed right-3 top-20 z-[9999] w-[calc(100vw-24px)] max-w-[380px] animate-[fadeIn_.25s_ease] rounded-2xl border border-[#DDE7F3] bg-white p-4 shadow-[0_16px_40px_rgba(15,23,42,0.14)] sm:right-6 sm:top-24">
             <div className="flex items-start gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#1F3C88]/10 text-[#1F3C88]">
                 <MessageSquare size={18} />
@@ -202,7 +209,7 @@ export default function Navbar() {
                   الرسائل داخل الداشبورد.
                 </p>
 
-                <div className="mt-3 flex items-center gap-2">
+                <div className="mt-3 flex flex-wrap items-center gap-2">
                   <button
                     type="button"
                     onClick={goToMessages}

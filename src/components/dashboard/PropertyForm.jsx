@@ -336,6 +336,7 @@ export default function PropertyForm({
                   <option value="بيت">بيت</option>
                   <option value="محل">محل</option>
                   <option value="أرض">أرض</option>
+                  <option value="مصيف">مصيف</option>
                 </select>
               </div>
 
