@@ -61,7 +61,7 @@ export default function Hero() {
                 <h3 className="text-[11px] font-bold text-[#102A43] sm:text-[14px]">
                   إدارة العقارات
                 </h3>
-                <p className="mt-1 text-[10px] leading-4 text-gray-600 sm:text-[12px] sm:leading-5">
+                <p className="mt-1 text-[10px] leading-4 text-gray-600 sm:text-[12px] sm:leading-5 font-bold">
                   إدارة ومتابعة العقارات بشكل منظم وواضح.
                 </p>
               </div>
@@ -73,7 +73,7 @@ export default function Hero() {
                 <h3 className="text-[11px] font-bold text-[#102A43] sm:text-[14px]">
                   إدارة المستأجرين
                 </h3>
-                <p className="mt-1 text-[10px] leading-4 text-gray-600 sm:text-[12px] sm:leading-5">
+                <p className="mt-1 text-[10px] leading-4 text-gray-600 sm:text-[12px] sm:leading-5 font-bold">
                   متابعة المستأجرين والتواصل والالتزامات بسهولة.
                 </p>
               </div>
@@ -85,7 +85,7 @@ export default function Hero() {
                 <h3 className="text-[11px] font-bold text-[#102A43] sm:text-[14px]">
                   إدارة الرسائل
                 </h3>
-                <p className="mt-1 text-[10px] leading-4 text-gray-600 sm:text-[12px] sm:leading-5">
+                <p className="mt-1 text-[10px] leading-4 text-gray-600 sm:text-[12px] sm:leading-5 font-bold">
                   إدارة الرسائل والاستفسارات عبر الواتساب من قبل المالكين او المستاجرين .
                 </p>
               </div>
