@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const features = [
   {
@@ -111,33 +112,121 @@ function LockIcon() {
   );
 }
 
+const sectionVariants = {
+  hidden: { opacity: 0, y: 40 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const headerVariants = {
+  hidden: { opacity: 0, y: 24 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.65,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const cardsContainer = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.14,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 35, scale: 0.98 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.65,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 14 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.45,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
 export default function WhySection() {
   return (
-    <section className="bg-white py-24" dir="rtl" id="features">
+    <motion.section
+      className="bg-white py-24"
+      dir="rtl"
+      id="features"
+      variants={sectionVariants}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.15 }}
+    >
       <div className="mx-auto max-w-6xl px-6">
         {/* Header */}
-        <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center rounded-full bg-[#1F3C88]/10 px-4 py-1.5 text-sm font-medium text-[#1F3C88]">
+        <motion.div
+          className="mx-auto max-w-3xl text-center"
+          variants={headerVariants}
+        >
+          <motion.span
+            variants={itemVariants}
+            className="inline-flex items-center rounded-full bg-[#1F3C88]/10 px-4 py-1.5 text-sm font-medium text-[#1F3C88]"
+          >
             لماذا تختار إدارة عقاراتك عبر وسيط؟
-          </span>
+          </motion.span>
 
-          <h2 className="mt-5 text-3xl font-bold leading-tight text-[#102A43] md:text-4xl">
-            الوسيط يتولى كل شيء عنك... وأنت تتابع بكل راحة
-          </h2>
+          <motion.h2
+            variants={itemVariants}
+            className="mt-5 text-3xl font-bold leading-tight text-[#102A43] md:text-4xl"
+          >
+            الوسيط يتولى كل شيء عنك وأنت تتابع بكل راحة
+          </motion.h2>
 
-          <p className="mt-4 mb-10 text-base leading-8 text-gray-600 md:text-lg">
+          <motion.p
+            variants={itemVariants}
+            className="mt-4 mb-10 text-base leading-8 text-gray-600 md:text-lg font-bold"
+          >
             من إدارة العقارات إلى التعامل مع المستأجرين وتنظيم العقود وتحصيل
             الدفعات، يقوم الوسيط العقاري بإدارة كل التفاصيل اليومية نيابة عنك،
             بينما يمنحك النظام رؤية واضحة وتحكمًا كاملاً دون أي تعقيد.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Cards */}
-        <div className="grid gap-6 md:grid-cols-3">
+        <motion.div
+          className="grid gap-6 md:grid-cols-3"
+          variants={cardsContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.12 }}
+        >
           {features.map((feature, index) => (
-            <div
+            <motion.div
               key={index}
-              className={`group relative overflow-hidden rounded-3xl bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+              variants={cardVariants}
+              whileHover={{ y: -4 }}
+              transition={{ duration: 0.25 }}
+              className={`group relative overflow-hidden rounded-3xl bg-white p-7 transition-all duration-300 hover:shadow-xl ${
                 feature.isComingCard
                   ? "border border-dashed border-amber-300 shadow-[0_10px_35px_rgba(245,158,11,0.14)]"
                   : "border border-gray-200 shadow-sm"
@@ -146,14 +235,31 @@ export default function WhySection() {
               {feature.isComingCard && (
                 <>
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-amber-50/90 via-white to-white" />
-                  <div className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full bg-amber-200/30 blur-3xl" />
-                  <div className="pointer-events-none absolute -bottom-12 -right-12 h-36 w-36 rounded-full bg-amber-100/40 blur-3xl" />
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.7, delay: 0.1 }}
+                    viewport={{ once: true }}
+                    className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full bg-amber-200/30 blur-3xl"
+                  />
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.7, delay: 0.2 }}
+                    viewport={{ once: true }}
+                    className="pointer-events-none absolute -bottom-12 -right-12 h-36 w-36 rounded-full bg-amber-100/40 blur-3xl"
+                  />
                 </>
               )}
 
               <div className="relative z-10">
-                <div className="mb-5 flex items-center justify-between">
-                  <div
+                <motion.div
+                  variants={itemVariants}
+                  className="mb-5 flex items-center justify-between"
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.04, rotate: -1 }}
+                    transition={{ duration: 0.25 }}
                     className={`flex h-14 w-14 items-center justify-center rounded-2xl transition duration-300 group-hover:scale-105 ${
                       feature.isComingCard
                         ? "bg-amber-100 text-amber-700 group-hover:bg-amber-500 group-hover:text-white"
@@ -161,10 +267,13 @@ export default function WhySection() {
                     }`}
                   >
                     {feature.icon}
-                  </div>
+                  </motion.div>
 
                   {feature.isComingCard && (
-                    <div className="flex items-center gap-3">
+                    <motion.div
+                      variants={itemVariants}
+                      className="flex items-center gap-3"
+                    >
                       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-700 shadow-sm">
                         <ComingSoonIcon />
                       </div>
@@ -180,22 +289,30 @@ export default function WhySection() {
                           قريبًا
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   )}
-                </div>
+                </motion.div>
 
-                <h3
+                <motion.h3
+                  variants={itemVariants}
                   className={`text-xl font-bold ${
                     feature.isComingCard ? "text-amber-900" : "text-[#102A43]"
                   }`}
                 >
                   {feature.title}
-                </h3>
+                </motion.h3>
 
-                <ul className="mt-5 space-y-3">
+                <motion.ul
+                  className="mt-5 space-y-3"
+                  variants={cardsContainer}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, amount: 0.15 }}
+                >
                   {feature.points.map((point, i) => (
-                    <li
+                    <motion.li
                       key={i}
+                      variants={itemVariants}
                       className={`flex items-start gap-3 text-sm leading-7 ${
                         feature.isComingCard ? "text-amber-900/80" : "text-gray-600"
                       }`}
@@ -224,56 +341,87 @@ export default function WhySection() {
                             <span>{point.text}</span>
 
                             {point.comingSoon && (
-                              <span className="mr-auto flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700">
+                              <motion.span
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.35 }}
+                                viewport={{ once: true }}
+                                className="mr-auto flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700"
+                              >
                                 <ComingSoonIcon />
                                 قريبًا
-                              </span>
+                              </motion.span>
                             )}
                           </div>
                         </>
                       )}
-                    </li>
+                    </motion.li>
                   ))}
-                </ul>
+                </motion.ul>
 
-                <div
-                  className={`mt-6 h-[2px] w-0 transition-all duration-300 group-hover:w-full ${
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "100%" }}
+                  transition={{ duration: 0.7, delay: 0.2 }}
+                  viewport={{ once: true }}
+                  className={`mt-6 h-[2px] ${
                     feature.isComingCard ? "bg-amber-400" : "bg-[#1F3C88]"
                   }`}
                 />
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Bottom info */}
-        <div className="mt-20 rounded-3xl border border-gray-200 bg-[#F8FAFC] px-6 py-10 text-center md:px-12">
-          <h3 className="text-2xl font-bold text-[#102A43]">
+        <motion.div
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          className="mt-20 rounded-3xl border border-gray-200 bg-[#F8FAFC] px-6 py-10 text-center md:px-12"
+        >
+          <motion.h3
+            variants={itemVariants}
+            className="text-2xl font-bold text-[#102A43]"
+          >
             إدارة عقاراتك بدون تعب أو متابعة يومية
-          </h3>
+          </motion.h3>
 
-          <p className="mx-auto mt-4 max-w-3xl text-base leading-8 text-gray-600">
+          <motion.p
+            variants={itemVariants}
+            className="mx-auto mt-4 max-w-3xl text-base leading-8 text-gray-600"
+          >
             مع الوسيط العقاري، لن تحتاج لمتابعة التفاصيل اليومية أو التعامل مع
             المستأجرين أو القلق حول العقود والدفعات. كل شيء يتم إدارته باحتراف،
             بينما تتابع أنت الأداء والنتائج بكل وضوح وسهولة.
-          </p>
+          </motion.p>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <span className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700">
-              بدون متابعة يومية
-            </span>
-            <span className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700">
-              إدارة كاملة عنك
-            </span>
-            <span className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700">
-              تحصيل مضمون
-            </span>
-            <span className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700">
-              رؤية واضحة
-            </span>
-          </div>
-        </div>
+          <motion.div
+            variants={cardsContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+            className="mt-8 flex flex-wrap items-center justify-center gap-3"
+          >
+            {[
+              "بدون متابعة يومية",
+              "إدارة كاملة عنك",
+              "تحصيل مضمون",
+              "رؤية واضحة",
+            ].map((tag, i) => (
+              <motion.span
+                key={i}
+                variants={itemVariants}
+                whileHover={{ y: -2 }}
+                className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700"
+              >
+                {tag}
+              </motion.span>
+            ))}
+          </motion.div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
