@@ -12,7 +12,7 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import MessagesPage from "./pages/dashboard/MessagesPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import PublicLayout from "./components/layout/PublicLayout";
-
+import AdminProfilePage from "./pages/dashboard/AdminProfilePage";
 export default function App() {
   return (
     <>
@@ -40,6 +40,7 @@ export default function App() {
           <Route path="owners" element={<OwnersPage />} />
           <Route path="property" element={<PropertyPage />} />
           <Route path="messages" element={<MessagesPage />} />
+          <Route path="profile" element={<AdminProfilePage />} />
         </Route>
       </Routes>
     </>
