@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Bell, User, MessageSquare, X, Menu } from "lucide-react";
+import {
+  Bell,
+  User,
+  MessageSquare,
+  X,
+  Menu,
+  ChevronDown,
+  LogOut,
+} from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import logo from "../../assets/aqari_top_white.png";
@@ -7,10 +15,22 @@ import logo from "../../assets/aqari_top_white.png";
 export default function Navbar({ onMenuClick }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const profileRef = useRef(null);
 
   const [unreadCount, setUnreadCount] = useState(0);
   const [showMessageAlert, setShowMessageAlert] = useState(false);
   const [latestMessageText, setLatestMessageText] = useState("");
+  const [admin, setAdmin] = useState(() => {
+    const cachedName = localStorage.getItem("admin_full_name") || "";
+    const cachedEmail = localStorage.getItem("admin_email") || "";
+
+    return {
+      full_name: cachedName,
+      email: cachedEmail,
+    };
+  });
+  const [openProfileMenu, setOpenProfileMenu] = useState(false);
+
   const initializedRef = useRef(false);
   const previousUnreadCountRef = useRef(0);
 
@@ -23,6 +43,40 @@ export default function Navbar({ onMenuClick }) {
       audio.play().catch(() => {});
     } catch (error) {
       console.error("Sound play error:", error);
+    }
+  };
+
+  const fetchAdminData = async () => {
+    try {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) return;
+
+      const { data, error } = await supabase
+        .from("admins")
+        .select("id, full_name, email")
+        .eq("email", user.email)
+        .single();
+
+      if (error) {
+        console.error("Error fetching admin data:", error);
+        return;
+      }
+
+      setAdmin(data);
+
+      if (data?.full_name) {
+        localStorage.setItem("admin_full_name", data.full_name);
+      }
+
+      if (data?.email) {
+        localStorage.setItem("admin_email", data.email);
+      }
+    } catch (error) {
+      console.error("Unexpected error fetching admin data:", error);
     }
   };
 
@@ -75,6 +129,7 @@ export default function Navbar({ onMenuClick }) {
   };
 
   useEffect(() => {
+    fetchAdminData();
     fetchUnreadMessagesCount(true);
 
     const channel = supabase
@@ -128,17 +183,38 @@ export default function Navbar({ onMenuClick }) {
     return () => clearTimeout(timer);
   }, [showMessageAlert]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setOpenProfileMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const goToMessages = () => {
     setShowMessageAlert(false);
     navigate("/dashboard/messages");
+  };
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      localStorage.removeItem("admin_full_name");
+      localStorage.removeItem("admin_email");
+      setOpenProfileMenu(false);
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   return (
     <>
       <nav className="w-full bg-gradient-to-b from-[#1F3C88] to-[#18346F] px-3 sm:px-4 md:px-8 lg:px-14">
         <div className="mx-auto flex h-[64px] sm:h-[70px] max-w-[1400px] items-center justify-between gap-3">
-          
-          {/* Right side / logo + mobile menu */}
           <div className="flex items-center gap-2 sm:gap-3">
             <button
               type="button"
@@ -153,9 +229,18 @@ export default function Navbar({ onMenuClick }) {
               alt="Aqari"
               className="h-10 sm:h-12 md:h-14 w-auto object-contain"
             />
+
+            <div className="hidden sm:flex flex-col text-right leading-tight">
+              <span className="text-[11px] md:text-[12px] text-white/75 font-medium">
+                أهلاً بك
+              </span>
+
+              <span className="min-h-[18px] text-[12px] md:text-[13px] font-bold text-white">
+                {admin?.full_name || ""}
+              </span>
+            </div>
           </div>
 
-          {/* Left side / actions */}
           <div className="flex items-center gap-2 sm:gap-3">
             <button
               type="button"
@@ -179,13 +264,56 @@ export default function Navbar({ onMenuClick }) {
               <Bell size={18} className="hidden sm:block" />
             </button>
 
-            <button
-              type="button"
-              className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/20"
-            >
-              <User size={17} className="sm:hidden" />
-              <User size={18} className="hidden sm:block" />
-            </button>
+            <div className="relative" ref={profileRef}>
+              <button
+                type="button"
+                onClick={() => setOpenProfileMenu((prev) => !prev)}
+                className="flex h-9 sm:h-10 items-center justify-center gap-1.5 rounded-xl bg-white/10 px-2.5 sm:px-3 text-white transition hover:bg-white/20"
+              >
+                <User size={17} className="sm:hidden" />
+                <User size={18} className="hidden sm:block" />
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-200 ${
+                    openProfileMenu ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {openProfileMenu && (
+                <div className="absolute left-0 top-[calc(100%+10px)] z-50 w-52 overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white shadow-[0_16px_40px_rgba(15,23,42,0.16)]">
+                  <div className="border-b border-[#EEF2F7] px-4 py-3 text-right">
+                    <p className="min-h-[20px] text-[13px] font-bold text-[#102A43]">
+                      {admin?.full_name || ""}
+                    </p>
+                    <p className="mt-1 min-h-[16px] text-[11px] text-gray-500">
+                      {admin?.email || ""}
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOpenProfileMenu(false);
+                      navigate("/dashboard/profile");
+                    }}
+                    className="flex w-full items-center justify-end gap-2 px-4 py-3 text-right text-[13px] font-medium text-[#102A43] transition hover:bg-gray-50"
+                  >
+                    الملف الشخصي
+                    <User size={15} />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="flex w-full items-center justify-end gap-2 px-4 py-3 text-right text-[13px] font-medium text-red-600 transition hover:bg-red-50"
+                  >
+                    تسجيل الخروج
+                    <LogOut size={15} />
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </nav>
