@@ -24,7 +24,12 @@ const menuSections = [
       { label: "نظرة عامة", icon: LayoutDashboard, path: "/dashboard" },
       { label: "العقارات", icon: Building2, path: "/dashboard/property" },
       { label: "إدارة المالكين", icon: Users, path: "/dashboard/owners" },
-      { label: "الرسائل", icon: MessageSquare, path: "/dashboard/messages", key: "messages" },
+      {
+        label: "الرسائل",
+        icon: MessageSquare,
+        path: "/dashboard/messages",
+        key: "messages",
+      },
     ],
   },
   {
@@ -90,7 +95,7 @@ export default function Sidebar() {
     fetchUnreadMessagesCount();
 
     const channel = supabase
-      .channel("messages-sidebar-channel")
+      .channel(`messages-sidebar-${Date.now()}`)
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "messages" },
@@ -123,51 +128,81 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-[220px] min-h-screen bg-[#f7f7f8] border-r border-[#ececec] px-2 py-3">
-      <div className="flex flex-col gap-4">
+    <aside className="w-[250px] min-h-screen border-r border-[#E6EAF0] bg-gradient-to-b from-[#F9FAFB] via-[#F7F8FA] to-[#F3F5F8] px-3 py-4 shadow-[0_8px_30px_rgba(15,23,42,0.04)]">
+      <div className="mb-5 rounded-2xl bg-gradient-to-r from-[#1F3C88] to-[#18346F] px-4 py-4 text-white shadow-[0_10px_30px_rgba(31,60,136,0.22)]">
+        <p className="text-[11px] font-medium text-white/75">لوحة التحكم</p>
+        <h2 className="mt-1 text-[18px] font-bold tracking-tight">Aqari Dashboard</h2>
+        <p className="mt-1 text-[11px] leading-5 text-white/75">
+          إدارة العقارات والمالكين والرسائل من مكان واحد
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-5">
         {menuSections.map((section, sectionIndex) => (
           <section key={sectionIndex}>
-            <h3 className="mb-2 px-2 text-[9px] font-bold uppercase tracking-[0.08em] text-[#b1b5bd]">
+            <h3 className="mb-2.5 px-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#9CA3AF]">
               {section.title}
             </h3>
 
-            <div className="space-y-0.5">
+            <div className="space-y-1.5">
               {section.items.map((item, itemIndex) => {
                 const Icon = item.icon;
                 const active = isActive(item.path);
                 const isMessagesItem = item.key === "messages";
+                const isLogout = item.action === "logout";
 
                 return (
                   <button
                     key={itemIndex}
                     type="button"
                     onClick={() => handleItemClick(item)}
-                    className={`flex w-full items-center justify-between rounded-md px-2.5 py-2 text-left transition-colors ${
+                    className={`group flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left transition-all duration-200 ${
                       active
-                        ? "bg-white border border-[#ececec] text-[#111827]"
-                        : "text-[#5f6672] hover:bg-[#18346F] hover:text-white"
+                        ? "border border-[#DCE6F8] bg-white text-[#102A43] shadow-[0_6px_18px_rgba(15,23,42,0.06)]"
+                        : isLogout
+                        ? "text-[#B42318] hover:bg-[#FEF3F2]"
+                        : "text-[#4B5563] hover:bg-white hover:shadow-[0_6px_18px_rgba(15,23,42,0.05)]"
                     }`}
                   >
-                    <div className="flex items-center gap-2">
-                      <Icon
-                        size={15}
-                        strokeWidth={1.8}
-                        className={active ? "text-[#111827]" : "text-[#8b93a1]"}
-                      />
-                      <span className="text-[12px] font-medium">{item.label}</span>
-                    </div>
-
-                    {isMessagesItem && unreadCount > 0 && (
-                      <span
-                        className={`min-w-[20px] rounded-full px-1.5 py-0.5 text-center text-[10px] font-bold ${
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`flex h-8 w-8 items-center justify-center rounded-lg transition-all ${
                           active
-                            ? "bg-[#18346F] text-white"
-                            : "bg-red-500 text-white"
+                            ? "bg-[#EEF4FF] text-[#1F3C88]"
+                            : isLogout
+                            ? "bg-[#FEF3F2] text-[#B42318]"
+                            : "bg-[#F3F4F6] text-[#6B7280] group-hover:bg-[#EEF4FF] group-hover:text-[#1F3C88]"
                         }`}
                       >
-                        {unreadCount > 99 ? "99+" : unreadCount}
+                        <Icon size={16} strokeWidth={1.9} />
+                      </div>
+
+                      <span
+                        className={`text-[13px] font-medium ${
+                          active ? "text-[#111827]" : ""
+                        }`}
+                      >
+                        {item.label}
                       </span>
-                    )}
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      {active && (
+                        <span className="h-2 w-2 rounded-full bg-[#1F3C88]" />
+                      )}
+
+                      {isMessagesItem && unreadCount > 0 && (
+                        <span
+                          className={`min-w-[22px] rounded-full px-1.5 py-0.5 text-center text-[10px] font-bold ${
+                            active
+                              ? "bg-[#1F3C88] text-white"
+                              : "bg-red-500 text-white"
+                          }`}
+                        >
+                          {unreadCount > 99 ? "99+" : unreadCount}
+                        </span>
+                      )}
+                    </div>
                   </button>
                 );
               })}
