@@ -4,25 +4,39 @@ import logo from "../assets/logo_top.png";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../auth/auth";
 
-
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("error");
+
+  const [showForgot, setShowForgot] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  const showToast = (text, type = "error") => {
+    setMessage(text);
+    setMessageType(type);
+  };
+
+  const clearToast = () => {
+    setMessage("");
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     const cleanEmail = email.trim().toLowerCase();
 
-    setErrorMessage("");
+    clearToast();
 
     if (!cleanEmail || !password.trim()) {
-      setErrorMessage("يرجى تعبئة جميع الحقول");
+      showToast("يرجى تعبئة جميع الحقول", "error");
       return;
     }
 
@@ -42,38 +56,137 @@ export default function LoginPage() {
         err?.message?.includes("Invalid login credentials") ||
         err?.message?.toLowerCase()?.includes("invalid")
       ) {
-        setErrorMessage("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+        showToast("البريد الإلكتروني أو كلمة المرور غير صحيحة", "error");
       } else {
-        setErrorMessage(err?.message || "حدث خطأ أثناء تسجيل الدخول");
+        showToast(err?.message || "حدث خطأ أثناء تسجيل الدخول", "error");
       }
     } finally {
       setLoading(false);
     }
   };
 
+  const handleResetPassword = async () => {
+    const cleanEmail = resetEmail.trim().toLowerCase();
+
+    clearToast();
+
+    if (!cleanEmail) {
+      showToast("يرجى إدخال البريد الإلكتروني", "error");
+      return;
+    }
+
+    try {
+      setResetLoading(true);
+
+      await auth.resetPassword(cleanEmail);
+
+      showToast(
+        "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني",
+        "success"
+      );
+      setShowForgot(false);
+      setResetEmail("");
+    } catch (err) {
+      console.error("Reset password error:", err);
+      showToast(err?.message || "حدث خطأ أثناء إرسال الرابط", "error");
+    } finally {
+      setResetLoading(false);
+    }
+  };
+
   return (
-    
     <div className="min-h-screen bg-[#f5f5f7]">
-      {errorMessage && (
+      {message && (
         <div className="fixed left-1/2 top-5 z-50 w-[calc(100%-24px)] max-w-md -translate-x-1/2">
-          <div className="flex items-start gap-3 rounded-xl border border-red-200 bg-white px-4 py-3 shadow-lg">
-            <div className="mt-0.5 text-red-500">
+          <div
+            className={`flex items-start gap-3 rounded-xl bg-white px-4 py-3 shadow-lg ${
+              messageType === "success"
+                ? "border border-green-200"
+                : "border border-red-200"
+            }`}
+          >
+            <div
+              className={`mt-0.5 ${
+                messageType === "success" ? "text-green-500" : "text-red-500"
+              }`}
+            >
               <AlertCircle size={18} />
             </div>
 
             <div className="flex-1 text-right">
-              <p className="text-sm font-medium text-red-600">
-                {errorMessage}
+              <p
+                className={`text-sm font-medium ${
+                  messageType === "success" ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {message}
               </p>
             </div>
 
             <button
               type="button"
-              onClick={() => setErrorMessage("")}
+              onClick={clearToast}
               className="text-gray-400 transition hover:text-gray-600"
             >
               <X size={16} />
             </button>
+          </div>
+        </div>
+      )}
+
+      {showForgot && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowForgot(false);
+                  setResetEmail("");
+                }}
+                className="text-gray-400 transition hover:text-gray-600"
+              >
+                <X size={18} />
+              </button>
+
+              <h2 className="text-right text-xl font-bold text-[#102A43]">
+                استعادة كلمة المرور
+              </h2>
+            </div>
+
+            <p className="mb-4 text-right text-sm text-gray-500">
+              أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور
+            </p>
+
+            <input
+              type="email"
+              placeholder="example@company.com"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              className="mb-4 h-12 w-full rounded-lg border border-[#e6e6e6] bg-white px-4 text-sm text-[#222] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+            />
+
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={handleResetPassword}
+                disabled={resetLoading}
+                className="h-12 flex-1 rounded-lg bg-gradient-to-b from-[#1F3C88] to-[#18346F] text-sm font-semibold text-white shadow-md transition hover:scale-[1.01] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {resetLoading ? "جاري الإرسال..." : "إرسال الرابط"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowForgot(false);
+                  setResetEmail("");
+                }}
+                className="h-12 flex-1 rounded-lg border border-[#e6e6e6] bg-white text-sm font-medium text-[#333] transition hover:border-indigo-300 hover:bg-[#fafaff]"
+              >
+                إلغاء
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -105,7 +218,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
-                    if (errorMessage) setErrorMessage("");
+                    if (message) clearToast();
                   }}
                   className="h-12 w-full rounded-lg border border-[#e6e6e6] bg-white px-4 text-sm text-[#222] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                 />
@@ -122,13 +235,15 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => {
                       setPassword(e.target.value);
-                      if (errorMessage) setErrorMessage("");
+                      if (message) clearToast();
                     }}
                     className="h-12 w-full rounded-lg border border-[#e6e6e6] bg-white px-4 pr-12 text-sm text-[#222] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
                   />
                   <button
                     type="button"
-                    aria-label={showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
+                    aria-label={
+                      showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"
+                    }
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9b9b9b]"
                   >
@@ -148,6 +263,7 @@ export default function LoginPage() {
 
                 <button
                   type="button"
+                  onClick={() => setShowForgot(true)}
                   className="text-sm font-medium text-[#102A43] transition hover:text-indigo-700"
                 >
                   هل نسيت كلمة المرور؟
@@ -249,7 +365,8 @@ export default function LoginPage() {
                   أدر فريقك وعملياتك بسهولة تامة.
                 </h2>
                 <p className="mt-5 max-w-[410px] text-sm leading-7 text-white/80">
-                  سجّل الدخول للوصول إلى لوحة التحكم الخاصة بك وإدارة فريقك وأعمالك.
+                  سجّل الدخول للوصول إلى لوحة التحكم الخاصة بك وإدارة فريقك
+                  وأعمالك.
                 </p>
               </div>
 
@@ -257,7 +374,9 @@ export default function LoginPage() {
                 <div className="rounded-[22px] bg-white p-5 shadow-2xl">
                   <div className="grid grid-cols-3 gap-4">
                     <div className="rounded-2xl bg-[#4a42ff] p-4 text-white">
-                      <p className="text-[11px] text-white/70">إجمالي المبيعات</p>
+                      <p className="text-[11px] text-white/70">
+                        إجمالي المبيعات
+                      </p>
                       <h3 className="mt-3 text-2xl font-semibold">$189,374</h3>
                       <div className="mt-6 h-1.5 w-14 rounded-full bg-white/30">
                         <div className="h-1.5 w-9 rounded-full bg-white"></div>
@@ -265,7 +384,9 @@ export default function LoginPage() {
                     </div>
 
                     <div className="rounded-2xl bg-[#f8f8fc] p-4">
-                      <p className="text-[11px] text-[#7b7b8f]">أداء المحادثات</p>
+                      <p className="text-[11px] text-[#7b7b8f]">
+                        أداء المحادثات
+                      </p>
                       <h3 className="mt-3 text-xl font-semibold text-[#1d1d1f]">
                         00:01:30
                       </h3>
@@ -278,7 +399,9 @@ export default function LoginPage() {
                     </div>
 
                     <div className="rounded-2xl bg-[#f8f8fc] p-4">
-                      <p className="text-[11px] text-[#7b7b8f]">نظرة عامة على المبيعات</p>
+                      <p className="text-[11px] text-[#7b7b8f]">
+                        نظرة عامة على المبيعات
+                      </p>
                       <div className="mt-4 flex h-20 items-end justify-center gap-2">
                         <span className="h-8 w-4 rounded-full bg-indigo-200"></span>
                         <span className="h-14 w-4 rounded-full bg-indigo-300"></span>
