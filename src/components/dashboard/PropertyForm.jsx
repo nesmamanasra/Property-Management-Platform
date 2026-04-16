@@ -370,6 +370,26 @@ export default function PropertyForm({
                   <option value="الخليل">الخليل</option>
                   <option value="جنين">جنين</option>
                   <option value="طولكرم">طولكرم</option>
+                  <option value="القدس">القدس</option>
+                  <option value="قلقيلية">قلقيلية</option>
+                  <option value="طوباس">طوباس</option>
+                  <option value="بيت لحم">بيت لحم</option>
+                  <option value="سلفيت">سلفيت</option>
+                  <option value="أريحا">أريحا</option>
+                  <option value="غزة">غزة</option>
+                  <option value="يافا">يافا</option>
+                  <option value="حيفا">حيفا</option>
+                  <option value="عكا">عكا</option>
+                  <option value="الناصرة">الناصرة</option>
+                  <option value="صفد">صفد</option>
+                  <option value="الرملة">الرملة</option>
+                  <option value="اللد">اللد</option>
+                  <option value="بيسان">بيسان</option>
+                  <option value="طبريا">طبريا</option>
+                  <option value="ام الفحم">أم الفحم</option>
+                  <option value="مناطق الداخل">مناطق الداخل</option>
+
+
                 </select>
               </div>
 
