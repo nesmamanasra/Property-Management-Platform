@@ -70,4 +70,26 @@ export const auth = {
       callback(session);
     });
   },
+
+  // 🔥 إرسال رابط إعادة تعيين كلمة المرور
+  async resetPassword(email) {
+    const cleanEmail = email.trim().toLowerCase();
+
+    const { error } = await supabase.auth.resetPasswordForEmail(cleanEmail, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+
+    if (error) throw error;
+  },
+
+  // 🔥 تحديث كلمة المرور
+  async updatePassword(newPassword) {
+    const { data, error } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+
+    if (error) throw error;
+
+    return data;
+  },
 };

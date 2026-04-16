@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPages from "./pages/SignupPages";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import DashboardHome from "./pages/dashboard/DashboardHome";
 import AqariStorePage from "./pages/aqari-store/AqariStorePage";
 import ShowPropertyPage from "./pages/aqari-store/ShowPropertyPage";
@@ -13,6 +14,7 @@ import MessagesPage from "./pages/dashboard/MessagesPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import PublicLayout from "./components/layout/PublicLayout";
 import AdminProfilePage from "./pages/dashboard/AdminProfilePage";
+
 export default function App() {
   return (
     <>
@@ -21,6 +23,7 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPages />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<LandingPage />} />
