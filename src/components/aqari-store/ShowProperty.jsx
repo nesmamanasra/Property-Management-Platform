@@ -11,6 +11,28 @@ import {
 } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 
+function getCurrencyLabel(currency) {
+  const map = {
+    ILS: "شيكل",
+    USD: "دولار",
+    JOD: "دينار",
+    EUR: "يورو",
+    GBP: "جنيه إسترليني",
+  };
+
+  const normalized = String(currency || "").trim().toUpperCase();
+  return map[normalized] || currency || "";
+}
+
+function formatPrice(price, currency) {
+  const formattedPrice = Number(price || 0).toLocaleString();
+  const currencyLabel = getCurrencyLabel(currency);
+
+  return currencyLabel
+    ? `${formattedPrice} ${currencyLabel}`
+    : formattedPrice;
+}
+
 export default function ShowProperty() {
   const { id } = useParams();
   const [property, setProperty] = useState(null);
@@ -45,7 +67,7 @@ export default function ShowProperty() {
 📌 ${property?.title || ""}
 🏠 ${property?.property_type || ""}
 📍 ${property?.city || ""}
-💰 ${property?.price || ""}
+💰 ${formatPrice(property?.price, property?.currency)}
 
 أرجو تزويدي بمزيد من التفاصيل.`;
 
@@ -144,7 +166,7 @@ export default function ShowProperty() {
 
                   <div>
                     <h2 className="text-2xl font-bold text-[#1F3C88]">
-                      ${property.price}
+                      {formatPrice(property.price, property.currency)}
                     </h2>
                     <p className="mt-1 text-[13px] text-gray-500">
                       قيمة العقار المعروضة حالياً
@@ -275,7 +297,7 @@ export default function ShowProperty() {
                     <div>
                       <p className="text-[11px] text-gray-400">السعر</p>
                       <p className="mt-1 text-[14px] font-semibold text-gray-800">
-                        ${property.price}
+                        {formatPrice(property.price, property.currency)}
                       </p>
                     </div>
                   </div>
