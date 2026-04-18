@@ -235,6 +235,10 @@ export default function PropertyForm({
       image: formData.image || null,
     };
 
+    console.log("Submitting property payload:", payload);
+    console.log("payload property_type:", payload.property_type);
+    console.log("payload city:", payload.city);
+
     try {
       setSubmitting(true);
       setFormError("");
@@ -424,7 +428,7 @@ export default function PropertyForm({
                   <option value="اللد">اللد</option>
                   <option value="بيسان">بيسان</option>
                   <option value="طبريا">طبريا</option>
-                  <option value="ام الفحم">أم الفحم</option>
+                  <option value="أم الفحم">أم الفحم</option>
                   <option value="مناطق الداخل">مناطق الداخل</option>
                 </select>
               </div>
