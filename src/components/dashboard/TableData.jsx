@@ -38,6 +38,12 @@ export default function TableData({ onEdit, renderAddButton }) {
 
   const menuRef = useRef(null);
 
+  const currencyMap = {
+    ILS: "₪",
+    JOD: "د.أ",
+    USD: "$",
+  };
+
   React.useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -63,6 +69,7 @@ export default function TableData({ onEdit, renderAddButton }) {
         String(item.operation_type || "").toLowerCase().includes(value) ||
         String(item.city || "").toLowerCase().includes(value) ||
         String(item.price || "").toLowerCase().includes(value) ||
+        String(item.currency || "").toLowerCase().includes(value) ||
         String(item.status || "").toLowerCase().includes(value) ||
         String(item.description || "").toLowerCase().includes(value)
       );
@@ -171,7 +178,9 @@ export default function TableData({ onEdit, renderAddButton }) {
                     <td className="px-3 py-2 group-hover:text-white">{item.operation_type}</td>
                     <td className="px-3 py-2 group-hover:text-white">{item.city}</td>
                     <td className="px-3 py-2 group-hover:text-white">{item.description}</td>
-                    <td className="px-3 py-2 group-hover:text-white">{item.price}</td>
+                    <td className="px-3 py-2 group-hover:text-white">
+                      {item.price} {currencyMap[item.currency] || item.currency || "₪"}
+                    </td>
 
                     <td className="px-3 py-2">
                       <StatusBadge status={item.status} />

@@ -14,6 +14,7 @@ export default function PropertyForm({
   const [loadingOwners, setLoadingOwners] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [compressingImage, setCompressingImage] = useState(false);
+  const [formError, setFormError] = useState("");
 
   const [formData, setFormData] = useState({
     owner_id: "",
@@ -22,6 +23,7 @@ export default function PropertyForm({
     purchaseType: "بيع",
     city: "نابلس",
     price: "",
+    currency: "ILS",
     status: "قيد الانتظار",
     description: "",
     image: "",
@@ -37,7 +39,12 @@ export default function PropertyForm({
         .order("id", { ascending: false });
 
       if (error) {
-        console.error("Error fetching owners:", error);
+        console.error("Error fetching owners:", {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code,
+        });
         return;
       }
 
@@ -54,6 +61,7 @@ export default function PropertyForm({
   }, []);
 
   const resetForm = () => {
+    setFormError("");
     setFormData({
       owner_id: "",
       propertyName: "",
@@ -61,6 +69,7 @@ export default function PropertyForm({
       purchaseType: "بيع",
       city: "نابلس",
       price: "",
+      currency: "ILS",
       status: "قيد الانتظار",
       description: "",
       image: "",
@@ -73,12 +82,12 @@ export default function PropertyForm({
 
   const closeModal = () => {
     setShowAddModal(false);
-    setEditingItem(null);
+    setEditingItem?.(null);
     resetForm();
   };
 
   const openAddModal = () => {
-    setEditingItem(null);
+    setEditingItem?.(null);
     resetForm();
     setShowAddModal(true);
   };
@@ -86,6 +95,7 @@ export default function PropertyForm({
   useEffect(() => {
     if (!editingItem) return;
 
+    setFormError("");
     setFormData({
       owner_id: editingItem.owner_id || "",
       propertyName: editingItem.title || "",
@@ -96,6 +106,7 @@ export default function PropertyForm({
         editingItem.price !== null && editingItem.price !== undefined
           ? String(editingItem.price)
           : "",
+      currency: editingItem.currency || "ILS",
       status: editingItem.status || "قيد الانتظار",
       description: editingItem.description || "",
       image: editingItem.image || "",
@@ -111,6 +122,7 @@ export default function PropertyForm({
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
+    setFormError("");
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -188,14 +200,25 @@ export default function PropertyForm({
   };
 
   const handleSubmitProperty = async () => {
-    if (
-      submitting ||
-      compressingImage ||
-      !formData.owner_id ||
-      !formData.propertyName.trim() ||
-      !formData.price.trim() ||
-      !formData.description.trim()
-    ) {
+    if (submitting || compressingImage) return;
+
+    if (!formData.owner_id) {
+      setFormError("يرجى اختيار المالك");
+      return;
+    }
+
+    if (!formData.propertyName.trim()) {
+      setFormError("يرجى إدخال اسم العقار");
+      return;
+    }
+
+    if (!formData.price.trim()) {
+      setFormError("يرجى إدخال السعر");
+      return;
+    }
+
+    if (!formData.description.trim()) {
+      setFormError("يرجى إدخال وصف العقار");
       return;
     }
 
@@ -207,12 +230,14 @@ export default function PropertyForm({
       city: formData.city,
       description: formData.description.trim(),
       price: Number(formData.price),
+      currency: formData.currency,
       status: formData.status,
-      image: formData.image,
+      image: formData.image || null,
     };
 
     try {
       setSubmitting(true);
+      setFormError("");
 
       if (editingItem?.id) {
         const { data, error } = await supabase
@@ -223,7 +248,13 @@ export default function PropertyForm({
           .single();
 
         if (error) {
-          console.error("Error updating property:", error);
+          console.error("Error updating property:", {
+            message: error.message,
+            details: error.details,
+            hint: error.hint,
+            code: error.code,
+          });
+          setFormError(error.message || "حدث خطأ أثناء تعديل العقار");
           return;
         }
 
@@ -243,7 +274,13 @@ export default function PropertyForm({
         .single();
 
       if (error) {
-        console.error("Error inserting property:", error);
+        console.error("Error inserting property:", {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code,
+        });
+        setFormError(error.message || "حدث خطأ أثناء إضافة العقار");
         return;
       }
 
@@ -254,6 +291,7 @@ export default function PropertyForm({
       }
     } catch (error) {
       console.error("Unexpected submit error:", error);
+      setFormError("حدث خطأ غير متوقع");
     } finally {
       setSubmitting(false);
     }
@@ -388,8 +426,6 @@ export default function PropertyForm({
                   <option value="طبريا">طبريا</option>
                   <option value="ام الفحم">أم الفحم</option>
                   <option value="مناطق الداخل">مناطق الداخل</option>
-
-
                 </select>
               </div>
 
@@ -405,6 +441,22 @@ export default function PropertyForm({
                   placeholder="مثال: 250000"
                   className="w-full rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-right text-sm text-[#374151] outline-none transition focus:border-[#18346F]"
                 />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-right text-sm font-medium text-[#374151]">
+                  العملة
+                </label>
+                <select
+                  name="currency"
+                  value={formData.currency}
+                  onChange={handleInputChange}
+                  className="w-full rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-right text-sm text-[#374151] outline-none transition focus:border-[#18346F]"
+                >
+                  <option value="ILS">شيكل (₪)</option>
+                  <option value="JOD">دينار (د.أ)</option>
+                  <option value="USD">دولار ($)</option>
+                </select>
               </div>
 
               <div className="md:col-span-2">
@@ -468,6 +520,14 @@ export default function PropertyForm({
                   </div>
                 )}
               </div>
+
+              {formError && (
+                <div className="md:col-span-2">
+                  <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-right text-sm text-red-600">
+                    {formError}
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="flex items-center justify-end gap-3 border-t border-[#EEF1F5] bg-white px-5 py-4">
