@@ -25,19 +25,52 @@ const cities = [
   "نابلس",
   "رام الله",
   "الخليل",
-  "بيت لحم",
   "جنين",
   "طولكرم",
+  "القدس",
   "قلقيلية",
+  "طوباس",
+  "بيت لحم",
   "سلفيت",
   "أريحا",
+  "غزة",
+  "يافا",
+  "حيفا",
+  "عكا",
+  "الناصرة",
+  "صفد",
+  "الرملة",
+  "اللد",
+  "بيسان",
+  "طبريا",
+  "أم الفحم",
+  "مناطق الداخل",
 ];
 
-function formatPrice(price, badge) {
+function getCurrencyLabel(currency) {
+  const map = {
+    ILS: "شيكل",
+    USD: "دولار",
+    JOD: "دينار",
+    EUR: "يورو",
+    GBP: "جنيه إسترليني",
+  };
+
+  const normalized = String(currency || "").trim().toUpperCase();
+  return map[normalized] || currency || "";
+}
+
+function formatPrice(price, badge, currency) {
+  const formattedPrice = Number(price || 0).toLocaleString();
+  const currencyLabel = getCurrencyLabel(currency);
+
   if (badge === "للإيجار") {
-    return `${Number(price || 0).toLocaleString()} $ / شهر`;
+    return currencyLabel
+      ? `${formattedPrice} ${currencyLabel} / شهر`
+      : `${formattedPrice} / شهر`;
   }
-  return `${Number(price || 0).toLocaleString()} $`;
+
+  return currencyLabel ? `${formattedPrice} ${currencyLabel}` : formattedPrice;
 }
 
 function FilterButton({ label, active = false, icon = null, onClick }) {
@@ -274,7 +307,7 @@ function PropertyCard({ property }) {
           <div className="text-right">
             <p className="text-[10px] text-slate-400">السعر</p>
             <p className="text-[16px] font-extrabold tracking-tight text-slate-900">
-              {formatPrice(property.price, property.badge)}
+              {formatPrice(property.price, property.badge, property.currency)}
             </p>
           </div>
         </div>
@@ -314,6 +347,7 @@ export default function MainAqariStore() {
           ? "للإيجار"
           : "للبيع",
       price: Number(item.price || 0),
+      currency: item.currency || "",
     }));
   }, [properties]);
 
