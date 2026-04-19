@@ -199,6 +199,17 @@ export default function PropertyForm({
     }
   };
 
+  const handleRemoveImage = () => {
+    setFormData((prev) => ({
+      ...prev,
+      image: "",
+    }));
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const handleSubmitProperty = async () => {
     if (submitting || compressingImage) return;
 
@@ -499,13 +510,25 @@ export default function PropertyForm({
                   صورة العقار
                 </label>
 
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="w-full rounded-xl border border-[#E5E7EB] bg-white px-4 py-3 text-right text-sm text-[#374151] file:ml-3 file:rounded-lg file:border-0 file:bg-[#18346F] file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-[#1F3C88]"
-                />
+                <div className="flex flex-col gap-3 md:flex-row md:items-center">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="w-full rounded-xl border border-[#E5E7EB] bg-white px-3 py-2 text-right text-sm text-[#374151] file:ml-3 file:rounded-lg file:border-0 file:bg-[#18346F] file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-[#1F3C88]"
+                  />
+
+                  {formData.image && (
+                   <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-medium text-red-600 transition hover:bg-red-100"
+                  >
+                    إلغاء الصورة
+                  </button>
+                  )}
+                </div>
 
                 {compressingImage && (
                   <p className="mt-2 text-right text-sm text-[#6B7280]">
