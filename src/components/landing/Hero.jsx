@@ -34,9 +34,8 @@ export default function Hero() {
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.35, delay: 0.05 }}
-              className="inline-flex items-center gap-2 rounded-full border border-[#1F3C88]/10 bg-white px-3.5 py-1.5 text-[12px] font-semibold text-[#1F3C88] shadow-sm md:text-[13px]"
-            >
-              <span className="inline-block h-2 w-2 rounded-full bg-[#1F3C88]" />
+className="mt-5 md:mt-0 inline-flex items-center gap-2 rounded-full border border-[#1F3C88]/10 bg-white px-3.5 py-1.5 text-[12px] font-semibold text-[#1F3C88] shadow-sm md:text-[13px]"            >
+              <span className="inline-block h-2 w-2 rounded-full bg-[#1F3C88]s" />
               منصة لإدارة العقارات عبر وسيط محترف
             </motion.div>
 
@@ -95,12 +94,12 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Add property button */}
+            {/* Add property button - Desktop only */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
-              className="mt-6 flex justify-center md:justify-start"
+              className="mt-6 hidden md:flex md:justify-start "
             >
               <button
                 type="button"
@@ -113,56 +112,74 @@ export default function Hero() {
           </motion.div>
 
           {/* IMAGE */}
-          <motion.div
-            initial={{ opacity: 0, x: -18 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="relative mx-auto w-full max-w-[560px] md:mt-4"
-          >
-            {/* floating cards */}
+          <div className="relative mx-auto w-full max-w-[560px] md:mt-4 mb-10">
             <motion.div
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-4 right-0 z-10 hidden rounded-2xl border border-white/50 bg-white/85 px-3.5 py-2.5 shadow-xl backdrop-blur md:block"
+              initial={{ opacity: 0, x: -18 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="relative"
             >
-              <p className="text-[11px] font-medium text-gray-500">
-                العقود النشطة
-              </p>
-              <p className="mt-1 text-[18px] font-extrabold text-[#102A43]">
-                +1,200
-              </p>
-            </motion.div>
+              {/* floating cards */}
+              <motion.div
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-4 right-0 z-10 hidden rounded-2xl border border-white/50 bg-white/85 px-3.5 py-2.5 shadow-xl backdrop-blur md:block"
+              >
+                <p className="text-[11px] font-medium text-gray-500">
+                  العقود النشطة
+                </p>
+                <p className="mt-1 text-[18px] font-extrabold text-[#102A43]">
+                  +1,200
+                </p>
+              </motion.div>
 
-            <motion.div
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute bottom-5 left-0 z-10 hidden rounded-2xl border border-white/50 bg-white/85 px-3.5 py-2.5 shadow-xl backdrop-blur md:block"
-            >
-              <p className="text-[11px] font-medium text-gray-500">
-                دقة البيانات
-              </p>
-              <p className="mt-1 text-[18px] font-extrabold text-[#102A43]">
-                99%
-              </p>
-            </motion.div>
+              <motion.div
+                animate={{ y: [0, 6, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute bottom-5 left-0 z-10 hidden rounded-2xl border border-white/50 bg-white/85 px-3.5 py-2.5 shadow-xl backdrop-blur md:block"
+              >
+                <p className="text-[11px] font-medium text-gray-500">
+                  دقة البيانات
+                </p>
+                <p className="mt-1 text-[18px] font-extrabold text-[#102A43]">
+                  99%
+                </p>
+              </motion.div>
 
-            {/* image wrapper */}
-            <div className="relative rounded-[24px] border border-white/60 bg-white/70 p-2.5 shadow-[0_24px_70px_rgba(16,42,67,0.12)] backdrop-blur-sm">
-              <div className="rounded-[18px] bg-gradient-to-b from-white to-slate-100 p-2">
-                <motion.img
-                  src={heroDevices}
-                  alt="واجهة منصة عقارية لإدارة العقارات عبر وسيط"
-                  className="w-full rounded-[14px] drop-shadow-xl"
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{
-                    duration: 4.5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
+              {/* image wrapper */}
+              <div className="relative rounded-[24px] border border-white/60 bg-white/70 p-2.5 shadow-[0_24px_70px_rgba(16,42,67,0.12)] backdrop-blur-sm">
+                <div className="rounded-[18px] bg-gradient-to-b from-white to-slate-100 p-2">
+                  <motion.img
+                    src={heroDevices}
+                    alt="واجهة منصة عقارية لإدارة العقارات عبر وسيط"
+                    className="w-full rounded-[14px] drop-shadow-xl"
+                    animate={{ y: [0, -5, 0] }}
+                    transition={{
+                      duration: 4.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+
+            {/* Add property button - Mobile only */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              className="mt-6 flex justify-center md:hidden"
+            >
+              <button
+                type="button"
+                onClick={() => navigate("/add-property")}
+                className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-l from-[#1F3C88] to-[#2E6FD8] px-6 py-3 text-[14px] font-bold text-white shadow-[0_14px_30px_rgba(31,60,136,0.22)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(31,60,136,0.28)]"
+              >
+                أضف عقارك
+              </button>
+            </motion.div>
+          </div>
         </div>
       </Container>
     </section>
