@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
 import { Building2, Users, FileText } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Container from "../layout/Container";
 import heroDevices from "../../assets/hero_devices.png";
 
 export default function Hero() {
+  const navigate = useNavigate();
+
   return (
     <section
       id="home"
@@ -61,7 +64,7 @@ export default function Hero() {
                 <h3 className="text-[11px] font-bold text-[#102A43] sm:text-[14px]">
                   إدارة العقارات
                 </h3>
-                <p className="mt-1 text-[10px] leading-4 text-gray-600 sm:text-[12px] sm:leading-5 font-bold">
+                <p className="mt-1 text-[10px] font-bold leading-4 text-gray-600 sm:text-[12px] sm:leading-5">
                   إدارة ومتابعة العقارات بشكل منظم وواضح.
                 </p>
               </div>
@@ -73,7 +76,7 @@ export default function Hero() {
                 <h3 className="text-[11px] font-bold text-[#102A43] sm:text-[14px]">
                   إدارة المستأجرين
                 </h3>
-                <p className="mt-1 text-[10px] leading-4 text-gray-600 sm:text-[12px] sm:leading-5 font-bold">
+                <p className="mt-1 text-[10px] font-bold leading-4 text-gray-600 sm:text-[12px] sm:leading-5">
                   متابعة المستأجرين والتواصل والالتزامات بسهولة.
                 </p>
               </div>
@@ -85,11 +88,28 @@ export default function Hero() {
                 <h3 className="text-[11px] font-bold text-[#102A43] sm:text-[14px]">
                   إدارة الرسائل
                 </h3>
-                <p className="mt-1 text-[10px] leading-4 text-gray-600 sm:text-[12px] sm:leading-5 font-bold">
-                  إدارة الرسائل والاستفسارات عبر الواتساب من قبل المالكين او المستاجرين .
+                <p className="mt-1 text-[10px] font-bold leading-4 text-gray-600 sm:text-[12px] sm:leading-5">
+                  إدارة الرسائل والاستفسارات عبر الواتساب من قبل المالكين او
+                  المستاجرين .
                 </p>
               </div>
             </div>
+
+            {/* Add property button */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              className="mt-6 flex justify-center md:justify-start"
+            >
+              <button
+                type="button"
+                onClick={() => navigate("/add-property")}
+                className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-l from-[#1F3C88] to-[#2E6FD8] px-6 py-3 text-[14px] font-bold text-white shadow-[0_14px_30px_rgba(31,60,136,0.22)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(31,60,136,0.28)] md:text-[15px]"
+              >
+                أضف عقارك
+              </button>
+            </motion.div>
           </motion.div>
 
           {/* IMAGE */}
