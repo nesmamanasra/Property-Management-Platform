@@ -437,9 +437,6 @@ export default function AddPropertyPage() {
                   <h3 className="text-[18px] font-extrabold text-[#102A43]">
                     بيانات المالك
                   </h3>
-                  <p className="text-sm text-gray-500">
-                    سيتم حفظ هذه البيانات في جدول المالكين.
-                  </p>
                 </div>
               </div>
 
