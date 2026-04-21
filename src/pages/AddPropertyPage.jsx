@@ -269,10 +269,6 @@ export default function AddPropertyPage() {
         "تم إرسال بيانات العقار بنجاح. سيبقى العقار قيد الانتظار إلى حين مراجعة البيانات والتواصل معك من قبل الوسيط."
       );
       resetForm();
-
-      setTimeout(() => {
-        navigate("/aqari-store");
-      }, 1800);
     } catch (error) {
       console.error("Add property error:", error);
       setSubmitState("error");
