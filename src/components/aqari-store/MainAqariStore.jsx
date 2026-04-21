@@ -335,20 +335,22 @@ export default function MainAqariStore() {
   const perPage = 15;
 
   const allProperties = useMemo(() => {
-    return (properties || []).map((item) => ({
-      id: item.id,
-      title: item.title,
-      image: item.image,
-      location: item.city,
-      city: item.city,
-      type: item.property_type,
-      badge:
-        item.operation_type === "إيجار" || item.operation_type === "للإيجار"
-          ? "للإيجار"
-          : "للبيع",
-      price: Number(item.price || 0),
-      currency: item.currency || "",
-    }));
+    return (properties || [])
+      .filter((item) => item.status === "متاح")
+      .map((item) => ({
+        id: item.id,
+        title: item.title,
+        image: item.image,
+        location: item.city,
+        city: item.city,
+        type: item.property_type,
+        badge:
+          item.operation_type === "إيجار" || item.operation_type === "للإيجار"
+            ? "للإيجار"
+            : "للبيع",
+        price: Number(item.price || 0),
+        currency: item.currency || "",
+      }));
   }, [properties]);
 
   const filteredProperties = useMemo(() => {

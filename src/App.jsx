@@ -14,6 +14,7 @@ import MessagesPage from "./pages/dashboard/MessagesPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import PublicLayout from "./components/layout/PublicLayout";
 import AdminProfilePage from "./pages/dashboard/AdminProfilePage";
+import AddPropertyPage from "./pages/AddPropertyPage";
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
           <Route index element={<LandingPage />} />
           <Route path="aqari-store" element={<AqariStorePage />} />
           <Route path="property/:id" element={<ShowPropertyPage />} />
+          <Route path="add-property" element={<AddPropertyPage />} />
         </Route>
 
         <Route
