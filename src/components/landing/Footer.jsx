@@ -1,4 +1,5 @@
 import logo from "../../assets/aqari_top_white.png";
+import { useNavigate } from "react-router-dom";
 import {
   Mail,
   Phone,
@@ -13,6 +14,7 @@ import {
 } from "lucide-react";
 
 export default function FooterSection() {
+  const navigate = useNavigate();
   return (
     <footer
       className="relative overflow-hidden bg-gradient-to-b from-[#1F3C88] to-[#18346F] text-white"
@@ -60,6 +62,13 @@ export default function FooterSection() {
             <p className="mt-2 text-sm leading-6 text-white/75">
               اترك الإدارة اليومية للوسيط وركز على استثمارك ونمو أعمالك.
             </p>
+             <button
+                type="button"
+                onClick={() => navigate("/add-property")}
+                className="mt-5 inline-flex items-center justify-center rounded-2xl bg-gradient-to-l from-[#F7EAD4] to-[#CACFD4] px-6 py-2 text-[14px] font-bold text-[#1F3C88] shadow-[0_14px_30px_rgba(31,60,136,0.22)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(31,60,136,0.28)] md:text-[15px]"
+              >
+                أضف عقارك
+              </button>
           </div>
         </div>
 

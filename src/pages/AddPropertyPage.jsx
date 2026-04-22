@@ -578,14 +578,6 @@ export default function AddPropertyPage() {
 
             <div className="flex flex-col-reverse gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
               <button
-                type="button"
-                onClick={resetForm}
-                className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-[#102A43] transition hover:bg-slate-50"
-              >
-                إعادة تعيين
-              </button>
-
-              <button
                 type="submit"
                 disabled={submitState === "loading"}
                 className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-l from-[#1F3C88] to-[#3E6FD8] px-6 py-3 text-sm font-extrabold text-white shadow-[0_14px_30px_rgba(31,60,136,0.22)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(31,60,136,0.28)] disabled:cursor-not-allowed disabled:opacity-70"
