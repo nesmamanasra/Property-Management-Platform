@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import { Building2, Users, FileText } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Container from "../layout/Container";
 import heroDevices from "../../assets/hero_devices.png";
 
 export default function Hero() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <section
@@ -34,7 +34,7 @@ export default function Hero() {
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.35, delay: 0.05 }}
-className="mt-5 md:mt-0 inline-flex items-center gap-2 rounded-full border border-[#1F3C88]/10 bg-white px-3.5 py-1.5 text-[12px] font-semibold text-[#1F3C88] shadow-sm md:text-[13px]"            >
+              className="mt-5 md:mt-0 inline-flex items-center gap-2 rounded-full border border-[#1F3C88]/10 bg-white px-3.5 py-1.5 text-[12px] font-semibold text-[#1F3C88] shadow-sm md:text-[13px]"            >
               <span className="inline-block h-2 w-2 rounded-full bg-[#1F3C88]s" />
               منصة لإدارة العقارات عبر وسيط محترف
             </motion.div>
@@ -95,7 +95,7 @@ className="mt-5 md:mt-0 inline-flex items-center gap-2 rounded-full border borde
             </div>
 
             {/* Add property button - Desktop only */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
@@ -104,15 +104,15 @@ className="mt-5 md:mt-0 inline-flex items-center gap-2 rounded-full border borde
               <button
                 type="button"
                 onClick={() => navigate("/add-property")}
-                className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-l from-[#1F3C88] to-[#2E6FD8] px-6 py-3 text-[14px] font-bold text-white shadow-[0_14px_30px_rgba(31,60,136,0.22)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(31,60,136,0.28)] md:text-[15px]"
+                className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-l from-[#1F3C88] to-[#2E6FD8] px-6 py-2 text-[14px] font-bold text-white shadow-[0_14px_30px_rgba(31,60,136,0.22)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(31,60,136,0.28)] md:text-[15px]"
               >
                 أضف عقارك
               </button>
-            </motion.div>
+            </motion.div> */}
           </motion.div>
 
           {/* IMAGE */}
-          <div className="relative mx-auto w-full max-w-[560px] md:mt-4 mb-10">
+          <div className="relative mx-auto w-full max-w-[560px] md:mt-4 mb-5">
             <motion.div
               initial={{ opacity: 0, x: -18 }}
               animate={{ opacity: 1, x: 0 }}
