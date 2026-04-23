@@ -8,12 +8,14 @@ export default function PropertyForm({
   onSuccess,
 }) {
   const fileInputRef = useRef(null);
+  const videoInputRef = useRef(null);
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [owners, setOwners] = useState([]);
   const [loadingOwners, setLoadingOwners] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [compressingImage, setCompressingImage] = useState(false);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
   const [formError, setFormError] = useState("");
 
   const [formData, setFormData] = useState({
@@ -27,6 +29,7 @@ export default function PropertyForm({
     status: "قيد الانتظار",
     description: "",
     image: "",
+    video_url: "",
   });
 
   const fetchOwners = async () => {
@@ -73,10 +76,15 @@ export default function PropertyForm({
       status: "قيد الانتظار",
       description: "",
       image: "",
+      video_url: "",
     });
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
+    }
+
+    if (videoInputRef.current) {
+      videoInputRef.current.value = "";
     }
   };
 
@@ -110,12 +118,17 @@ export default function PropertyForm({
       status: editingItem.status || "قيد الانتظار",
       description: editingItem.description || "",
       image: editingItem.image || "",
+      video_url: editingItem.video_url || "",
     });
 
     setShowAddModal(true);
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
+    }
+
+    if (videoInputRef.current) {
+      videoInputRef.current.value = "";
     }
   }, [editingItem]);
 
@@ -194,8 +207,111 @@ export default function PropertyForm({
       }));
     } catch (error) {
       console.error("Error compressing image:", error);
+      setFormError("حدث خطأ أثناء تجهيز الصورة");
     } finally {
       setCompressingImage(false);
+    }
+  };
+
+  const getVideoFilePath = (file) => {
+    const extension = file.name.split(".").pop()?.toLowerCase() || "mp4";
+    const safeName = `${Date.now()}-${Math.random()
+      .toString(36)
+      .slice(2, 10)}.${extension}`;
+
+    return `properties/${safeName}`;
+  };
+
+  const removeOldVideoFromStorage = async (videoUrl) => {
+    try {
+      if (!videoUrl || !videoUrl.includes("/storage/v1/object/public/property-videos/")) {
+        return;
+      }
+
+      const marker = "/storage/v1/object/public/property-videos/";
+      const path = videoUrl.split(marker)[1];
+
+      if (!path) return;
+
+      const { error } = await supabase.storage
+        .from("property-videos")
+        .remove([path]);
+
+      if (error) {
+        console.error("Error removing old video:", error);
+      }
+    } catch (error) {
+      console.error("Unexpected remove old video error:", error);
+    }
+  };
+
+  const handleVideoChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const maxSizeInBytes = 25 * 1024 * 1024;
+
+    if (!file.type.startsWith("video/")) {
+      setFormError("يرجى اختيار ملف فيديو صحيح");
+      if (videoInputRef.current) {
+        videoInputRef.current.value = "";
+      }
+      return;
+    }
+
+    if (file.size > maxSizeInBytes) {
+      setFormError("حجم الفيديو كبير جداً. الحد الأقصى 25MB");
+      if (videoInputRef.current) {
+        videoInputRef.current.value = "";
+      }
+      return;
+    }
+
+    try {
+      setUploadingVideo(true);
+      setFormError("");
+
+      const oldVideoUrl = formData.video_url;
+      const filePath = getVideoFilePath(file);
+
+      const { error: uploadError } = await supabase.storage
+        .from("property-videos")
+        .upload(filePath, file, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: file.type,
+        });
+
+      if (uploadError) {
+        console.error("Video upload error:", uploadError);
+        setFormError(uploadError.message || "حدث خطأ أثناء رفع الفيديو");
+        return;
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from("property-videos")
+        .getPublicUrl(filePath);
+
+      const publicUrl = publicUrlData?.publicUrl || "";
+
+      if (!publicUrl) {
+        setFormError("تعذر إنشاء رابط الفيديو");
+        return;
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        video_url: publicUrl,
+      }));
+
+      if (oldVideoUrl) {
+        await removeOldVideoFromStorage(oldVideoUrl);
+      }
+    } catch (error) {
+      console.error("Unexpected video upload error:", error);
+      setFormError("حدث خطأ غير متوقع أثناء رفع الفيديو");
+    } finally {
+      setUploadingVideo(false);
     }
   };
 
@@ -210,8 +326,25 @@ export default function PropertyForm({
     }
   };
 
+  const handleRemoveVideo = async () => {
+    const currentVideoUrl = formData.video_url;
+
+    setFormData((prev) => ({
+      ...prev,
+      video_url: "",
+    }));
+
+    if (videoInputRef.current) {
+      videoInputRef.current.value = "";
+    }
+
+    if (editingItem?.id && currentVideoUrl) {
+      await removeOldVideoFromStorage(currentVideoUrl);
+    }
+  };
+
   const handleSubmitProperty = async () => {
-    if (submitting || compressingImage) return;
+    if (submitting || compressingImage || uploadingVideo) return;
 
     if (!formData.owner_id) {
       setFormError("يرجى اختيار المالك");
@@ -244,11 +377,8 @@ export default function PropertyForm({
       currency: formData.currency,
       status: formData.status,
       image: formData.image || null,
+      video_url: formData.video_url || null,
     };
-
-    console.log("Submitting property payload:", payload);
-    console.log("payload property_type:", payload.property_type);
-    console.log("payload city:", payload.city);
 
     try {
       setSubmitting(true);
@@ -520,13 +650,13 @@ export default function PropertyForm({
                   />
 
                   {formData.image && (
-                   <button
-                    type="button"
-                    onClick={handleRemoveImage}
-                    className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-medium text-red-600 transition hover:bg-red-100"
-                  >
-                    إلغاء الصورة
-                  </button>
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-medium text-red-600 transition hover:bg-red-100"
+                    >
+                      إلغاء الصورة
+                    </button>
                   )}
                 </div>
 
@@ -548,6 +678,53 @@ export default function PropertyForm({
                 )}
               </div>
 
+              <div className="md:col-span-2">
+                <label className="mb-2 block text-right text-sm font-medium text-[#374151]">
+                  فيديو العقار
+                </label>
+
+                <div className="flex flex-col gap-3 md:flex-row md:items-center">
+                  <input
+                    ref={videoInputRef}
+                    type="file"
+                    accept="video/mp4,video/webm,video/ogg,video/quicktime"
+                    onChange={handleVideoChange}
+                    className="w-full rounded-xl border border-[#E5E7EB] bg-white px-3 py-2 text-right text-sm text-[#374151] file:ml-3 file:rounded-lg file:border-0 file:bg-[#18346F] file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-[#1F3C88]"
+                  />
+
+                  {formData.video_url && (
+                    <button
+                      type="button"
+                      onClick={handleRemoveVideo}
+                      className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-medium text-red-600 transition hover:bg-red-100"
+                    >
+                      إلغاء الفيديو
+                    </button>
+                  )}
+                </div>
+
+                {uploadingVideo && (
+                  <p className="mt-2 text-right text-sm text-[#6B7280]">
+                    جاري رفع الفيديو...
+                  </p>
+                )}
+
+                {formData.video_url && (
+                  <div className="mt-4 overflow-hidden rounded-2xl border border-[#E5E7EB] bg-black">
+                    <video
+                      src={formData.video_url}
+                      controls
+                      preload="metadata"
+                      className="h-56 w-full object-cover"
+                    />
+                  </div>
+                )}
+
+                <p className="mt-2 text-right text-xs text-[#6B7280]">
+                  يفضل رفع فيديو قصير وخفيف للحفاظ على سرعة الموقع. الحد الأقصى 25MB.
+                </p>
+              </div>
+
               {formError && (
                 <div className="md:col-span-2">
                   <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-right text-sm text-red-600">
@@ -567,11 +744,13 @@ export default function PropertyForm({
 
               <button
                 onClick={handleSubmitProperty}
-                disabled={submitting || compressingImage}
+                disabled={submitting || compressingImage || uploadingVideo}
                 className="rounded-xl bg-[#18346F] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#1F3C88] disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {compressingImage
                   ? "جاري تجهيز الصورة..."
+                  : uploadingVideo
+                  ? "جاري رفع الفيديو..."
                   : submitting
                   ? "جاري الحفظ..."
                   : editingItem
