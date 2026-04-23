@@ -8,6 +8,8 @@ import {
   MessageCircle,
   ShieldCheck,
   PhoneCall,
+  Video,
+  Image as ImageIcon,
 } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 
@@ -37,6 +39,7 @@ export default function ShowProperty() {
   const { id } = useParams();
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [activeMedia, setActiveMedia] = useState("image");
 
   useEffect(() => {
     fetchProperty();
@@ -53,6 +56,7 @@ export default function ShowProperty() {
 
     if (!error) {
       setProperty(data);
+      setActiveMedia(data?.video_url ? "video" : "image");
     }
 
     setLoading(false);
@@ -107,23 +111,38 @@ export default function ShowProperty() {
     );
   }
 
+  const hasVideo = !!property.video_url;
+  const hasImage = !!property.image;
+
   return (
     <div className="min-h-screen bg-[#F5F7FA]">
-      {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0F172A] via-[#18346F]/80 to-[#F5F7FA]" />
 
         <div className="relative mx-auto max-w-[1400px] px-4 pb-8 pt-5 sm:px-6 lg:px-10">
           <div className="grid gap-5 lg:grid-cols-[1.55fr_.8fr]">
-            {/* Main Image */}
-            <div className="relative overflow-hidden rounded-[24px] shadow-[0_18px_50px_rgba(15,23,42,0.28)]">
-              <img
-                src={property.image}
-                alt={property.title}
-                className="h-[260px] w-full object-cover sm:h-[340px] lg:h-[420px]"
-              />
+            <div className="relative overflow-hidden rounded-[24px] shadow-[0_18px_50px_rgba(15,23,42,0.28)] bg-black">
+              {activeMedia === "video" && hasVideo ? (
+                <video
+                  src={property.video_url}
+                  controls
+                  preload="metadata"
+                  playsInline
+                  className="h-[260px] w-full object-cover sm:h-[340px] lg:h-[420px]"
+                />
+              ) : hasImage ? (
+                <img
+                  src={property.image}
+                  alt={property.title}
+                  className="h-[260px] w-full object-cover sm:h-[340px] lg:h-[420px]"
+                />
+              ) : (
+                <div className="flex h-[260px] w-full items-center justify-center bg-[#0F172A] text-white sm:h-[340px] lg:h-[420px]">
+                  لا توجد وسائط متوفرة
+                </div>
+              )}
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent pointer-events-none" />
 
               <div className="absolute right-4 top-4 flex flex-wrap gap-2">
                 <span className="rounded-full border border-white/20 bg-white/15 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-md">
@@ -132,6 +151,11 @@ export default function ShowProperty() {
                 <span className="rounded-full border border-white/20 bg-white/15 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-md">
                   {property.property_type}
                 </span>
+                {hasVideo && (
+                  <span className="rounded-full border border-white/20 bg-white/15 px-3 py-1 text-[11px] font-medium text-white backdrop-blur-md">
+                    يوجد فيديو
+                  </span>
+                )}
               </div>
 
               <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
@@ -152,7 +176,6 @@ export default function ShowProperty() {
               </div>
             </div>
 
-            {/* Price / Summary Card */}
             <div className="flex flex-col gap-4">
               <div className="rounded-[24px] bg-white p-5 shadow-[0_16px_40px_rgba(15,23,42,0.08)] ring-1 ring-gray-100 sm:p-6">
                 <p className="text-[13px] font-medium text-gray-400">
@@ -223,13 +246,45 @@ export default function ShowProperty() {
               </div>
             </div>
           </div>
+
+          {(hasImage || hasVideo) && (
+            <div className="mt-4 flex flex-wrap gap-3">
+              {hasImage && (
+                <button
+                  type="button"
+                  onClick={() => setActiveMedia("image")}
+                  className={`inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 text-[12px] font-semibold transition ${
+                    activeMedia === "image"
+                      ? "bg-white text-[#1F3C88] shadow-md"
+                      : "bg-white/15 text-white backdrop-blur-md"
+                  }`}
+                >
+                  <ImageIcon size={15} />
+                  الصورة
+                </button>
+              )}
+
+              {hasVideo && (
+                <button
+                  type="button"
+                  onClick={() => setActiveMedia("video")}
+                  className={`inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 text-[12px] font-semibold transition ${
+                    activeMedia === "video"
+                      ? "bg-white text-[#1F3C88] shadow-md"
+                      : "bg-white/15 text-white backdrop-blur-md"
+                  }`}
+                >
+                  <Video size={15} />
+                  الفيديو
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Details Section */}
       <section className="mx-auto max-w-[1400px] px-4 pb-10 sm:px-6 lg:px-10">
         <div className="grid gap-5 lg:grid-cols-[1.55fr_.8fr]">
-          {/* Left Content */}
           <div className="space-y-5">
             <div className="rounded-[24px] bg-white p-5 shadow-[0_16px_40px_rgba(15,23,42,0.06)] ring-1 ring-gray-100 sm:p-6">
               <div className="mb-5 flex items-center gap-3">
@@ -302,8 +357,50 @@ export default function ShowProperty() {
                     </div>
                   </div>
                 </div>
+
+                <div className="rounded-2xl border border-gray-100 bg-[#FAFBFC] p-4 transition hover:shadow-md sm:col-span-2">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#1F3C88]/10 text-[#1F3C88]">
+                      <Video size={18} />
+                    </div>
+                    <div>
+                      <p className="text-[11px] text-gray-400">الفيديو</p>
+                      <p className="mt-1 text-[14px] font-semibold text-gray-800">
+                        {hasVideo ? "متوفر لهذا العقار" : "غير متوفر"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+
+            {hasVideo && (
+              <div className="rounded-[24px] bg-white p-5 shadow-[0_16px_40px_rgba(15,23,42,0.06)] ring-1 ring-gray-100 sm:p-6">
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#1F3C88]/10 text-[#1F3C88]">
+                    <Video size={20} />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-bold text-[#1F3C88]">
+                      فيديو العقار
+                    </h2>
+                    <p className="mt-1 text-[13px] text-gray-500">
+                      استعراض مرئي سريع للعقار بجودة مناسبة وسرعة جيدة
+                    </p>
+                  </div>
+                </div>
+
+                <div className="overflow-hidden rounded-[24px] bg-black shadow-inner">
+                  <video
+                    src={property.video_url}
+                    controls
+                    preload="metadata"
+                    playsInline
+                    className="max-h-[520px] w-full bg-black"
+                  />
+                </div>
+              </div>
+            )}
 
             <div className="rounded-[24px] bg-white p-5 shadow-[0_16px_40px_rgba(15,23,42,0.06)] ring-1 ring-gray-100 sm:p-6">
               <div className="mb-4 flex items-center gap-3">
@@ -326,7 +423,6 @@ export default function ShowProperty() {
             </div>
           </div>
 
-          {/* Sticky CTA */}
           <div className="lg:pt-0">
             <div className="sticky top-6 rounded-[24px] bg-white p-5 shadow-[0_16px_40px_rgba(15,23,42,0.08)] ring-1 ring-gray-100 sm:p-6">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#1F3C88]/10 px-3 py-1.5 text-[11px] font-semibold text-[#1F3C88]">

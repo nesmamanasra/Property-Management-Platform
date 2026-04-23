@@ -11,6 +11,7 @@ import {
   Building2,
   MapPinned,
   BadgeDollarSign,
+  Video,
 } from "lucide-react";
 import { useDashboardData } from "../../context/DashboardDataContext";
 
@@ -273,6 +274,7 @@ function PropertyCard({ property }) {
         <img
           src={property.image || "/placeholder-property.jpg"}
           alt={property.title}
+          loading="lazy"
           className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
         />
 
@@ -283,9 +285,18 @@ function PropertyCard({ property }) {
             <ArrowUpLeft size={14} />
           </button>
 
-          <span className="rounded-full bg-emerald-500/90 px-2 py-0.5 text-[10px] font-semibold text-white shadow">
-            {property.badge}
-          </span>
+          <div className="flex items-center gap-2">
+            {property.video_url && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#1F3C88]/90 px-2 py-0.5 text-[10px] font-semibold text-white shadow">
+                <Video size={11} />
+                فيديو
+              </span>
+            )}
+
+            <span className="rounded-full bg-emerald-500/90 px-2 py-0.5 text-[10px] font-semibold text-white shadow">
+              {property.badge}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -341,6 +352,7 @@ export default function MainAqariStore() {
         id: item.id,
         title: item.title,
         image: item.image,
+        video_url: item.video_url,
         location: item.city,
         city: item.city,
         type: item.property_type,
@@ -379,7 +391,7 @@ export default function MainAqariStore() {
     } else if (sortBy === "الأقل سعرًا") {
       data.sort((a, b) => a.price - b.price);
     } else {
-      data.sort((a, b) => b.id - a.id);
+      data.sort((a, b) => String(b.id).localeCompare(String(a.id)));
     }
 
     return data;

@@ -6,6 +6,7 @@ import {
   MoreHorizontal,
   Pencil,
   Trash2,
+  Video,
 } from "lucide-react";
 import { supabase } from "../../lib/supabase";
 import { useDashboardData } from "../../context/DashboardDataContext";
@@ -25,6 +26,19 @@ function StatusBadge({ status }) {
       }`}
     >
       {status || "—"}
+    </span>
+  );
+}
+
+function VideoBadge({ hasVideo }) {
+  if (!hasVideo) {
+    return <span className="text-[#9CA3AF]">—</span>;
+  }
+
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full bg-[#EEF4FF] px-2.5 py-1 text-[10px] font-semibold text-[#1F3C88]">
+      <Video size={12} />
+      يوجد فيديو
     </span>
   );
 }
@@ -97,8 +111,6 @@ export default function TableData({ onEdit, renderAddButton }) {
     <section className="bg-[#F7F8FA] p-4" dir="rtl">
       <div className="mx-auto max-w-[1400px]">
         <div className="rounded-2xl border border-[#ECEEF2] bg-white shadow-[0_2px_10px_rgba(15,23,42,0.04)]">
-
-          {/* Header */}
           <div className="flex flex-col gap-2 border-b border-[#EEF1F5] px-3 py-3 lg:flex-row lg:items-center lg:justify-between">
             <h3 className="text-right text-[14px] font-semibold text-[#1F2937]">
               العقارات
@@ -130,14 +142,14 @@ export default function TableData({ onEdit, renderAddButton }) {
             </div>
           </div>
 
-          {/* Table */}
           <div className="overflow-x-auto">
-            <table className="min-w-[1900px] w-full">
+            <table className="min-w-[2050px] w-full">
               <thead>
                 <tr className="border-b border-[#EEF1F5] bg-[#FCFCFD] text-right">
                   <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">#</th>
                   <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">المالك</th>
                   <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">الصورة</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">الفيديو</th>
                   <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">العقار</th>
                   <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">النوع</th>
                   <th className="px-3 py-2 text-[10px] text-[#9CA3AF]">العملية</th>
@@ -156,6 +168,7 @@ export default function TableData({ onEdit, renderAddButton }) {
                     className="group border-b border-[#F3F4F6] hover:bg-[#18346F]"
                   >
                     <td className="px-3 py-2 group-hover:text-white">{index + 1}</td>
+
                     <td className="px-3 py-2 group-hover:text-white">
                       {item.owners?.full_name || "—"}
                     </td>
@@ -169,8 +182,12 @@ export default function TableData({ onEdit, renderAddButton }) {
                           className="h-10 w-14 rounded-lg object-cover"
                         />
                       ) : (
-                        "—"
+                        <span className="text-[#9CA3AF]">—</span>
                       )}
+                    </td>
+
+                    <td className="px-3 py-2">
+                      <VideoBadge hasVideo={!!item.video_url} />
                     </td>
 
                     <td className="px-3 py-2 group-hover:text-white">{item.title}</td>
@@ -228,7 +245,7 @@ export default function TableData({ onEdit, renderAddButton }) {
 
                 {filteredData.length === 0 && (
                   <tr>
-                    <td colSpan={11} className="py-6 text-center text-gray-400">
+                    <td colSpan={12} className="py-6 text-center text-gray-400">
                       لا توجد بيانات
                     </td>
                   </tr>
@@ -236,7 +253,6 @@ export default function TableData({ onEdit, renderAddButton }) {
               </tbody>
             </table>
           </div>
-
         </div>
       </div>
     </section>
