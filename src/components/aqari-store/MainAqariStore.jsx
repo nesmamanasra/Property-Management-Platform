@@ -108,6 +108,7 @@ function PageButton({ label, icon, active = false, onClick, disabled = false }) 
 
 function HeroSection({ onSearch, propertiesCount }) {
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
   const stats = [
     {
@@ -189,6 +190,16 @@ function HeroSection({ onSearch, propertiesCount }) {
               استعرض أحدث العقارات في مختلف المدن، وقارن بين الخيارات بسهولة،
               وابحث بطريقة سريعة داخل منصة عقارية حديثة.
             </p>
+
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+              <button
+                onClick={() => navigate("/")}
+                className="inline-flex items-center gap-2 rounded-2xl border border-white/20 bg-white/15 px-5 py-3 text-xs font-semibold text-white backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-[#1F3C88] md:text-sm"
+              >
+                تصفح موقع عقاري
+                <ArrowUpLeft size={16} />
+              </button>
+            </div>
           </motion.div>
 
           <motion.div
