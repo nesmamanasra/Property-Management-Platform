@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import { Building2, Users, FileText } from "lucide-react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Container from "../layout/Container";
 import heroDevices from "../../assets/hero_devices.png";
 
 export default function Hero() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <section
@@ -34,8 +34,9 @@ export default function Hero() {
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.35, delay: 0.05 }}
-              className="mt-5 md:mt-0 inline-flex items-center gap-2 rounded-full border border-[#1F3C88]/10 bg-white px-3.5 py-1.5 text-[12px] font-semibold text-[#1F3C88] shadow-sm md:text-[13px]"            >
-              <span className="inline-block h-2 w-2 rounded-full bg-[#1F3C88]s" />
+              className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#1F3C88]/10 bg-white px-3.5 py-1.5 text-[12px] font-semibold text-[#1F3C88] shadow-sm md:mt-0 md:text-[13px]"
+            >
+              <span className="inline-block h-2 w-2 rounded-full bg-[#1F3C88]" />
               منصة لإدارة العقارات عبر وسيط محترف
             </motion.div>
 
@@ -94,25 +95,48 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Add property button - Desktop only */}
-            {/* <motion.div
-              initial={{ opacity: 0, y: 12 }}
+            {/* CTA Card - Desktop Ultra */}
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-              className="mt-6 hidden md:flex md:justify-start "
+              transition={{ duration: 0.4, delay: 0.22 }}
+              className="relative mb-8 mt-5 hidden w-full max-w-[365px] overflow-hidden rounded-[26px] border border-white/70 bg-white/75 p-4 shadow-[0_22px_60px_rgba(16,42,67,0.14)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_75px_rgba(31,60,136,0.20)] md:block"
             >
-              <button
-                type="button"
-                onClick={() => navigate("/add-property")}
-                className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-l from-[#1F3C88] to-[#2E6FD8] px-6 py-2 text-[14px] font-bold text-white shadow-[0_14px_30px_rgba(31,60,136,0.22)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(31,60,136,0.28)] md:text-[15px]"
-              >
-                أضف عقارك
-              </button>
-            </motion.div> */}
+              <div className="absolute -left-10 -top-10 h-28 w-28 rounded-full bg-[#3E6FD8]/15 blur-2xl" />
+              <div className="absolute -bottom-12 right-10 h-28 w-28 rounded-full bg-[#1F3C88]/15 blur-2xl" />
+
+              <div className="relative">
+                <span className="inline-flex rounded-full bg-[#1F3C88]/10 px-3 py-1 text-[11px] font-extrabold text-[#1F3C88]">
+                  خدمة مخصصة للمالكين
+                </span>
+
+                <h3 className="mt-3 text-[19px] font-extrabold text-[#102A43]">
+                  ابدأ مع وسيط عقاري اليوم
+                </h3>
+
+                <p className="mt-2 text-[13px] leading-6 text-gray-600">
+                  اترك الإدارة اليومية للوسيط وركز على استثمارك ونمو أعمالك.
+                </p>
+
+                <div className="mt-4 flex items-center justify-between gap-3">
+                  <button
+                    type="button"
+                    onClick={() => navigate("/add-property")}
+                    className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-l from-[#1F3C88] to-[#3E6FD8] px-5 py-2.5 text-[13px] font-extrabold text-white shadow-[0_14px_30px_rgba(31,60,136,0.25)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(31,60,136,0.32)]"
+                  >
+                    أضف عقارك
+                  </button>
+
+                  <span className="text-[11px] font-bold text-gray-500">
+                    خلال دقائق
+                  </span>
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
 
           {/* IMAGE */}
-          <div className="relative mx-auto w-full max-w-[560px] md:mt-4 mb-5">
+          <div className="relative mx-auto mb-5 w-full max-w-[560px] md:mt-4">
             <motion.div
               initial={{ opacity: 0, x: -18 }}
               animate={{ opacity: 1, x: 0 }}
@@ -122,7 +146,11 @@ export default function Hero() {
               {/* floating cards */}
               <motion.div
                 animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
                 className="absolute top-4 right-0 z-10 hidden rounded-2xl border border-white/50 bg-white/85 px-3.5 py-2.5 shadow-xl backdrop-blur md:block"
               >
                 <p className="text-[11px] font-medium text-gray-500">
@@ -135,7 +163,11 @@ export default function Hero() {
 
               <motion.div
                 animate={{ y: [0, 6, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
                 className="absolute bottom-5 left-0 z-10 hidden rounded-2xl border border-white/50 bg-white/85 px-3.5 py-2.5 shadow-xl backdrop-blur md:block"
               >
                 <p className="text-[11px] font-medium text-gray-500">
@@ -164,21 +196,38 @@ export default function Hero() {
               </div>
             </motion.div>
 
-            {/* Add property button - Mobile only */}
-            {/* <motion.div
-              initial={{ opacity: 0, y: 12 }}
+            {/* CTA Card - Mobile Ultra */}
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-              className="mt-6 flex justify-center md:hidden"
+              transition={{ duration: 0.4, delay: 0.22 }}
+              className="relative mx-auto mb-8 mt-5 block w-full max-w-[340px] overflow-hidden rounded-[24px] border border-white/70 bg-white/80 p-4 text-right shadow-[0_20px_55px_rgba(16,42,67,0.13)] backdrop-blur-xl md:hidden"
             >
-              <button
-                type="button"
-                onClick={() => navigate("/add-property")}
-                className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-l from-[#1F3C88] to-[#2E6FD8] px-6 py-3 text-[14px] font-bold text-white shadow-[0_14px_30px_rgba(31,60,136,0.22)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(31,60,136,0.28)]"
-              >
-                أضف عقارك
-              </button>
-            </motion.div> */}
+              <div className="absolute -left-10 -top-10 h-24 w-24 rounded-full bg-[#3E6FD8]/15 blur-2xl" />
+              <div className="absolute -bottom-10 right-8 h-24 w-24 rounded-full bg-[#1F3C88]/15 blur-2xl" />
+
+              <div className="relative">
+                <span className="inline-flex rounded-full bg-[#1F3C88]/10 px-3 py-1 text-[11px] font-extrabold text-[#1F3C88]">
+                  للمالكين
+                </span>
+
+                <h3 className="mt-3 text-[18px] font-extrabold text-[#102A43]">
+                  أضف عقارك بسهولة
+                </h3>
+
+                <p className="mt-2 text-[13px] leading-6 text-gray-600">
+                  اترك الإدارة للوسيط وركز على استثمارك.
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() => navigate("/add-property")}
+                  className="mt-4 w-full rounded-2xl bg-gradient-to-l from-[#1F3C88] to-[#3E6FD8] py-2.5 text-[13px] font-extrabold text-white shadow-[0_14px_30px_rgba(31,60,136,0.25)]"
+                >
+                  أضف عقارك
+                </button>
+              </div>
+            </motion.div>
           </div>
         </div>
       </Container>
