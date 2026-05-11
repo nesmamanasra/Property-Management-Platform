@@ -373,6 +373,7 @@ export default function MainAqariStore() {
             : "للبيع",
         price: Number(item.price || 0),
         currency: item.currency || "",
+        created_at: item.created_at,
       }));
   }, [properties]);
 
@@ -401,8 +402,10 @@ export default function MainAqariStore() {
       data.sort((a, b) => b.price - a.price);
     } else if (sortBy === "الأقل سعرًا") {
       data.sort((a, b) => a.price - b.price);
-    } else {
-      data.sort((a, b) => String(b.id).localeCompare(String(a.id)));
+    } else if (sortBy === "الأحدث") {
+      data.sort(
+        (a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0)
+      );
     }
 
     return data;
@@ -413,13 +416,17 @@ export default function MainAqariStore() {
   }, [activeFilter, selectedCity, sortBy, searchQuery]);
 
   const totalPages = Math.max(1, Math.ceil(filteredProperties.length / perPage));
+
   const paginatedProperties = filteredProperties.slice(
     (currentPage - 1) * perPage,
     currentPage * perPage
   );
 
   return (
-    <section dir="rtl" className="w-full rounded-[28px] bg-[#F5F7FA] p-4 sm:p-5 lg:p-6">
+    <section
+      dir="rtl"
+      className="w-full rounded-[28px] bg-[#F5F7FA] p-4 sm:p-5 lg:p-6"
+    >
       <HeroSection
         onSearch={setSearchQuery}
         propertiesCount={allProperties.length}
@@ -461,9 +468,9 @@ export default function MainAqariStore() {
               onChange={(e) => setSortBy(e.target.value)}
               className="rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 outline-none transition focus:border-[#1F3C88]"
             >
-              <option>الأحدث</option>
-              <option>الأعلى سعرًا</option>
-              <option>الأقل سعرًا</option>
+              <option value="الأحدث">الأحدث</option>
+              <option value="الأعلى سعرًا">الأعلى سعرًا</option>
+              <option value="الأقل سعرًا">الأقل سعرًا</option>
             </select>
           </div>
         </div>
@@ -491,6 +498,7 @@ export default function MainAqariStore() {
 
           {Array.from({ length: totalPages }).map((_, index) => {
             const page = index + 1;
+
             return (
               <PageButton
                 key={page}
@@ -511,7 +519,9 @@ export default function MainAqariStore() {
         <p className="text-right text-sm text-slate-500">
           عرض{" "}
           <span className="font-semibold text-slate-800">
-            {filteredProperties.length === 0 ? 0 : (currentPage - 1) * perPage + 1}
+            {filteredProperties.length === 0
+              ? 0
+              : (currentPage - 1) * perPage + 1}
           </span>{" "}
           -{" "}
           <span className="font-semibold text-slate-800">
